@@ -8,7 +8,7 @@
  */
 
 import type { ClosingCopy, HeroCopy, Item, PageMeta, SectionCopy } from "./types";
-import { contactFor, routes } from "./site";
+import { routes } from "./site";
 
 export const aboutMeta: PageMeta = {
   title: "About Algomotive",
@@ -19,8 +19,8 @@ export const aboutMeta: PageMeta = {
 export const aboutHero: HeroCopy = {
   heading: "Engineering intelligence into the operation.",
   lede: "Algomotive helps organisations move from isolated AI assistance to specialised agents, governed workflows, connected enterprise systems, human authority and measurable operational outcomes.",
-  primary: { label: "Engineer Your AI Future", href: contactFor("opportunity") },
-  secondary: { label: "Request Company Brochure", href: contactFor("resource") },
+  primary: { label: "Engineer Your AI Future", href: routes.contact },
+  secondary: { label: "Request Company Brochure", href: routes.contact },
 };
 
 export const story: SectionCopy & { steps: Item[] } = {
@@ -123,6 +123,6 @@ export const accountability: SectionCopy & { items: Item[] } = {
 
 export const aboutClosing: ClosingCopy = {
   heading: "Start with one qualified workflow and a measurable outcome.",
-  primary: { label: "Engineer Your AI Future", href: contactFor("opportunity") },
+  primary: { label: "Engineer Your AI Future", href: routes.contact },
   secondary: { label: "Explore the Agent Launch", href: routes.agentLaunch },
 };

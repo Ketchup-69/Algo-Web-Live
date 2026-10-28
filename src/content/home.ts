@@ -5,7 +5,7 @@
  */
 
 import type { ClosingCopy, Cta, HeroCopy, Item, PageMeta, SectionCopy } from "./types";
-import { contactFor, routes } from "./site";
+import { routes } from "./site";
 
 export const homeMeta: PageMeta = {
   title: "Algomotive AI Platform | Enterprise AI Agents in the UAE",
@@ -16,7 +16,7 @@ export const homeMeta: PageMeta = {
 export const homeHero: HeroCopy = {
   heading: "Your Business, Engineered to Think.",
   lede: "Purpose-built AI agents that understand your operation, coordinate governed workflows, connect with enterprise systems and target measurable business outcomes.",
-  primary: { label: "Start Your Agent Launch", href: contactFor("opportunity") },
+  primary: { label: "Start Your Agent Launch", href: routes.contact },
   secondary: { label: "Experience a Live Workflow", href: `${routes.algopo}#workflow` },
   note: "Three-week Agent Launch: from a qualified workflow to governed production.",
 };
@@ -193,7 +193,7 @@ export const products: SectionCopy & { items: ProductSummary[] } = {
       category: "Purpose-built enterprise intelligence",
       tagline: "Your ambition, engineered to think.",
       body: "Engineer specialised agents, governed workflows, enterprise integrations and intelligent applications around a high-value process unique to your organisation.",
-      link: { label: "Start with your challenge", href: contactFor("opportunity") },
+      link: { label: "Start with your challenge", href: routes.contact },
     },
   ],
 };

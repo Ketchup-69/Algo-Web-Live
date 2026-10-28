@@ -7,7 +7,7 @@
  */
 
 import type { ClosingCopy, HeroCopy, Item, PageMeta, Related, SectionCopy } from "./types";
-import { contactFor, routes } from "./site";
+import { routes } from "./site";
 
 export type ProductSlug = "algopo" | "algocash" | "algopay" | "algocapital-ai";
 
@@ -64,7 +64,7 @@ export const productList: Product[] = [
     hero: {
       heading: "Procurement, Engineered to Think.",
       lede: "Transform requisitions, purchase orders, approvals, supplier decisions, delivery monitoring and procurement analytics.",
-      primary: { label: "Discuss AlgoPO", href: contactFor("product") },
+      primary: { label: "Discuss AlgoPO", href: routes.contact },
       secondary: { label: "Explore the Workflow", href: "#workflow" },
     },
     workflow: {
@@ -170,7 +170,7 @@ export const productList: Product[] = [
     related,
     closing: {
       heading: closingHeading,
-      primary: { label: "Discuss AlgoPO", href: contactFor("product") },
+      primary: { label: "Discuss AlgoPO", href: routes.contact },
       secondary: allProducts,
     },
   },
@@ -185,7 +185,7 @@ export const productList: Product[] = [
     hero: {
       heading: "Cash Flow, Engineered to Think.",
       lede: "Apply intelligent agents to receivables, collections, customer prioritisation, cash visibility and DSO optimisation.",
-      primary: { label: "Discuss AlgoCash", href: contactFor("product") },
+      primary: { label: "Discuss AlgoCash", href: routes.contact },
       secondary: { label: "Explore the Workflow", href: "#workflow" },
     },
     workflow: {
@@ -289,7 +289,7 @@ export const productList: Product[] = [
     related,
     closing: {
       heading: closingHeading,
-      primary: { label: "Discuss AlgoCash", href: contactFor("product") },
+      primary: { label: "Discuss AlgoCash", href: routes.contact },
       secondary: allProducts,
     },
   },
@@ -304,7 +304,7 @@ export const productList: Product[] = [
     hero: {
       heading: "Payments, Engineered to Think.",
       lede: "Orchestrate payment validation, approvals, execution, reconciliation, controls and real-time financial visibility.",
-      primary: { label: "Discuss AlgoPay", href: contactFor("product") },
+      primary: { label: "Discuss AlgoPay", href: routes.contact },
       secondary: { label: "Explore the Workflow", href: "#workflow" },
     },
     workflow: {
@@ -408,7 +408,7 @@ export const productList: Product[] = [
     related,
     closing: {
       heading: closingHeading,
-      primary: { label: "Discuss AlgoPay", href: contactFor("product") },
+      primary: { label: "Discuss AlgoPay", href: routes.contact },
       secondary: allProducts,
     },
   },
@@ -423,7 +423,7 @@ export const productList: Product[] = [
     hero: {
       heading: "Finance, Engineered to Think.",
       lede: "Connect liquidity, forecasting, capital allocation, risk signals and financial decisions through one intelligent foundation.",
-      primary: { label: "Discuss AlgoCapital AI", href: contactFor("product") },
+      primary: { label: "Discuss AlgoCapital AI", href: routes.contact },
       secondary: { label: "Explore the Workflow", href: "#workflow" },
     },
     workflow: {
@@ -530,7 +530,7 @@ export const productList: Product[] = [
     related,
     closing: {
       heading: "Connect financial context, evaluate approved scenarios, and keep finance leaders in authority.",
-      primary: { label: "Discuss AlgoCapital AI", href: contactFor("product") },
+      primary: { label: "Discuss AlgoCapital AI", href: routes.contact },
       secondary: allProducts,
     },
   },

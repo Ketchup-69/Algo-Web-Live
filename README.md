@@ -189,8 +189,11 @@ Without it Pages runs the output through Jekyll, which silently drops every
 | 4 | Checklist items, CRM contact form, legal drafts | To do |
 | 5 | Pre-handover sweep, deploy, handover note | To do |
 
-Still placeholders: the CRM form (the `mailto:` composer stands in), the
-legal pages, social links, the registered entity name in the copyright line,
+The contact form is the CRM's embedded form (`HubSpotContactForm`, settings
+in `src/content/contact.ts`): its fields, styling, reCAPTCHA, thank-you message
+and notifications are managed in the CRM, not in this code.
+
+Still placeholders: the legal pages, social links, the registered entity name in the copyright line,
 the real domain, and illustrations for AlgoCash, AlgoPay and AlgoCapital AI.
 
 Type is Plus Jakarta Sans throughout (SIL Open Font License 1.1), served from

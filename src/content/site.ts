@@ -29,10 +29,6 @@ export const routes = {
   industries: "/#industries",
 } as const;
 
-/** The contact page, opened with one of its request types already chosen. */
-export const contactFor = (request: "opportunity" | "product" | "resource" | "support") =>
-  `${routes.contact}?request=${request}`;
-
 export type NavLink = Cta;
 export type NavGroup = { label: string; items: NavLink[] };
 export type NavEntry = NavLink | NavGroup;
@@ -79,8 +75,6 @@ export type SiteConfig = {
     salesLabel: string;
     helpdeskLabel: string;
     backToTop: string;
-    /** The mark after a required form label. */
-    requiredMarker: string;
     /** Under every product illustration, so it is never read as real (§2). */
     sampleNote: string;
   };
@@ -171,23 +165,6 @@ export const site: SiteConfig = {
     salesLabel: "Sales",
     helpdeskLabel: "Customer support",
     backToTop: "Back to top",
-    requiredMarker: "*",
     sampleNote: "Illustration with sample data.",
   },
 };
-
-/**
- * Builds a `mailto:` link to one of the two addresses. The contact form uses
- * it until the CRM form replaces it (§7), and keeps it as the fallback after.
- */
-export function buildMailto(
-  to: string,
-  options?: { subject?: string; body?: string },
-): string {
-  // encodeURIComponent, not URLSearchParams: the latter writes spaces as "+",
-  // which mail clients show literally in the subject line.
-  const params: string[] = [];
-  if (options?.subject) params.push(`subject=${encodeURIComponent(options.subject)}`);
-  if (options?.body) params.push(`body=${encodeURIComponent(options.body)}`);
-  return `mailto:${to}${params.length ? `?${params.join("&")}` : ""}`;
-}

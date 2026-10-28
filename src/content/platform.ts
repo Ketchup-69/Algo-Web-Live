@@ -7,7 +7,7 @@
  */
 
 import type { ClosingCopy, HeroCopy, Item, PageMeta, Related, SectionCopy } from "./types";
-import { contactFor, routes } from "./site";
+import { routes } from "./site";
 
 export const platformMeta: PageMeta = {
   title: "Enterprise Agentic AI Platform and AI Agents",
@@ -18,7 +18,7 @@ export const platformMeta: PageMeta = {
 export const platformHero: HeroCopy = {
   heading: "One platform for intelligence that understands and acts.",
   lede: "Build specialised AI agents, coordinate governed workflows, connect approved enterprise knowledge and systems, preserve human authority, and measure operational outcomes through one modular platform.",
-  primary: { label: "Start Your Agent Launch", href: contactFor("opportunity") },
+  primary: { label: "Start Your Agent Launch", href: routes.contact },
   secondary: { label: "Explore the Architecture", href: "#architecture" },
 };
 
@@ -412,5 +412,5 @@ export const platformRelated: SectionCopy & { items: Related[] } = {
 
 export const platformClosing: ClosingCopy = {
   heading: "Choose one workflow. Build the intelligence around it.",
-  primary: { label: "Start Your Agent Launch", href: contactFor("opportunity") },
+  primary: { label: "Start Your Agent Launch", href: routes.contact },
 };

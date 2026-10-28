@@ -6,7 +6,7 @@
  */
 
 import type { ClosingCopy, HeroCopy, Item, PageMeta, SectionCopy } from "./types";
-import { contactFor, routes } from "./site";
+import { routes } from "./site";
 
 export const securityMeta: PageMeta = {
   title: "Enterprise AI Security and Trust",
@@ -17,7 +17,7 @@ export const securityMeta: PageMeta = {
 export const securityHero: HeroCopy = {
   heading: "Every consequential action moves through control.",
   lede: "Algomotive is designed to connect agent intelligence with identity, data boundaries, least-privilege tools, business policy, human authority, controlled execution, monitoring and accountable evidence.",
-  primary: { label: "Start Your Agent Launch", href: contactFor("opportunity") },
+  primary: { label: "Start Your Agent Launch", href: routes.contact },
   secondary: { label: "Explore the AI Platform", href: routes.platform },
 };
 
@@ -181,6 +181,6 @@ export const frameworks: SectionCopy & { items: Item[]; disclaimer: string } = {
 
 export const securityClosing: ClosingCopy = {
   heading: "Move one qualified workflow toward governed production.",
-  primary: { label: "Start Your Agent Launch", href: contactFor("opportunity") },
+  primary: { label: "Start Your Agent Launch", href: routes.contact },
   secondary: { label: "Explore the AI Platform", href: routes.platform },
 };

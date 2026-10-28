@@ -23,12 +23,12 @@ Phase 1 audit, 28 Oct 2026. Verified in the code and in a baseline build (`npm r
 | A11 | Privacy policy page | src/app/privacy (placeholder) | missing | `src/app/privacy/page.tsx` is a one-line placeholder (noindex). DRAFT only, marked unapproved. Must cover the form data and UAE PDPL. The CEO approves before launch |
 | A12 | Terms and conditions page | src/app/terms (placeholder) | missing | `src/app/terms/page.tsx`, one-line placeholder. DRAFT only, the CEO approves |
 | A13 | Last-updated date on privacy and terms | | missing | |
-| A14 | Cookie consent banner | | n/a for now | The demo sets no cookies: theme is in `localStorage`, fonts are self-hosted, no analytics. Re-check when the form script is added; decline by default |
-| A15 | Contact form via HubSpot embed | mailto composer exists | missing | `/contact` (`src/components/sections/ContactForm.tsx`) is the validated `mailto:` composer with the live site's four request types; support goes to helpdesk@, the rest to sales@. Waiting on the embed code (Phase 4) |
-| A16 | Form validation | composer validates | exists | `Contact.tsx` `validate()`: required fields, email format, `aria-invalid`, `role="alert"`, focus to the first error |
-| A17 | Form success state | | exists (partial) | `ContactForm.tsx` composer panel with copy buttons. Embedded-form success state still to build |
-| A18 | Form error state | | exists (partial) | Inline field errors exist. No send-failure state (a `mailto:` cannot report one); build with the embed |
-| A19 | Spam protection | | missing | Form setting, owner switches on |
+| A14 | Cookie consent banner | | missing (check) | The CRM form and its reCAPTCHA probably set cookies; not verifiable from the build sandbox. Check on the live demo (/contact, browser dev tools, Cookies), then decide: consent before the form loads, or list them as necessary on the privacy page |
+| A15 | Contact form via HubSpot embed | mailto composer exists | done | `src/components/sections/HubSpotContactForm.tsx` on `/contact`, settings in `src/content/contact.ts`. Script loads on that page only; works after a hard refresh and after client-side navigation. The old `mailto:` composer was removed (owner OK); the sales and helpdesk addresses beside the form are the fallback, and replace the form if it cannot load |
+| A16 | Form validation | composer validates | done | Inside the CRM form (required fields, email format), set in the CRM |
+| A17 | Form success state | | done | The CRM form's inline thank-you message, set in the CRM |
+| A18 | Form error state | | done | The CRM form's own field errors; if the form cannot load at all, `HubSpotContactForm` shows the two addresses instead |
+| A19 | Spam protection | | done | reCAPTCHA switched on in the CRM form settings |
 | A20 | One clear call to action per page | | done | Each page's hero carries the live site's own primary action, and the closing navy band repeats it; the header holds "Talk to Algomotive". The footer no longer duplicates it |
 | A21 | Sticky header | | exists | `src/components/layout/Nav.tsx`: `sticky top-0`, fixed `h-16`, only colour transitions, no layout shift |
 | A22 | Mobile menu | MobileNav.tsx | exists | `src/components/layout/MobileNav.tsx`: modal sheet, focus trap, Escape, scroll lock |

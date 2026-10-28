@@ -1,7 +1,7 @@
 /**
  * /contact. Copy from the live site's /contact page. The live page's "Ask
- * Algo" chooser becomes one question at the top of an ordinary form, with the
- * same four choices. No phone number (owner decision, 28 Oct 2026).
+ * Algo" chooser is the first question of the CRM form ("What do you need?"),
+ * with the same four choices. No phone number (owner decision, 28 Oct 2026).
  * Source: docs/live-site-content.md, PAGE /contact.
  *
  * The form itself is the CRM's embedded form (`contactEmbed` below). The
@@ -39,76 +39,9 @@ export const contactEmbed = {
   },
 } as const;
 
-export type RequestType = "opportunity" | "product" | "resource" | "support";
-
-export type Field = {
-  name: string;
-  label: string;
-  type: "text" | "email" | "textarea";
-  required: boolean;
-  autoComplete?: string;
-};
-
 export const contactPage = {
   heading: "Start with the workflow your business is ready to improve.",
   lede: "Choose what you need and tell us a little about it. Most requests take less than a minute.",
-
-  request: {
-    legend: "What do you need?",
-    options: [
-      {
-        value: "opportunity",
-        label: "Discuss an AI opportunity",
-        hint: "Describe a workflow, operational challenge or business outcome.",
-      },
-      {
-        value: "product",
-        label: "Explore a product",
-        hint: "Ask about an Algomotive product, request information or arrange a demo.",
-      },
-      {
-        value: "resource",
-        label: "Request a resource",
-        hint: "Request the company brochure, a technical brochure or the high-quality film.",
-      },
-      {
-        value: "support",
-        label: "Customer support",
-        hint: "Get help with an existing Algomotive environment. This goes to the helpdesk.",
-      },
-    ] as { value: RequestType; label: string; hint: string }[],
-  },
-
-  fields: [
-    { name: "name", label: "Name", type: "text", required: true, autoComplete: "name" },
-    { name: "email", label: "Work email", type: "email", required: true, autoComplete: "email" },
-    { name: "company", label: "Company", type: "text", required: true, autoComplete: "organization" },
-    { name: "role", label: "Role", type: "text", required: false, autoComplete: "organization-title" },
-    { name: "message", label: "How can we help?", type: "textarea", required: true },
-  ] as Field[],
-  optionalMarker: "(optional)",
-
-  submitLabel: "Send",
-  /** Shown beside the button. The form opens an email until the CRM form is live (§7). */
-  submitNote: "Opens in your email app.",
-  /** `{request}`, `{name}` and `{company}` are filled in from the form. */
-  subjectTemplate: "{request}: {name}, {company}",
-  composer: {
-    title: "Your email app should have opened.",
-    body: "If nothing happened, copy the address or the message and send it from wherever you read email.",
-    addressLabel: "Address",
-    copyAddress: "Copy address",
-    copyMessage: "Copy message",
-    copied: "Copied",
-    /** Shown when the clipboard is unavailable; the text is selected instead. */
-    copyFailed: "Selected. Copy it with your keyboard.",
-    edit: "Edit the message",
-  },
-  errors: {
-    required: "This field is required.",
-    email: "Enter a valid work email address.",
-    request: "Choose what you need.",
-  },
 } as const;
 
 export const brief: SectionCopy & { items: Item[] } = {
