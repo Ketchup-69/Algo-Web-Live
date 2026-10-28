@@ -71,7 +71,7 @@ Status values: `exists` (already in the repo, say where), `missing`, `done` (bui
 
 | Item | Question |
 |---|---|
-| D1 Floating contact button | WhatsApp or "Talk to us" button fixed on screen: yes or no? |
+| D1 Floating contact button | Decided 28 Oct 2026: no |
 | D2 Announcement banner | Thin bar at the top (for example a launch or event note): yes or no, and the text |
-| D3 Phone number | Live site shows "Call 800 ALGOMOTIVE". Confirm the real number before it goes on the site |
+| D3 Phone number | Decided 28 Oct 2026: no phone number on the site. Do not use "800 ALGOMOTIVE" (unconfirmed). Email only |
 | D4 Page map | Phase 1 proposes it, owner approves |

@@ -11,7 +11,7 @@ How to read it:
 - Numbered lines (01, 02...) are step or card markers on the live site.
 - Duplicate card text and decorative status words (PASS, READY, VERIFIED) were dropped.
 
-Contact details on the live site: sales@algomotiveai.com (sales), helpdesk@algomotiveai.com (support), customer portal at portal.algomotiveai.com, phone shown as "Call 800 ALGOMOTIVE" (number format UNVERIFIED, confirm with the Sales Director before use).
+Contact details on the live site: sales@algomotiveai.com (sales), helpdesk@algomotiveai.com (support), customer portal at portal.algomotiveai.com, phone shown as "Call 800 ALGOMOTIVE". Owner decision 28 Oct 2026: do NOT use it; no phone number on the new site.
 
 ---
 

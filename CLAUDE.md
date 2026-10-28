@@ -76,7 +76,7 @@ The Sales Director wants the contact form to be a HubSpot form embed, so leads l
 - Load the HubSpot embed script only on pages that show the form, after the cookie choice allows it if the script sets cookies (check what it sets and record it in the privacy page).
 - Style the embedded form to match the site's tokens as far as HubSpot allows; record any limits.
 - Success state, error state, field validation and spam protection must all work. Spam protection and the thank-you message are HubSpot form settings: list them for the owner to switch on.
-- Contact addresses: sales@algomotiveai.com for sales, helpdesk@algomotiveai.com for existing customers. They live in `src/content/site.ts` as single constants.
+- Contact addresses: sales@algomotiveai.com for sales, helpdesk@algomotiveai.com for existing customers. They live in `src/content/site.ts` as single constants. No phone number on the site and no floating contact button (owner decisions, 28 Oct 2026). The HubSpot form comes later; build Phases 2 and 3 without waiting for it.
 No analytics in the demo. Leave the single commented slot in the root layout; the handover note says analytics (HubSpot tracking or GA4, one, not both) is added on the real domain with a cookie banner.
 ---
 8. Quality floor
