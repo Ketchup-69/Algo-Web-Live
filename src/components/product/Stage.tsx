@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { cn } from "@/lib/cn";
+import { InteractiveFrame } from "./InteractiveFrame";
 
 /**
  * The frame a product visual is built in.
@@ -13,7 +14,7 @@ import { cn } from "@/lib/cn";
  * Always light, in both page themes — the drawings exist in light only.
  *
  * It is one image to assistive tech, described by `label` (or a labelled
- * group, when `interactive`). The text inside is
+ * group, when `interactive`, from 640px: see InteractiveFrame). The text inside is
  * sample data, not page copy, and reading forty fragments of a mock invoice
  * aloud helps nobody; it stays in the DOM all the same.
  */
@@ -37,20 +38,21 @@ export function Stage({
   className?: string;
   children: ReactNode;
 }) {
+  const style = { "--stage-width": width, "--u": "calc(100cqw / var(--stage-width))" } as CSSProperties;
   return (
     <div
       className={cn("w-full [container-type:inline-size]", className)}
       style={{ maxWidth: `${(width * maxScale) / 16}rem` }}
     >
-      <div
-        role={interactive ? "group" : "img"}
-        aria-label={label}
-        data-theme="light"
-        className="stage relative"
-        style={{ "--stage-width": width, "--u": "calc(100cqw / var(--stage-width))" } as CSSProperties}
-      >
-        {children}
-      </div>
+      {interactive ? (
+        <InteractiveFrame label={label} className="stage relative" style={style}>
+          {children}
+        </InteractiveFrame>
+      ) : (
+        <div role="img" aria-label={label} data-theme="light" className="stage relative" style={style}>
+          {children}
+        </div>
+      )}
     </div>
   );
 }

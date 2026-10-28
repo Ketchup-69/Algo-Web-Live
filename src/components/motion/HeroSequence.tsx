@@ -5,7 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { SplitText } from "gsap/SplitText";
 import { ease, travel } from "@/lib/motion";
 import { useGsapContext } from "./useGsapContext";
-import { revealWords, revealWordsSoft, wordsFrom } from "./lines";
+import { revealWords, wordsFrom } from "./lines";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,6 +19,10 @@ gsap.registerPlugin(ScrollTrigger);
  * list of elements announcing themselves.
  *
  * Everything is transform and opacity.
+ *
+ * The paragraph under the headline is not part of it: it is a page's largest
+ * text, so it stands still from the first frame. Holding it back until the
+ * sequence ran made phones count the page as loaded about a second late (LCP).
  */
 export function HeroSequence({ children }: { children: React.ReactNode }) {
   const scope = useGsapContext<HTMLDivElement>((_self, element) => {
@@ -48,24 +52,6 @@ export function HeroSequence({ children }: { children: React.ReactNode }) {
         splits.push(revealWords(headline, (words) => wordsFrom(words)));
       }
 
-      /* ---- the sub-head: word by word, a beat behind the headline ---- */
-      const sub = element.querySelector<HTMLElement>("[data-hero-seq='sub']");
-      if (sub) {
-        gsap.set(sub, { opacity: 1 });
-        splits.push(
-          revealWordsSoft(sub, (words) =>
-            gsap.from(words, {
-              opacity: 0,
-              y: 10,
-              duration: 0.7,
-              ease: ease.out,
-              stagger: 0.018,
-              delay: 0.35,
-            }),
-          ),
-        );
-      }
-
       const tl = gsap.timeline({
         defaults: { ease: ease.out },
         onComplete: () => {
@@ -76,7 +62,7 @@ export function HeroSequence({ children }: { children: React.ReactNode }) {
           // clearing opacity hands control back to the `html.js [data-hero-seq]`
           // rule in globals.css, which sets opacity 0. The hero animated in and
           // then disappeared. The inline 1 has to outlive the timeline.
-          gsap.set("[data-hero-seq]:not([data-hero-seq='headline']):not([data-hero-seq='sub'])", {
+          gsap.set("[data-hero-seq]:not([data-hero-seq='headline'])", {
             clearProps: "transform",
             opacity: 1,
           });

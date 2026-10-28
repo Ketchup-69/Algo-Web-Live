@@ -112,7 +112,7 @@ From `grep -rn "PLACEHOLDER" src content`, 28 Oct 2026:
 Sweep of 28 Oct 2026 (checklist A28, A30):
 
 - Layout is clean at 360, 768, 1280 and 1920 in both themes.
-- Desktop performance 96 to 98.
-- Mobile performance is 85 to 89 on home, platform and security, against a 95 target. The hero hides its paragraph until the opening animation runs.
-- Accessibility is 92 to 96 on home, AlgoPO and security because of faint sample text and small tap targets inside the illustrations.
-- Re-check both on the live site with PageSpeed Insights.
+- Performance: desktop 96 to 98, mobile 93 to 98 on every page measured.
+- Clickable illustrations become static pictures below 640px wide (`src/components/product/InteractiveFrame.tsx`), because their controls would be under the 24px tap-target minimum there.
+- Accessibility is 100 except home and AlgoPO at 96: faint sample text inside the illustrations. WCAG exempts text that is part of a picture, and the owner chose to keep it.
+- The contact page's layout-shift score depends on the real form, which the build sandbox cannot load. Check it on the live site with PageSpeed Insights.

@@ -89,24 +89,3 @@ export function wordsFrom(
     ...vars,
   });
 }
-
-/**
- * Body copy, word by word: opacity and a few pixels, no mask. Used for the
- * hero sub-head, where a paragraph arriving as one block would fall behind
- * the headline's rhythm.
- *
- * `aria: "none"`: a paragraph may not carry an aria-label (it has no role),
- * and the word fragments are ordinary inline text that a screen reader
- * reads as the sentence it is, so nothing needs hiding or relabelling.
- */
-export function revealWordsSoft(
-  target: Element,
-  build: (words: Element[]) => gsap.core.Tween | gsap.core.Timeline,
-): SplitText {
-  return SplitText.create(target, {
-    type: "words",
-    autoSplit: true,
-    aria: "none",
-    onSplit: (self) => build(self.words),
-  });
-}

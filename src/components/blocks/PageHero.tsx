@@ -39,7 +39,7 @@ export function PageHero({
               >
                 {copy.heading}
               </Heading>
-              <Text tone="muted" size="lg" className="mt-8 max-w-[52ch]" data-hero-seq="sub">
+              <Text tone="muted" size="lg" className="mt-8 max-w-[52ch]">
                 {copy.lede}
               </Text>
               <div className="mt-10 flex flex-wrap items-center gap-3">
