@@ -26,7 +26,7 @@ The build runs the contrast gate first. Never bypass it. `.github/workflows/ci.y
 
 ## Going live on a server (Ubuntu)
 
-Ubuntu 20.04 is out of standard security support (since 2025). Use **24.04 LTS** if the VM allows it; if not, attach Ubuntu Pro for security updates. The steps are the same.
+Target: **Ubuntu 24.04 LTS**. Confirm with `lsb_release -a`; if it says 24.10, reinstall 24.04, because 24.10 no longer gets security updates.
 
 Install:
 
