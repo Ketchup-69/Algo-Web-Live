@@ -148,6 +148,15 @@ export function Nav() {
         <div className="flex h-16 items-center justify-between gap-4">
           <NextLink
             href="/"
+            onClick={(event) => {
+              // Already home: a link to the same page does nothing, so take the
+              // reader back to the top instead (instantly under reduced motion).
+              if (trim(pathname) !== "/") return;
+              event.preventDefault();
+              const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+              window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+              if (window.location.hash) history.replaceState(null, "", window.location.pathname);
+            }}
             className="inline-flex min-h-11 items-center rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
           >
             <Logo />
