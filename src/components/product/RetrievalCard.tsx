@@ -34,12 +34,12 @@ export function RetrievalCard({ maxScale = 1.4, className }: { maxScale?: number
 
       <div data-ptr="" className="card flex flex-col p-[calc(var(--u)*22-1px)]">
         <div className="flex items-center justify-between">
-          <span className="font-mono fs-u-10 font-bold text-ui-label">{data.roleLabel}</span>
-          <span className="rounded-u-3 bg-ui-value/6 px-6 py-2 font-mono fs-u-8 font-medium text-ui-value">{data.role}</span>
+          <span className="font-data fs-u-10 font-bold text-ui-label">{data.roleLabel}</span>
+          <span className="rounded-u-3 bg-ui-value/6 px-6 py-2 font-data fs-u-8 font-medium text-ui-value">{data.role}</span>
         </div>
 
-        <p className="mt-16 fs-u-14 font-semibold tracking-[-0.04em] text-fg">{data.question}</p>
-        <p className="mt-8 fs-u-10 leading-[1.55] font-semibold tracking-[-0.03em] text-ui-value/70">
+        <p className="mt-16 fs-u-14 font-semibold tracking-[-0.025em] text-fg">{data.question}</p>
+        <p className="mt-8 fs-u-10 leading-[1.55] font-semibold tracking-[-0.02em] text-ui-value/70">
           {data.answer.map((part, i) =>
             "cite" in part ? (
               <button
@@ -47,8 +47,8 @@ export function RetrievalCard({ maxScale = 1.4, className }: { maxScale?: number
                 type="button"
                 {...hooks(part.cite)}
                 className={cn(
-                  "mx-2 inline-flex h-12 min-w-12 items-center justify-center rounded-u-3 px-3 align-middle font-mono fs-u-8 font-bold transition-colors duration-150",
-                  lit === part.cite ? "bg-ui-code text-surface" : "bg-ui-code-soft text-ui-code",
+                  "mx-2 inline-flex h-12 min-w-12 items-center justify-center rounded-u-3 px-3 align-middle font-data fs-u-8 font-bold transition-colors duration-150",
+                  lit === part.cite ? "bg-ui-ai text-ui-on-ai" : "bg-ui-code-soft text-ui-code",
                 )}
               >
                 {part.cite}
@@ -61,7 +61,7 @@ export function RetrievalCard({ maxScale = 1.4, className }: { maxScale?: number
 
         <div className="h-16 border-b-[0.5px] border-ui-rule" />
 
-        <span className="mt-12 font-mono fs-u-10 font-bold text-ui-label">{data.sourcesLabel}</span>
+        <span className="mt-12 font-data fs-u-10 font-bold text-ui-label">{data.sourcesLabel}</span>
         <div className="mt-6 flex flex-col">
           {data.sources.map((source, i) => {
             const n = i + 1;
@@ -72,23 +72,23 @@ export function RetrievalCard({ maxScale = 1.4, className }: { maxScale?: number
                 {...hooks(n)}
                 className={cn(
                   "-mx-6 flex h-28 items-center justify-between rounded-u-4 px-6 text-left transition-colors duration-150",
-                  lit === n && "bg-ui-code/8",
+                  lit === n && "bg-ui-ai/8",
                 )}
               >
                 <span className="flex items-center gap-8">
-                  <span className="flex size-12 items-center justify-center rounded-u-3 bg-ui-code-soft font-mono fs-u-8 font-bold text-ui-code">
+                  <span className="flex size-12 items-center justify-center rounded-u-3 bg-ui-code-soft font-data fs-u-8 font-bold text-ui-code">
                     {n}
                   </span>
                   <span
                     className={cn(
-                      "fs-u-10 leading-[1.2] font-semibold tracking-[-0.05em] transition-colors duration-150",
+                      "fs-u-10 leading-[1.2] font-semibold tracking-[-0.03em] transition-colors duration-150",
                       lit === n ? "text-fg" : "text-ui-quiet",
                     )}
                   >
                     {source.title}
                   </span>
                 </span>
-                <span className="font-mono fs-u-8 font-medium text-ui-value">{source.detail}</span>
+                <span className="font-data fs-u-8 font-medium text-ui-value">{source.detail}</span>
               </button>
             );
           })}
@@ -97,9 +97,9 @@ export function RetrievalCard({ maxScale = 1.4, className }: { maxScale?: number
           <div className="flex h-28 items-center justify-between opacity-60">
             <span className="flex items-center gap-8">
               <Icon name="lock" className="size-12 text-ui-label" />
-              <span className="fs-u-10 leading-[1.2] font-semibold tracking-[-0.05em] text-ui-quiet">{data.locked.title}</span>
+              <span className="fs-u-10 leading-[1.2] font-semibold tracking-[-0.03em] text-ui-quiet">{data.locked.title}</span>
             </span>
-            <span className="rounded-u-3 bg-ui-value/6 px-6 py-2 font-mono fs-u-8 font-medium text-ui-label">{data.locked.tag}</span>
+            <span className="rounded-u-3 bg-ui-value/6 px-6 py-2 font-data fs-u-8 font-medium text-ui-label">{data.locked.tag}</span>
           </div>
         </div>
       </div>

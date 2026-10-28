@@ -1,9 +1,9 @@
 /* Product-UI tokens for the statement visual. Imported by globals.css. */
 :root,
 [data-theme="light"] {
-  --algo-ui-slate: #111827; /* the supplier name heading the statement */
-  --algo-ui-cleared: #059669; /* cleared lines: the tick and the count */
-  --algo-ui-warn-rule: #ffcb8f; /* the short rule under the divider label */
+  --algo-ui-slate: var(--algo-navy); /* the supplier name heading the statement */
+  --algo-ui-cleared: var(--algo-navy); /* cleared lines: the tick and the count. The green is the dot beside them */
+  --algo-ui-warn-rule: var(--algo-navy); /* the short rule under the divider label */
 }
 @theme inline {
   --color-ui-slate: var(--algo-ui-slate);

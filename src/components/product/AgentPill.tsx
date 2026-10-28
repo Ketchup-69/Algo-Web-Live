@@ -60,7 +60,7 @@ export function AgentPill({
       )}
     >
       <AgentMark live={live} />
-      <span className="text-ui-pill fs-u-13.25 font-semibold tracking-[-0.05em]">{children}</span>
+      <span className="text-ui-pill fs-u-13.25 font-semibold tracking-[-0.03em]">{children}</span>
     </div>
   );
 }

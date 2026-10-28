@@ -14,8 +14,8 @@ type Filter = (typeof data.filters)[number]["id"];
 /** The approval is the one a person made, so it is the one in colour. */
 const TAG: Record<Kind, string> = {
   input: "bg-ui-value/6 text-ui-label",
-  decision: "bg-ui-code-soft text-ui-code",
-  approval: "bg-ui-match-soft text-ui-match",
+  decision: "bg-ui-ai text-ui-on-ai",
+  approval: "bg-ui-approved text-ui-on-good",
   output: "bg-ui-value/6 text-ui-label",
 };
 
@@ -36,8 +36,8 @@ export function AuditTrailCard({ maxScale = 1.4, className }: { maxScale?: numbe
 
       <div data-ptr="" className="card flex flex-col p-[calc(var(--u)*22-1px)]">
         <div className="flex items-center justify-between">
-          <span className="font-mono fs-u-10 font-bold text-ui-label">{data.title}</span>
-          <span className="font-mono fs-u-10 font-bold text-ui-label">{data.reference}</span>
+          <span className="font-data fs-u-10 font-bold text-ui-label">{data.title}</span>
+          <span className="font-data fs-u-10 font-bold text-ui-label">{data.reference}</span>
         </div>
 
         <div className="mt-12 flex gap-2">
@@ -48,7 +48,7 @@ export function AuditTrailCard({ maxScale = 1.4, className }: { maxScale?: numbe
               aria-pressed={filter === item.id}
               onClick={() => setFilter(item.id)}
               className={cn(
-                "ui-press flex h-22 items-center rounded-u-6 px-8 fs-u-10 font-semibold tracking-[-0.04em] transition-colors duration-150",
+                "ui-press flex h-22 items-center rounded-u-6 px-8 fs-u-10 font-semibold tracking-[-0.025em] transition-colors duration-150",
                 filter === item.id ? "bg-ui-value/6 text-fg" : "text-ui-quiet",
               )}
             >
@@ -66,18 +66,18 @@ export function AuditTrailCard({ maxScale = 1.4, className }: { maxScale?: numbe
                 filter !== "all" && filter !== event.kind && "opacity-25",
               )}
             >
-              <span className="w-44 shrink-0 font-mono fs-u-8 font-medium text-ui-label tabular-nums">{event.time}</span>
-              <span className={cn("flex w-52 shrink-0 justify-center rounded-u-3 py-2 font-mono fs-u-7 font-bold", TAG[event.kind])}>
+              <span className="w-44 shrink-0 font-data fs-u-8 font-medium text-ui-label tabular-nums">{event.time}</span>
+              <span className={cn("flex w-52 shrink-0 justify-center rounded-u-3 py-2 font-data fs-u-7 font-bold", TAG[event.kind])}>
                 {event.tag}
               </span>
-              <span className="min-w-px flex-1 fs-u-10 font-semibold tracking-[-0.04em] whitespace-nowrap text-fg">{event.text}</span>
+              <span className="min-w-px flex-1 fs-u-10 font-semibold tracking-[-0.025em] whitespace-nowrap text-fg">{event.text}</span>
             </div>
           ))}
         </div>
 
         <div className="mt-12 flex h-30 items-center justify-between rounded-u-6 bg-ui-total-tint px-10 whitespace-nowrap">
-          <span className="font-mono fs-u-8 font-bold text-ui-label">{data.footerLabel}</span>
-          <span className="font-mono fs-u-8 font-bold text-ui-value">{data.footerValue}</span>
+          <span className="font-data fs-u-8 font-bold text-ui-label">{data.footerLabel}</span>
+          <span className="font-data fs-u-8 font-bold text-ui-value">{data.footerValue}</span>
         </div>
       </div>
     </Stage>

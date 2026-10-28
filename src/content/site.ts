@@ -1,51 +1,64 @@
 /**
  * Site-wide constants. Every user-facing string on the site comes from
- * `src/content/*` — components hold zero hardcoded copy, because the owner
- * edits this weekly without touching JSX (CLAUDE.md §6).
+ * `src/content/*` — components hold zero hardcoded copy, so the copy can be
+ * edited without touching JSX (CLAUDE.md §6).
  *
  * Placeholders use the greppable `PLACEHOLDER:` convention. Run
- * `grep -rn "PLACEHOLDER:" src/content/` before launch to find every one.
+ * `grep -rn "PLACEHOLDER" src content` before launch to find every one.
  */
 
-export type NavItem = {
-  label: string;
-  /** In-page anchor (`#agents`) or a route (`/blog`). */
-  href: string;
-};
+import type { Cta } from "./types";
 
-export type SocialLink = {
-  label: string;
-  href: string;
-};
+/** Every route on the site, in one place, so a renamed page is one edit. */
+export const routes = {
+  home: "/",
+  platform: "/platform/",
+  agents: "/platform/#agents",
+  security: "/security/",
+  about: "/about/",
+  contact: "/contact/",
+  privacy: "/privacy/",
+  terms: "/terms/",
+  algopo: "/products/algopo/",
+  algocash: "/products/algocash/",
+  algopay: "/products/algopay/",
+  algocapital: "/products/algocapital-ai/",
+  products: "/#products",
+  custom: "/#custom",
+  agentLaunch: "/#agent-launch",
+  industries: "/#industries",
+} as const;
+
+export type NavLink = Cta;
+export type NavGroup = { label: string; items: NavLink[] };
+export type NavEntry = NavLink | NavGroup;
+
+export const isGroup = (entry: NavEntry): entry is NavGroup => "items" in entry;
 
 export type SiteConfig = {
   /** The only brand name permitted anywhere on this site (§2). */
   name: string;
-  tagline: string;
+  /** The second line of the logo lockup, from the logo pack. */
+  logoSubline: string;
+  /** The default meta description, and the footer's line under the logo. */
   description: string;
-  /**
-   * Single source of truth for the contact address. Every form and every CTA
-   * builds its `mailto:` composer from this one constant (§7).
-   */
-  contactEmail: string;
   /** Canonical origin. Used for metadata once the domain is decided. */
   url: string;
-  nav: NavItem[];
-  /** Repeated in the footer; kept separate so the two can diverge. */
-  footerNav: NavItem[];
-  legalNav: NavItem[];
-  social: SocialLink[];
-  contact: {
-    /** True while the lines below are filler rather than a real address. */
-    placeholder: boolean;
-    addressLines: string[];
-    /** Empty string when not yet confirmed; the footer omits it. */
-    phone: string;
-    email: string;
-  };
+  /**
+   * The two addresses on the site, each in one place (§7): sales for new
+   * conversations, the helpdesk for existing customers. No phone number
+   * (owner decision, 28 Oct 2026).
+   */
+  email: { sales: string; helpdesk: string };
+  /** Sign-in for existing customers. A separate product, linked, not embedded. */
+  portal: Cta;
+  /** The one action in the header and the mobile menu. */
+  cta: Cta;
+  nav: NavEntry[];
+  footer: { heading: string; links: NavLink[] }[];
+  legalNav: NavLink[];
+  social: NavLink[];
   legalLine: string;
-  /** The footer's closing invitation. Resolves to the same composer as every CTA (§7). */
-  footerCta: { label: string; href: string };
   /**
    * Chrome strings: labels for controls that are not page copy but are still
    * user-facing. Kept here so a component never holds a string (§6).
@@ -57,75 +70,84 @@ export type SiteConfig = {
     menuLabel: string;
     primaryNavLabel: string;
     themeToggle: { neutral: string; toLight: string; toDark: string };
-    footerSections: string;
     footerContact: string;
     footerElsewhere: string;
+    salesLabel: string;
+    helpdeskLabel: string;
     backToTop: string;
-    backToWriting: string;
-    readingTime: (minutes: number) => string;
-    /** The mark after a required form label. */
-    requiredMarker: string;
-    /** Title for a post whose frontmatter has none. */
-    untitledPost: string;
+    /** Under every product illustration, so it is never read as real (§2). */
+    sampleNote: string;
   };
 };
 
 export const site: SiteConfig = {
   name: "Algomotive",
-  tagline: "AI agents for enterprise finance and operations",
+  logoSubline: "AI Platform",
   description:
-    "Algomotive deploys AI agents across payables, receivables, procurement and cash. They read from the systems you already run, prepare the work, and wait for a person to approve it.",
+    "Build intelligent agents, orchestrate complex workflows, and connect data, people and enterprise systems on one secure AI platform.",
 
-  // PLACEHOLDER: replace with the real inbox before launch
-  contactEmail: "hello@algomotive.example",
-
-  // PLACEHOLDER: replace when the domain is decided (Pages URL or custom domain)
+  // PLACEHOLDER: the demo address on GitHub Pages. Becomes https://www.algomotiveai.com at handover.
   url: "https://ketchup-69.github.io/Algo-Web-Live",
 
-  // Anchors are route-qualified ("/#agents", not "#agents") so they resolve
-  // from the blog, the legal pages and the 404 as well as from the home page.
+  email: {
+    sales: "sales@algomotiveai.com",
+    helpdesk: "helpdesk@algomotiveai.com",
+  },
+
+  portal: { label: "Customer Portal", href: "https://portal.algomotiveai.com" },
+
+  cta: { label: "Talk to Algomotive", href: routes.contact },
+
   nav: [
-    { label: "Agents", href: "/#agents" },
-    { label: "How it works", href: "/#how-it-works" },
-    { label: "Governance", href: "/#governance" },
-    { label: "Blog", href: "/blog" },
+    { label: "Platform", href: routes.platform },
+    {
+      label: "Products",
+      items: [
+        { label: "AlgoPO", href: routes.algopo },
+        { label: "AlgoCash", href: routes.algocash },
+        { label: "AlgoPay", href: routes.algopay },
+        { label: "AlgoCapital AI", href: routes.algocapital },
+        { label: "Custom AI Solutions", href: routes.custom },
+      ],
+    },
+    { label: "Security", href: routes.security },
+    { label: "About", href: routes.about },
   ],
 
-  footerNav: [
-    { label: "Agents", href: "/#agents" },
-    { label: "How it works", href: "/#how-it-works" },
-    { label: "Governance", href: "/#governance" },
-    { label: "Integrations", href: "/#integrations" },
-    { label: "Blog", href: "/blog" },
+  footer: [
+    {
+      heading: "Company",
+      links: [
+        { label: "Platform", href: routes.platform },
+        { label: "AI agents", href: routes.agents },
+        { label: "Security and trust", href: routes.security },
+        { label: "About", href: routes.about },
+        { label: "Contact", href: routes.contact },
+      ],
+    },
+    {
+      heading: "Products",
+      links: [
+        { label: "AlgoPO", href: routes.algopo },
+        { label: "AlgoCash", href: routes.algocash },
+        { label: "AlgoPay", href: routes.algopay },
+        { label: "AlgoCapital AI", href: routes.algocapital },
+        { label: "Custom AI Solutions", href: routes.custom },
+      ],
+    },
   ],
 
   legalNav: [
-    { label: "Privacy", href: "/privacy" },
-    { label: "Terms", href: "/terms" },
+    { label: "Privacy", href: routes.privacy },
+    { label: "Terms", href: routes.terms },
   ],
 
-  // PLACEHOLDER: replace every href once the owner confirms which profiles are
-  // public. Labels are safe; the destinations are not real.
-  social: [
-    { label: "LinkedIn", href: "#" },
-    { label: "X", href: "#" },
-  ],
-
-  // PLACEHOLDER: no real contact detail is known yet. The lines say so on the
-  // page. Nothing here may name a building, a landlord or any other company
-  // (§2). Fill in the real address and phone, then set `placeholder: false`.
-  contact: {
-    placeholder: true,
-    addressLines: ["Office address pending", "Dubai, United Arab Emirates"],
-    /** Empty until confirmed: the footer omits the phone line while it is. */
-    phone: "",
-    email: "hello@algomotive.example",
-  },
+  // PLACEHOLDER: add each public profile (LinkedIn first) once the owner confirms it.
+  // A link only renders once its href starts with http.
+  social: [{ label: "LinkedIn", href: "#" }],
 
   // PLACEHOLDER: confirm the registered entity name and year with the owner
   legalLine: "© 2026 Algomotive. All rights reserved.",
-
-  footerCta: { label: "Start a conversation", href: "/#contact" },
 
   ui: {
     skipToContent: "Skip to content",
@@ -138,33 +160,11 @@ export const site: SiteConfig = {
       toLight: "Switch to light theme",
       toDark: "Switch to dark theme",
     },
-    footerSections: "Sections",
     footerContact: "Contact",
     footerElsewhere: "Elsewhere",
+    salesLabel: "Sales",
+    helpdeskLabel: "Customer support",
     backToTop: "Back to top",
-    backToWriting: "Back to writing",
-    readingTime: (minutes) => `${minutes} min read`,
-    requiredMarker: "*",
-    untitledPost: "Untitled",
+    sampleNote: "Illustration with sample data.",
   },
 };
-
-/**
- * Builds the `mailto:` composer used by every CTA and by the contact form.
- * Returns null when no address is configured, so callers can fall back to a
- * copy-to-clipboard line rather than rendering a dead link (§7).
- *
- * The contact form composes through this, and so does every plain contact link.
- */
-export function buildMailto(options?: {
-  subject?: string;
-  body?: string;
-}): string | null {
-  if (!site.contactEmail) return null;
-  // encodeURIComponent, not URLSearchParams: the latter writes spaces as "+",
-  // which mail clients show literally in the subject line.
-  const params: string[] = [];
-  if (options?.subject) params.push(`subject=${encodeURIComponent(options.subject)}`);
-  if (options?.body) params.push(`body=${encodeURIComponent(options.body)}`);
-  return `mailto:${site.contactEmail}${params.length ? `?${params.join("&")}` : ""}`;
-}

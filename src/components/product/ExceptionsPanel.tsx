@@ -51,21 +51,21 @@ export function ExceptionsPanel({ maxScale = 1.4, className }: { maxScale?: numb
             >
               <span
                 className={cn(
-                  "flex size-18 shrink-0 items-center justify-center rounded-u-9 text-ui-sheet transition-colors duration-200",
-                  released.has(row.kind) ? "bg-ui-approved" : "bg-ui-warn-badge",
+                  "flex size-18 shrink-0 items-center justify-center rounded-u-9 transition-colors duration-200",
+                  released.has(row.kind) ? "bg-ui-approved text-ui-on-good" : "bg-ui-warn-badge text-ui-on-flag",
                 )}
               >
                 <Icon name={released.has(row.kind) ? "check" : "priority_high"} className="size-12" />
               </span>
               <div className="flex h-full min-w-px flex-1 items-center pl-10">
                 <div className="flex min-w-px flex-1 flex-col items-start justify-center gap-1 whitespace-nowrap">
-                  <span key={String(released.has(row.kind))} className="ui-swap font-mono fs-u-8 font-bold text-ui-label">
+                  <span key={String(released.has(row.kind))} className="ui-swap font-data fs-u-8 font-bold text-ui-label">
                     {released.has(row.kind) ? data.releasedLabel : row.kind}
                   </span>
-                  <span className="fs-u-12 leading-[1.2] font-bold tracking-[-0.05em] text-fg">{row.title}</span>
-                  <span className="fs-u-10 font-medium tracking-[-0.04em] text-ui-meta">{row.source}</span>
+                  <span className="fs-u-12 leading-[1.2] font-bold tracking-[-0.03em] text-fg">{row.title}</span>
+                  <span className="fs-u-10 font-medium tracking-[-0.025em] text-ui-meta">{row.source}</span>
                 </div>
-                <span className="w-72 shrink-0 text-right font-mono fs-u-10.5 font-medium whitespace-nowrap text-ui-value">
+                <span className="w-72 shrink-0 text-right font-data fs-u-10.5 font-medium whitespace-nowrap text-ui-value">
                   {row.amount}
                 </span>
               </div>
@@ -74,17 +74,17 @@ export function ExceptionsPanel({ maxScale = 1.4, className }: { maxScale?: numb
         </div>
 
         <div className="flex h-30 shrink-0 items-center justify-between rounded-u-6 bg-ui-total-tint px-10 py-7 whitespace-nowrap">
-          <span key={String(submitted)} className="ui-swap font-mono fs-u-8 font-bold text-ui-label">
+          <span key={String(submitted)} className="ui-swap font-data fs-u-8 font-bold text-ui-label">
             {submitted ? data.submittedLabel : data.totalLabel}
           </span>
-          <span key={held} className="ui-swap font-mono fs-u-13 font-semibold text-ui-value tabular-nums" aria-live="polite">
+          <span key={held} className="ui-swap font-data fs-u-13 font-semibold text-ui-value tabular-nums" aria-live="polite">
             {money(held)}
           </span>
         </div>
 
         {/* The step the drawing stops short of: send the run, see what it did. */}
         <div className="flex min-h-30 items-center justify-between gap-12">
-          <span key={String(submitted)} className="ui-swap min-w-px flex-1 fs-u-10 leading-[1.3] font-medium tracking-[-0.04em] text-ui-meta" aria-live="polite">
+          <span key={String(submitted)} className="ui-swap min-w-px flex-1 fs-u-10 leading-[1.3] font-medium tracking-[-0.025em] text-ui-meta" aria-live="polite">
             {submitted
               ? held > 0
                 ? data.submittedNote.replace("{paid}", money(paid)).replace("{held}", money(held))
@@ -95,8 +95,8 @@ export function ExceptionsPanel({ maxScale = 1.4, className }: { maxScale?: numb
             type="button"
             onClick={() => setSubmitted((value) => !value)}
             className={cn(
-              "ui-press flex h-30 shrink-0 items-center rounded-u-10 px-16 fs-u-12 font-semibold tracking-[-0.05em] whitespace-nowrap transition-colors duration-200",
-              submitted ? "ui-quiet-control bg-surface text-fg shadow-[inset_0_0_calc(var(--u)*2)_0_rgb(10_14_26/0.2)]" : "bg-accent text-surface",
+              "ui-press flex h-30 shrink-0 items-center rounded-u-10 px-16 fs-u-12 font-semibold tracking-[-0.03em] whitespace-nowrap transition-colors duration-200",
+              submitted ? "ui-quiet-control bg-surface text-fg shadow-[inset_0_0_calc(var(--u)*2)_0_rgb(3_21_34/0.2)]" : "bg-ui-action text-ui-on-action",
             )}
           >
             {submitted ? data.edit : data.submit}

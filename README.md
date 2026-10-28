@@ -25,9 +25,9 @@ touch the last two:
 
 | Tier | What | Rule |
 |---|---|---|
-| Raw palette | `--algo-*` | The exact brand hexes. Never edited, never referenced by a component. |
+| Raw palette | `--algo-*` | The six logo-pack hexes (navy, green, cyan, violet, mint, white), plus neutrals and deep hues mixed from them. Never referenced by a component. |
 | Semantic aliases | `--bg`, `--fg-muted`, `--accent`… | What components consume. Dark mode remaps only these. |
-| Gradients | `--grad-*` | Buttons, panels, hairlines, the blue band wash and the headline gradient (`text-grad-brand`, display sizes only). Never body copy. |
+| Gradients | `--grad-*` | Buttons, panels, hairlines, the navy band's rise and the headline gradient (`text-grad-brand`, display sizes only, and only on navy grounds). Never body copy. |
 | Tailwind | `@theme inline` | Turns the aliases into `bg-surface`, `text-fg-muted`, `border-border-strong`. |
 
 **No component ever writes a hex.** If you find yourself reaching for one, the
@@ -35,16 +35,22 @@ alias you need is missing — add it to the token layer instead.
 
 ### Contrast
 
-The raw palette is the brand file's, and not all of it clears WCAG AA on
-screen: the brand grey is 3.06 on the tinted band and the bright blue is 3.16.
-Deep blue (`#004aad`) is 7.01 at worst, which is why it carries links, focus
-and the primary button. Every other AA-critical alias is derived with `color-mix(in oklab, …)` from two approved
-palette tokens — no new hex enters the codebase, and a brand-book swap
-propagates automatically.
+The raw palette is the logo pack's. Navy carries all text on light grounds.
+Green, cyan, violet and mint are fills with a navy label, never text on white:
+as text on white they measure 2.65, 2.14, 3.27 and 1.54. Where a brand hue has
+to be text or a thin line on a light ground (links, focus rings, a "matched"
+label), it is that hue mixed toward navy until it clears AA — the deep cyan,
+green and violet in tier 1. Greys are navy let down into white. Every derived
+value is a `color-mix(in oklab, …)` of two palette tokens — no new hex enters
+the codebase, and a palette change propagates automatically.
 
-`src/lib/tokens.ts` mirrors those mixes as data. It is the single source for
-both the build gate and the /styleguide page, so the numbers on screen cannot
-drift from the numbers CI enforces. **Change a mix percentage in `globals.css`
+Colour carries meaning, the same way everywhere, product visuals included:
+green is approved or matched, navy is "needs attention", violet is anything
+the agent did, cyan is the action.
+
+`src/lib/tokens.ts` mirrors those mixes as data, including the text pairings
+inside the product visuals, and the build gate reads it, so the numbers on
+screen cannot drift from the numbers CI enforces. **Change a mix percentage in `globals.css`
 and you must change it in `tokens.ts` too** — the gate is what catches you.
 
 Text is checked at 4.5:1 against every ground it can land on. UI boundaries are
@@ -60,31 +66,40 @@ paint, so there is no flash of the wrong theme. It reads `localStorage`, falls
 back to `prefers-color-scheme`, and falls back again to light if storage throws.
 
 The dark selector is a bare `[data-theme="dark"]` rather than `html[...]`, so
-any subtree can be themed independently — which is how /styleguide shows both
-themes at once.
+any subtree can be themed independently — which is how the closing band carries its own
+theme.
 
 ## Layout
 
 ```
 src/app/               routes, root layout, template (page transition), globals.css
+                       nine pages: /, /platform, /products/[slug] (four), /security,
+                       /about, /contact; legal placeholders; and small "moved" pages
+                       at the live site's old addresses (/ai-agents, /products,
+                       /solutions, /resources)
 src/components/ui      primitives — Container, Section, Button, Link, Heading, Text,
-                       Status, ThemeToggle, PageEnter, ReadingProgress
-src/components/layout  Nav, MobileNav, Footer, Logo
-src/components/motion  Reveal, HeroSequence, ProcessSequence, Counter, lines (SplitText)
-src/components/sections one file per section of the home page, plus the two diagrams
-src/content/           all user-facing copy, as typed objects
-src/lib/               fonts, theme, motion vocabulary, cn(), tokens, posts
+                       Status, ThemeToggle, PageEnter
+src/components/blocks  what every page is built from — PageHero, Block, ItemGrid,
+                       Steps, Trace, TermList, CompareTable, RelatedLinks, Figure,
+                       Note, CtaBand, MovedPage
+src/components/sections the few page-specific pieces — product rows, system tiles,
+                       the AlgoPO illustrations, the security scroll moment, the form
+src/components/product the product illustrations, each a coded replica in a <Stage>
+src/components/layout  Nav (with the products menu), MobileNav, Footer, Logo
+src/components/motion  Reveal, HeroSequence, PinnedSteps, lines (SplitText)
+src/content/           all user-facing copy, as typed objects, one file per page
+src/lib/               fonts, theme, motion vocabulary, cn(), tokens, page metadata
 scripts/               check-contrast.mts — the build gate
 ```
 
-Copy lives in `src/content/*` and nowhere else. Components contain zero
-hardcoded strings, because the owner edits copy without touching JSX. That
-includes chrome — menu labels, the theme toggle, footer headings — which sit in
-`site.ui`.
+Copy lives in `src/content/*` and nowhere else, taken from the live site
+(`docs/live-site-content.md`) in British spelling. Components contain zero
+hardcoded strings. That includes chrome — menu labels, the theme toggle,
+footer headings — which sit in `site.ui`. Routes and the two contact
+addresses are single constants in `src/content/site.ts`.
 
-`grep -rn "PLACEHOLDER" src content` lists everything still to be replaced
-before launch: the contact address, the logo strip, the client quotation, the
-legal pages, the social links, the brand mark and the social card.
+`grep -rn "PLACEHOLDER" src` lists everything still to be replaced before
+launch.
 
 ## Motion
 
@@ -104,22 +119,17 @@ hooks. Nothing below the fold is built until the hero has had its first frame
 within a viewport of the fold; anything already on screen when its section is
 built is left exactly as the static HTML has it. Nothing plays twice.
 
-Two places spend the boldness: the hero sequence (`HeroSequence`: the
-headline's words rise out of masked lines, the sub-head arrives word by word,
-the pipeline draws itself, then three ambient pulses ride the flow and pause
-while the hero is off screen) and the "How it works" board (`ProcessBoard` +
-`ProcessSequence`), which holds still with CSS `position: sticky` and changes
-stage as each step reaches the reading line. Neither pins or hijacks the
-scroll.
+Two places spend the boldness: the hero sequence on every page
+(`HeroSequence`: the headline's words rise out of masked lines, the sub-head
+arrives word by word, and on the home page the invoice scatter comes up
+beside it) and the signature scroll moment on /security (`ControlsShown` +
+`PinnedSteps`), where a full screen holds still with CSS `position: sticky`
+while three controls and their illustrations change places. Neither pins or
+hijacks the scroll. Everywhere else, section headings reveal line by line
+and nothing else moves.
 
-Both diagrams follow the theme. Their strokes and beams come through the
-`--flow-*` tokens in `globals.css`, which run deep blue to bright blue on paper
-and bright blue to sky on the night ground. The board is HTML nodes with an SVG
-overlay whose beams are measured from the nodes' positions; its motion is
-CSS keyed off a `data-stage` attribute (travelling beams, receding later
-stages, the tick drawing), so the scroll handler costs one attribute write.
-The border light on both cards and the drifting glow behind the hero are CSS
-too.
+The border light on cards and the drifting glow behind the hero are CSS, and
+follow the theme through the `--flow-*` and `--gf-*` tokens in `globals.css`.
 
 The contract every piece of motion keeps:
 
@@ -169,18 +179,23 @@ Without it Pages runs the output through Jekyll, which silently drops every
 
 ## Phase status
 
-`CLAUDE.md` refers to `BUILD-PROMPTS.md` for the phase definitions; that file
-is not in the repository, so the phases below are reconstructed from the
-commit history.
+`CLAUDE.md` §9 defines the phases for this round.
 
 | Phase | What | State |
 |---|---|---|
-| 0 | Tokens, fonts, theme, primitives, contrast gate, deploy pipeline | Done |
-| 1 | The full page, static, real copy, no motion; blog, legal pages | Done |
-| 2 | The motion layer: hero sequence, signature scroll moment, one entrance | Done |
-| 3 | `mailto:` composer, styleguide removed, sitemap, robots, social card, 404 | Done |
-| 4 | Motion and UI revamp: display type, masked line reveals, live pipeline, sticky process scene, approval console, logo strip, nav, footer, page transitions | Done |
+| 1 | Audit against the live site, checklist, page map | Done (`docs/phase-1-audit.md`) |
+| 2 | Brand layer: palette, Plus Jakarta Sans, logo, contrast gate | Done |
+| 3 | Live-site copy and the approved nine-page map | Done |
+| 4 | Checklist items, CRM contact form, legal drafts | To do |
+| 5 | Pre-handover sweep, deploy, handover note | To do |
 
-Still placeholders, by design: contact details, logo strip, the client
-quotation (disabled), legal pages, social links, brand mark, and the blog post
-(noindex until approved).
+The contact form is the CRM's embedded form (`HubSpotContactForm`, settings
+in `src/content/contact.ts`): its fields, styling, reCAPTCHA, thank-you message
+and notifications are managed in the CRM, not in this code.
+
+Still placeholders: the legal pages, social links, the registered entity name in the copyright line,
+the real domain, and illustrations for AlgoCash, AlgoPay and AlgoCapital AI.
+
+Type is Plus Jakarta Sans throughout (SIL Open Font License 1.1), served from
+the site by `next/font`. The logo mark, favicon and social card come from the
+official logo pack in `docs/brand/logo-pack/`.

@@ -62,19 +62,19 @@ function VerificationCard({ card }: { card: Card }) {
               renders; these are the site's icon set. */}
           <span
             className={cn(
-              "flex size-44 shrink-0 items-center justify-center rounded-u-22 text-ui-sheet transition-colors duration-200",
-              flagged ? "bg-ui-flag" : "bg-ui-approved",
+              "flex size-44 shrink-0 items-center justify-center rounded-u-22 transition-colors duration-200",
+              flagged ? "bg-ui-flag text-ui-on-flag" : "bg-ui-approved text-ui-on-good",
             )}
           >
             <Icon name={flagged ? "priority_high" : "check"} className="size-26" />
           </span>
-          <span key={String(accepted)} className="ui-swap fs-u-20 font-bold tracking-[-0.04em] text-ui-title">
+          <span key={String(accepted)} className="ui-swap fs-u-20 font-bold tracking-[-0.025em] text-ui-title">
             {accepted ? data.accepted.status : card.status}
           </span>
         </div>
         <span
           className={cn(
-            "fs-u-16 font-bold tracking-[-0.04em]",
+            "fs-u-16 font-bold tracking-[-0.025em]",
             "transition-colors duration-200",
             flagged ? "text-ui-flag-quiet" : "text-ui-approved-quiet",
           )}
@@ -104,7 +104,7 @@ function VerificationCard({ card }: { card: Card }) {
               <span
                 className={cn(
                   "flex size-22 shrink-0 items-center justify-center rounded-u-11 transition-colors duration-200",
-                  open ? "bg-ui-variance-soft text-ui-variance" : "bg-ui-match-soft text-ui-match",
+                  open ? "bg-ui-flag text-ui-on-flag" : "bg-ui-approved text-ui-on-good",
                 )}
               >
                 <Icon name={open ? "priority_high" : "check"} className="size-14" />
@@ -115,7 +115,7 @@ function VerificationCard({ card }: { card: Card }) {
               key={String(open)}
               className={cn(
                 "ui-swap rounded-u-6 px-10 py-4 fs-u-11 font-bold tracking-[0.0455em] whitespace-nowrap",
-                open ? "bg-ui-variance-soft text-ui-variance" : "bg-ui-match-soft text-ui-match",
+                open ? "bg-ui-flag text-ui-on-flag" : "bg-ui-approved text-ui-on-good",
               )}
             >
               {row.variance && accepted ? data.accepted.tag : row.tag}

@@ -1,12 +1,7 @@
 /**
- * Sample data for the three governance visuals that are NOT in the brand
- * file. They are drawn by the site in the brand file's language, to show the
- * three governance claims the approval card does not. None of it is real.
- *
- * PLACEHOLDER: `dataTiers.rows[n].route` names how each class of data is
- * processed. The page copy only commits to "handled differently, up to
- * self-hosted inference for restricted workloads"; the owner must confirm the
- * three routes (and the examples) before launch.
+ * Sample data for the governance visuals on /security that are NOT in the
+ * brand file: an answer citing the records it came from, and the audit trail.
+ * Drawn by the site in the brand file's language. None of it is real.
  */
 
 export const retrievalCard = {
@@ -58,19 +53,4 @@ export const auditTrailCard = {
   ],
   footerLabel: "4 EVENTS",
   footerValue: "EXPORTABLE FOR AUDIT",
-} as const;
-
-export const dataTiersCard = {
-  placeholder: true,
-  alt: "Try it: three classes of data, public, internal and restricted, each routed to a different place to be processed. Restricted data is processed by self-hosted inference.",
-  pill: "Routed by data class",
-  classLabel: "DATA CLASS",
-  routeLabel: "PROCESSED BY",
-  rows: [
-    { name: "PUBLIC", examples: "Supplier names, catalogue prices", route: "Hosted model" },
-    { name: "INTERNAL", examples: "Invoices, ledgers, statements", route: "Private endpoint" },
-    { name: "RESTRICTED", examples: "Payroll, bank details", route: "Self-hosted inference" },
-  ],
-  /** Which row is selected before anyone touches it. */
-  initial: 2,
 } as const;

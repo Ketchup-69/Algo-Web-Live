@@ -87,88 +87,103 @@ export const gradientWorst = (text: string, from: string, to: string) => {
   return worst;
 };
 
+/**
+ * A colour at `alpha` laid over a ground, as the browser composites it (in
+ * gamma-encoded sRGB). Mirrors `color-mix(in srgb, x a%, transparent)` once it
+ * is painted on something.
+ */
+export const over = (fg: string, alpha: number, ground: string) => {
+  const ch = (h: string, i: number) => parseInt(h.replace("#", "").slice(i, i + 2), 16);
+  return (
+    "#" +
+    [0, 2, 4]
+      .map((i) => Math.round(ch(fg, i) * alpha + ch(ground, i) * (1 - alpha)))
+      .map((v) => v.toString(16).padStart(2, "0"))
+      .join("")
+  );
+};
+
 /* ------------------------------------------------------- tier 1: palette -- */
 
-/** CLAUDE.md §4, from the brand file. Never referenced by a component. */
+/** CLAUDE.md §4, from the official logo pack. Never referenced by a component. */
 export const palette = {
-  ink: "#0c0a08",
-  night: "#0a0e1a",
-  "blue-deep": "#004aad",
-  "blue-mid": "#236dff",
-  blue: "#2c82fe",
-  sky: "#72a9e9",
-  paper: "#fffdf9",
-  card: "#fcfbf9",
-  muted: "#888888",
-  success: "#48ba86",
-  warning: "#f0ae3c",
-  danger: "#e76c54",
+  navy: "#031522",
+  green: "#22b573",
+  cyan: "#38bdf8",
+  violet: "#8b7cff",
+  mint: "#7de3c3",
+  white: "#ffffff",
 } as const;
 
 export type PaletteName = keyof typeof palette;
 
-/* ------------------------------------------------- tier 2: alias mapping -- */
-
 const p = palette;
 
+/** The neutrals of tier 1: navy let down into white, exactly as globals.css mixes them. */
+export const derived = {
+  "n-page": mix(p.navy, p.white, 3),
+  "n-line": mix(p.navy, p.white, 11),
+  "n-strong": mix(p.navy, p.white, 46),
+  "n-label": mix(p.navy, p.white, 58),
+  "n-support": mix(p.navy, p.white, 71),
+} as const;
+
+const d = derived;
+
+/* ------------------------------------------------- tier 2: alias mapping -- */
+
 /**
- * `border` is alpha in the stylesheet (night or paper let down to a hairline)
+ * `border` is alpha in the stylesheet (navy or white let down to a hairline)
  * so it sits on any ground. It is decorative and never checked; the value
  * here is what it resolves to on the page ground.
  */
 export const lightAliases = {
-  bg: p.paper,
-  "bg-subtle": mix(p.blue, p.paper, 6),
-  surface: p.card,
-  "surface-raised": p.card,
-  fg: p.ink,
-  "fg-muted": mix(p.muted, p.ink, 70),
-  border: mix(p.night, p.paper, 8),
-  "border-strong": p.muted,
-  accent: p["blue-deep"],
-  "accent-soft": mix(p.blue, p.paper, 12),
-  "accent-contrast": p.paper,
-  success: p.success,
-  warning: p.warning,
-  danger: p.danger,
-  "status-contrast": p.ink,
+  bg: p.white,
+  "bg-subtle": d["n-page"],
+  surface: p.white,
+  "surface-raised": p.white,
+  fg: p.navy,
+  "fg-muted": d["n-support"],
+  border: over(p.navy, 0.11, p.white),
+  "border-strong": d["n-strong"],
+  accent: p.navy,
+  "accent-soft": mix(p.cyan, p.white, 10),
+  "accent-contrast": p.navy,
+  success: p.green,
+  "on-success": p.navy,
+  attention: p.navy,
+  "on-attention": p.white,
+  ai: p.violet,
+  "on-ai": p.navy,
 } as const;
+
+const darkSurface = mix(p.white, p.navy, 6);
 
 export const darkAliases = {
-  bg: p.night,
-  "bg-subtle": mix(p.night, "#000000", 80),
-  surface: mix(p.night, p.muted, 88),
-  "surface-raised": mix(p.night, p.muted, 76),
-  fg: p.paper,
-  "fg-muted": mix(p.muted, p.paper, 74),
-  border: mix(p.paper, p.night, 10),
-  "border-strong": mix(p.paper, p.muted, 10),
-  accent: p.sky,
-  "accent-soft": mix(p.blue, p.night, 16),
-  "accent-contrast": p.night,
-  success: p.success,
-  warning: p.warning,
-  danger: p.danger,
-  "status-contrast": p.ink,
+  bg: p.navy,
+  "bg-subtle": mix(p.navy, "#000000", 78),
+  surface: darkSurface,
+  "surface-raised": mix(p.white, p.navy, 12),
+  fg: p.white,
+  "fg-muted": mix(p.white, p.navy, 72),
+  border: over(p.white, 0.11, p.navy),
+  "border-strong": mix(p.white, p.navy, 46),
+  accent: p.cyan,
+  "accent-soft": mix(p.cyan, p.navy, 14),
+  "accent-contrast": p.navy,
+  success: p.green,
+  "on-success": p.navy,
+  attention: p.white,
+  "on-attention": p.navy,
+  ai: p.violet,
+  "on-ai": p.navy,
 } as const;
 
-/** The blue closing band. Identical in the light and dark page themes. */
+/** The navy closing band. Identical in the light and dark page themes. */
 export const bandAliases = {
-  bg: p["blue-deep"],
-  "bg-subtle": mix(p["blue-deep"], p.night, 85),
-  surface: mix(p.paper, p["blue-deep"], 6),
-  "surface-raised": mix(p.paper, p["blue-deep"], 11),
-  fg: p.paper,
-  "fg-muted": mix(p.paper, p["blue-deep"], 90),
-  border: mix(p.paper, p["blue-deep"], 16),
-  "border-strong": mix(p.paper, p["blue-deep"], 74),
-  accent: p.paper,
-  "accent-soft": mix(p.paper, p["blue-deep"], 9),
-  "accent-contrast": p["blue-deep"],
-  success: p.success,
-  warning: p.warning,
-  danger: p.danger,
-  "status-contrast": p.ink,
+  ...darkAliases,
+  border: over(p.white, 0.14, p.navy),
+  "border-strong": mix(p.white, p.navy, 52),
 } as const;
 
 export type AliasName = keyof typeof lightAliases;
@@ -191,10 +206,12 @@ export const aliasNotes: Record<AliasName, string> = {
   accent: "Links, focus rings, emphasis",
   "accent-soft": "Tinted panel ground",
   "accent-contrast": "Label sitting on the primary fill",
-  success: "Status fill — carries an ink label, never coloured text",
-  warning: "Status fill — carries an ink label, never coloured text",
-  danger: "Status fill — carries an ink label, never coloured text",
-  "status-contrast": "Label colour for any status fill",
+  success: "Status fill — carries its own label, never coloured text",
+  "on-success": "Label on the success fill",
+  attention: "Status fill — the needs-attention badge",
+  "on-attention": "Label on the attention fill",
+  ai: "Status fill — something the agent did",
+  "on-ai": "Label on the AI fill",
 };
 
 /* ------------------------------------------------------ tier 3: gradients -- */
@@ -208,21 +225,19 @@ export type GradientSpec = {
   note: string;
 };
 
+const ctaStops: [string, string] = [mix(p.cyan, p.white, 80), p.cyan];
+
 export const gradients: GradientSpec[] = [
   {
     name: "grad-primary",
-    stops: {
-      light: [p["blue-deep"], mix(p.blue, p["blue-deep"], 30)],
-      dark: [p.blue, p.sky],
-      band: [p.paper, mix(p.sky, p.paper, 22)],
-    },
+    stops: { light: ctaStops, dark: ctaStops, band: ctaStops },
     textAlias: "accent-contrast",
     note: "Primary CTA fill",
   },
   {
     name: "grad-surface",
     stops: {
-      light: [p.card, lightAliases["bg-subtle"]],
+      light: [p.white, lightAliases["bg-subtle"]],
       dark: [darkAliases.surface, darkAliases["surface-raised"]],
       band: [bandAliases.surface, bandAliases["surface-raised"]],
     },
@@ -232,9 +247,9 @@ export const gradients: GradientSpec[] = [
   {
     name: "grad-accent-soft",
     stops: {
-      light: [lightAliases["accent-soft"], p.paper],
-      dark: [darkAliases["accent-soft"], p.night],
-      band: [bandAliases["accent-soft"], p["blue-deep"]],
+      light: [lightAliases["accent-soft"], p.white],
+      dark: [darkAliases["accent-soft"], p.navy],
+      band: [bandAliases["accent-soft"], p.navy],
     },
     textAlias: "fg-muted",
     note: "Tinted panel",
@@ -242,9 +257,9 @@ export const gradients: GradientSpec[] = [
   {
     name: "grad-hairline",
     stops: {
-      light: [p["blue-deep"], p.sky],
-      dark: [p["blue-deep"], p.sky],
-      band: [p.sky, p.paper],
+      light: [p.green, p.violet],
+      dark: [p.green, p.violet],
+      band: [p.green, p.violet],
     },
     textAlias: null,
     note: "Decorative 1px rule — never a focus ring or input border",
@@ -254,12 +269,61 @@ export const gradients: GradientSpec[] = [
 /**
  * The headline gradient is the text, not the ground, so it is checked the
  * other way round from the rest of this tier: every stop against every ground,
- * at the large-text floor. It is only ever set at display sizes.
+ * at the large-text floor. It is only ever set at display sizes. On light
+ * grounds it is flat navy: the logo's gradient fails there at its cyan stop.
  */
 export const textGradient: Record<ThemeName, string[]> = {
-  light: [p["blue-deep"], p["blue-mid"], p.blue],
-  dark: [p.blue, p.sky],
-  band: [mix(p.sky, p.paper, 55), p.paper],
+  light: [p.navy, p.navy],
+  dark: [p.green, p.cyan, p.violet],
+  band: [p.green, p.cyan, p.violet],
+};
+
+/* -------------------------------------------------------- product visuals -- */
+
+/**
+ * The text and icon pairings inside the product visuals, mirrored from
+ * src/app/product/*.css and the `--ui-*` aliases in globals.css. Each is a
+ * colour, the ground it actually sits on in a drawing, and the floor it has
+ * to clear: 4.5 for text, 3 for an icon or a thin line.
+ */
+type ProductPair = { label: string; fg: string; ground: string; floor: number };
+
+const lightCard = p.white;
+const darkCard = mix(p.white, p.navy, 7);
+const darkRaised = mix(p.white, p.navy, 14);
+
+export const productPairs: Record<"light" | "dark", ProductPair[]> = {
+  light: [
+    { label: "ui-value on card", fg: p.navy, ground: lightCard, floor: 4.5 },
+    { label: "ui-label on card", fg: over(p.navy, 0.64, lightCard), ground: lightCard, floor: 4.5 },
+    { label: "ui-quiet / meta / faint on card", fg: d["n-label"], ground: lightCard, floor: 4.5 },
+    { label: "ui-rule icon on card", fg: d["n-strong"], ground: lightCard, floor: 3 },
+    { label: "coded text on violet tint", fg: p.navy, ground: mix(p.violet, p.white, 6), floor: 4.5 },
+    { label: "violet icon on card", fg: p.violet, ground: lightCard, floor: 3 },
+    { label: "violet icon on violet tint", fg: p.violet, ground: mix(p.violet, p.white, 6), floor: 3 },
+    { label: "navy on violet chip", fg: p.navy, ground: p.violet, floor: 4.5 },
+    { label: "navy on cyan selection tint", fg: p.navy, ground: over(p.cyan, 0.12, lightCard), floor: 4.5 },
+    { label: "variance text on variance-soft", fg: p.navy, ground: mix(p.navy, p.white, 6), floor: 4.5 },
+    { label: "white on attention badge", fg: p.white, ground: p.navy, floor: 4.5 },
+    { label: "navy on approved fill", fg: p.navy, ground: p.green, floor: 4.5 },
+    { label: "navy on action button", fg: p.navy, ground: p.cyan, floor: 4.5 },
+  ],
+  dark: [
+    { label: "ui-value on card", fg: p.white, ground: darkCard, floor: 4.5 },
+    { label: "ui-value on raised", fg: p.white, ground: darkRaised, floor: 4.5 },
+    { label: "ui-label on raised", fg: over(p.white, 0.62, darkRaised), ground: darkRaised, floor: 4.5 },
+    { label: "ui-quiet / meta / faint on raised", fg: mix(p.white, p.navy, 62), ground: darkRaised, floor: 4.5 },
+    { label: "ui-rule icon on card", fg: mix(p.white, p.navy, 46), ground: darkCard, floor: 3 },
+    { label: "matched text (green) on raised", fg: p.green, ground: darkRaised, floor: 4.5 },
+    { label: "coded text on violet tint", fg: p.white, ground: over(p.violet, 0.18, darkCard), floor: 4.5 },
+    { label: "violet icon on card", fg: p.violet, ground: darkCard, floor: 3 },
+    { label: "navy on violet chip", fg: p.navy, ground: p.violet, floor: 4.5 },
+    { label: "agent pill text, cyan end", fg: p.cyan, ground: darkRaised, floor: 4.5 },
+    { label: "agent pill text, mint end", fg: p.mint, ground: darkRaised, floor: 4.5 },
+    { label: "navy on attention badge", fg: p.navy, ground: p.white, floor: 4.5 },
+    { label: "navy on approved fill", fg: p.navy, ground: p.green, floor: 4.5 },
+    { label: "navy on action button", fg: p.navy, ground: p.cyan, floor: 4.5 },
+  ],
 };
 
 /* ------------------------------------------------------------ type scale -- */
@@ -336,15 +400,19 @@ export function runChecks(): Check[] {
     }
 
     // Status colours are fills. What has to be readable is the label sitting
-    // on them, not the colour against the page — as text on paper the raw
-    // brand values are 1.86-3.02 and there is no intention of using them
-    // that way.
-    for (const token of ["success", "warning", "danger"] as AliasName[]) {
-      const r = contrast(t["status-contrast"], t[token]);
+    // on them, not the colour against the page — as text on white the brand
+    // green and violet are 2.65 and 3.27 and there is no intention of using
+    // them that way.
+    for (const [fill, label] of [
+      ["success", "on-success"],
+      ["attention", "on-attention"],
+      ["ai", "on-ai"],
+    ] as [AliasName, AliasName][]) {
+      const r = contrast(t[label], t[fill]);
       checks.push({
         theme: themeName,
-        label: `fill: ${token} + label`,
-        value: t[token],
+        label: `fill: ${fill} + label`,
+        value: t[fill],
         floor: FLOOR_TEXT,
         actual: r,
         pass: r >= FLOOR_TEXT,
@@ -426,6 +494,23 @@ export function runChecks(): Check[] {
         actual: worst,
         pass: worst >= FLOOR_TEXT,
         detail: `${round2(worst)} at worst stop`,
+      });
+    }
+  }
+
+  // Product visuals are drawn in the light theme and redrawn for the dark one;
+  // the closing band never holds one.
+  for (const themeName of ["light", "dark"] as const) {
+    for (const pair of productPairs[themeName]) {
+      const r = contrast(pair.fg, pair.ground);
+      checks.push({
+        theme: themeName,
+        label: `product: ${pair.label}`,
+        value: pair.fg,
+        floor: pair.floor,
+        actual: r,
+        pass: r >= pair.floor,
+        detail: `${round2(r)}`,
       });
     }
   }

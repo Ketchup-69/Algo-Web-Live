@@ -32,7 +32,7 @@ export function FormatWell({ maxScale, className }: { maxScale?: number; classNa
           1.167px hairline is taken out of it here. */}
       <div className="absolute top-75 right-46 left-47 flex h-325 flex-col gap-[calc(var(--u)*2.333)] overflow-clip rounded-t-[calc(var(--u)*14)] border-[length:calc(var(--u)*1.167)] border-ui-card-line/60 bg-bg px-[calc(var(--u)*10.5)] py-[calc(var(--u)*17.5)] shadow-[0_calc(var(--u)*1.167)_calc(var(--u)*3.5)_0_rgb(0_0_0/0.04),0_calc(var(--u)*4.667)_calc(var(--u)*23.333)_0_rgb(0_0_0/0.08)]">
         <div className="flex h-[calc(var(--u)*44.333)] shrink-0 items-center justify-between px-21">
-          <span className="text-[length:calc(var(--u)*23.333)] font-semibold tracking-[-0.04em] text-ui-slate">{data.title}</span>
+          <span className="text-[length:calc(var(--u)*23.333)] font-semibold tracking-[-0.025em] text-ui-slate">{data.title}</span>
           <Icon name="expand_less" className="size-[calc(var(--u)*22)] text-ui-faint" />
         </div>
 
@@ -43,7 +43,7 @@ export function FormatWell({ maxScale, className }: { maxScale?: number; classNa
           <span
             aria-hidden="true"
             // The highlight stops 14.333px short of the rows, as drawn.
-            className="ui-selection absolute top-0 left-0 h-[calc(var(--u)*51.333)] w-[calc(var(--u)*429.333)] rounded-[calc(var(--u)*9.333)] bg-ui-code/8"
+            className="ui-selection absolute top-0 left-0 h-[calc(var(--u)*51.333)] w-[calc(var(--u)*429.333)] rounded-[calc(var(--u)*9.333)] bg-ui-select/12"
             style={{ transform: `translateY(calc(var(--u) * ${53.666 * selected}))` }}
           />
           {data.rows.map((row, index) => {
@@ -58,11 +58,11 @@ export function FormatWell({ maxScale, className }: { maxScale?: number; classNa
                 onFocus={() => setSelected(index)}
                 className="ui-press relative flex h-[calc(var(--u)*51.333)] w-full shrink-0 items-center gap-[calc(var(--u)*16.333)] px-21 text-left"
               >
-                <Icon name={ICONS[row.icon]} className={cn("size-24 transition-colors duration-150", on ? "text-ui-code" : "text-ui-faint")} />
+                <Icon name={ICONS[row.icon]} className={cn("size-24 transition-colors duration-150", on ? "text-ui-value" : "text-ui-faint")} />
                 <span
                   className={cn(
-                    "fs-u-21 font-medium tracking-[-0.04em] transition-colors duration-150",
-                    on ? "text-ui-code" : "text-ui-meta",
+                    "fs-u-21 font-medium tracking-[-0.025em] transition-colors duration-150",
+                    on ? "text-ui-value" : "text-ui-meta",
                   )}
                 >
                   {row.label}

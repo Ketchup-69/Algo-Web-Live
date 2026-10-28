@@ -9,4 +9,3 @@ export { Text, Lede, type TextSize, type TextTone } from "./Text";
 export { ThemeScript } from "./ThemeScript";
 export { ThemeToggle } from "./ThemeToggle";
 export { PageEnter } from "./PageEnter";
-export { ReadingProgress } from "./ReadingProgress";

@@ -8,9 +8,9 @@ const sizes = {
 } as const;
 
 /**
- * No status tones here, deliberately. `--success`, `--warning` and `--danger`
- * are fills; as coloured text on paper they measure 2.33, 1.86 and 3.02. A
- * `tone="danger"` option would be a one-word way to ship text that fails AA,
+ * No status tones here, deliberately. `--success` and `--ai` are fills; as
+ * coloured text on white the brand green and violet measure 2.65 and 3.27. A
+ * `tone="success"` option would be a one-word way to ship text that fails AA,
  * so it does not exist. Use the Status component instead.
  */
 const tones = {

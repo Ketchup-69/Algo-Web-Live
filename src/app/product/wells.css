@@ -1,16 +1,16 @@
 /* Product-UI tokens for the wells visual. Imported by globals.css. */
 :root,
 [data-theme="light"] {
-  --algo-ui-well-bottom: #cfcece; /* the grey the well's ground falls to */
-  --algo-ui-well-wash: #dcdbdc; /* the veil the logo grid fades into */
-  --algo-ui-card-line: #e5e7eb; /* the floating cards' edge, drawn at 50–60% */
-  --algo-ui-code: #3b82f6; /* the chosen row, GL category and code */
-  --algo-ui-code-soft: #eff6ff; /* the pill behind a coded line */
-  --algo-ui-amount-soft: #e0ffd7; /* the tag behind the invoice amount */
-  --algo-ui-pill-line: #d6d6d6; /* the posted pill's edge */
+  --algo-ui-well-bottom: color-mix(in oklab, var(--algo-navy) 17%, var(--algo-white)); /* what the well's ground falls to */
+  --algo-ui-well-wash: color-mix(in oklab, var(--algo-navy) 12%, var(--algo-white)); /* the veil the grid fades into */
+  --algo-ui-card-line: var(--algo-n-line); /* the floating cards' edge, drawn at 50–60% */
+  --algo-ui-code: var(--algo-navy); /* what the agent coded: category and code. Violet is the tint and the icon */
+  --algo-ui-code-soft: color-mix(in oklab, var(--algo-violet) 6%, var(--algo-white)); /* the pill behind a coded line: light enough for a violet icon on it */
+  --algo-ui-amount-soft: color-mix(in oklab, var(--algo-green) 14%, var(--algo-white)); /* the tag behind the invoice amount */
+  --algo-ui-pill-line: color-mix(in oklab, var(--algo-navy) 16%, var(--algo-white)); /* the posted pill's edge */
 
-  /* The ground: paper at the top, grey at the bottom. */
-  --ui-well: linear-gradient(to bottom, var(--algo-paper), var(--algo-ui-well-bottom));
+  /* The ground: white at the top, a navy grey at the bottom. */
+  --ui-well: linear-gradient(to bottom, var(--algo-white), var(--algo-ui-well-bottom));
   --ui-well-wash: linear-gradient(to bottom, transparent, var(--algo-ui-well-wash));
 }
 @theme inline {
