@@ -172,9 +172,11 @@
 
   /* The closing band is navy in both themes. These are the two tints the
      white page passes through on its way down into it. */
-  --band-ground: var(--algo-navy);
-  --band-rise-1: color-mix(in oklab, var(--algo-cyan) 30%, var(--algo-white));
-  --band-rise-2: color-mix(in oklab, var(--algo-violet) 22%, var(--algo-navy));
+  /* Light: the band settles into a pale sky tint, not navy (owner decision,
+     29 Oct 2026); its heading is navy, so the brand gradient stays off white. */
+  --band-ground: color-mix(in oklab, var(--algo-cyan) 9%, var(--algo-white));
+  --band-rise-1: color-mix(in oklab, var(--algo-cyan) 18%, var(--algo-white));
+  --band-rise-2: color-mix(in oklab, var(--algo-violet) 12%, var(--algo-white));
   --grad-glow: radial-gradient(
     70% 55% at 50% 0%,
     color-mix(in srgb, var(--algo-cyan) 12%, transparent) 0%,
@@ -296,6 +298,7 @@
 
   /* The page is already navy, so the band rises out of two faint tints of
      it rather than out of white. */
+  --band-ground: var(--algo-navy);
   --band-rise-1: color-mix(in oklab, var(--algo-cyan) 6%, var(--algo-navy));
   --band-rise-2: color-mix(in oklab, var(--algo-violet) 8%, var(--algo-navy));
   --grad-glow: radial-gradient(

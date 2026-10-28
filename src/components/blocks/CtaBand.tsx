@@ -3,14 +3,14 @@ import { Reveal } from "@/components/motion";
 import type { ClosingCopy } from "@/content/types";
 
 /**
- * The navy band that closes every page: the page ground rises into it, and
- * the footer falls out of it. Themed `band`, so the gradient heading and the
- * buttons need no special case. One per page, and always last.
+ * The band that closes every page: the page ground rises into it, and the
+ * footer falls out of it. It follows the page theme: a pale sky tint with a
+ * navy heading in light, navy with the brand gradient in dark. One per page,
+ * and always last.
  */
 export function CtaBand({ copy }: { copy: ClosingCopy }) {
   return (
     <section
-      data-theme="band"
       className="bg-band relative pt-[calc(var(--band-rise)+2rem)] pb-(--space-section-md) text-fg"
     >
       <GradientField variant="band" />
