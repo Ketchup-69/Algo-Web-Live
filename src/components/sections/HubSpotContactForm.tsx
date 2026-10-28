@@ -13,6 +13,12 @@ const GIVE_UP_MS = 12000;
 const RESCAN_MS = 4000;
 /** Session flag so a reload to recover the form happens at most once. */
 const RELOADED_KEY = "algo-contact-form-reloaded";
+/**
+ * A drawn form is far taller than this. The empty frame the embed leaves
+ * when its own files are blocked (a strict company network, a content
+ * blocker) measures about 45px.
+ */
+const MIN_FORM_PX = 150;
 
 /**
  * True once the embed script has run in this page session. Module state, so
@@ -36,8 +42,9 @@ const SKELETON = ["h-11", "h-11", "h-11", "h-11", "h-11", "h-11", "h-28"] as con
  * which always does.
  *
  * While the form loads, field outlines hold its place so the page does not
- * jump. If it cannot load at all (the script is blocked or the network
- * fails), the two addresses take its place (§7: the email fallback).
+ * jump. If it cannot load (the script is blocked, the network fails, or the
+ * frame arrives but the form inside it never draws), the two addresses take
+ * its place (§7: the email fallback).
  */
 export function HubSpotContactForm({ className }: { className?: string }) {
   const frame = useRef<HTMLDivElement>(null);
@@ -54,12 +61,18 @@ export function HubSpotContactForm({ className }: { className?: string }) {
       setStatus(next);
     };
 
-    // Ready once the iframe exists and has loaded.
+    // Ready once the form has drawn: the embed grows its iframe to the form's
+    // height. An iframe that loads but stays a sliver is a form that never
+    // drew, and falls through to the addresses like no iframe at all.
+    let sized: ResizeObserver | undefined;
     const watch = new MutationObserver(() => {
       const iframe = container.querySelector("iframe");
       if (!iframe) return;
       watch.disconnect();
-      iframe.addEventListener("load", () => settle("ready"), { once: true });
+      sized = new ResizeObserver(() => {
+        if (iframe.getBoundingClientRect().height >= MIN_FORM_PX) settle("ready");
+      });
+      sized.observe(iframe);
     });
     watch.observe(container, { childList: true, subtree: true });
 
@@ -90,12 +103,12 @@ export function HubSpotContactForm({ className }: { className?: string }) {
         }, RESCAN_MS)
       : undefined;
 
-    const giveUp = window.setTimeout(() => {
-      if (!container.querySelector("iframe")) settle("failed");
-    }, GIVE_UP_MS);
+    // No-op once the form has drawn.
+    const giveUp = window.setTimeout(() => settle("failed"), GIVE_UP_MS);
 
     return () => {
       watch.disconnect();
+      sized?.disconnect();
       window.clearTimeout(giveUp);
       if (rescan) window.clearTimeout(rescan);
       script.remove();

@@ -44,6 +44,7 @@ Owner, blog (once the paid plan includes the CRM's blog):
 Phase 4: nothing else is open in the build. The legal pages and the blog wait on the owner items above.
 
 Phase 5 (sweep and handover):
+- Sweep done 28 Oct 2026 (checklist A28, A30). Layout clean at every width. The form now falls back to the two addresses when its frame loads but the form inside never draws (seen when a network blocks the provider's file server). Open, for the owner: the home, platform and security heroes hide their paragraph until the opening animation runs, which costs mobile speed (85 to 89 against the 95 target); faint sample text and small tap targets inside the illustrations keep accessibility at 92 to 96 on three pages. Run PageSpeed Insights on the live demo's home and contact pages to confirm the numbers outside the sandbox.
 - Name scan: `docs/reference-site-patterns.md` names a competitor; `docs/product-visuals/README.md` and `.claude/agents/product-visual.md` name the design tool and carry a private file key; code comments name the icon set's maker. Clear before the handover zip.
 - Write `HANDOVER.md` (`CLAUDE.md` §10). Run Lighthouse on the export.
 - Illustrations for AlgoCash, AlgoPay and AlgoCapital AI are still to be drawn.
