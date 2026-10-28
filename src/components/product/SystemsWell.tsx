@@ -53,7 +53,7 @@ export function SystemsWell({ maxScale, className }: { maxScale?: number; classN
       </div>
 
       <div className="absolute top-[calc(var(--u)*275.02)] left-[calc(var(--u)*185.81)] flex h-[calc(var(--u)*29.317)] w-[calc(var(--u)*188.115)] items-center justify-center gap-[calc(var(--u)*12.215)] rounded-[calc(var(--u)*4.886)] border-[length:calc(var(--u)*0.611)] border-ui-pill-line bg-bg whitespace-nowrap">
-        <Icon name="check" className="size-[calc(var(--u)*19)] text-ui-approved" />
+        <Icon name="check" className="size-[calc(var(--u)*19)] text-ui-match" />
         <span className="text-[length:calc(var(--u)*14.658)] font-bold text-ui-slate">{data.posted}</span>
       </div>
     </Well>

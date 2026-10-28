@@ -21,6 +21,8 @@ export type SocialLink = {
 export type SiteConfig = {
   /** The only brand name permitted anywhere on this site (§2). */
   name: string;
+  /** The second line of the logo lockup, from the logo pack. */
+  logoSubline: string;
   tagline: string;
   description: string;
   /**
@@ -72,6 +74,7 @@ export type SiteConfig = {
 
 export const site: SiteConfig = {
   name: "Algomotive",
+  logoSubline: "AI Platform",
   tagline: "AI agents for enterprise finance and operations",
   description:
     "Algomotive deploys AI agents across payables, receivables, procurement and cash. They read from the systems you already run, prepare the work, and wait for a person to approve it.",

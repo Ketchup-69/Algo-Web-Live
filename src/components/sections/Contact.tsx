@@ -131,7 +131,7 @@ export function Contact() {
       "transition-[border-color,box-shadow] duration-150 placeholder:text-fg-muted",
       "hover:border-fg-muted",
       "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-      hasError ? "border-danger" : "border-border-strong",
+      hasError ? "border-attention" : "border-border-strong",
     );
 
   return (
@@ -180,7 +180,7 @@ export function Contact() {
                     <div>
                       <dt className="text-sm font-medium text-fg">{contact.composer.addressLabel}</dt>
                       <dd className="mt-2 flex flex-wrap items-center gap-3">
-                        <code ref={addressRef} className="rounded-control bg-bg-subtle px-2.5 py-1.5 font-mono text-sm text-fg">
+                        <code ref={addressRef} className="rounded-control bg-bg-subtle px-2.5 py-1.5 font-data text-sm text-fg">
                           {site.contactEmail}
                         </code>
                         <Button

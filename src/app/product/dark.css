@@ -1,11 +1,11 @@
 /* Product visuals in the dark page theme. Imported last by globals.css.
 
-   The brand file draws every visual in light only, so these values are the
-   site's own — derived, like the rest of the token layer, by mixing the
-   drawing's colours toward night or paper rather than by inventing hexes.
-   The principle carried over from the light drawings: surfaces step UP toward
-   the viewer (well → card → floating pill), status is saturated text on a
-   whisper of its own colour, and the only strong colour is the focus.
+   The visuals are drawn light, so these values are the site's own: the same
+   roles on a navy card. Green still means matched, violet still means the
+   agent did it, cyan is still the one action. The navy "needs attention"
+   badge would vanish on navy, so it inverts to white with a navy label.
+   Surfaces step UP toward the viewer (well → card → floating pill), each
+   one navy let up toward white.
 
    Scope. A Stage carries `data-theme="light"`, which re-declares the light
    aliases on it. These rules key off the page theme on <html> instead, and
@@ -13,98 +13,98 @@
    together — and a visual placed inside any locally themed section would
    still follow the page, not the section. */
 
-/* Where a mix starts from a hex rather than a token (#059669, #3b82f6,
-   #2e7d32, #e65100), it is restating the light value from its partial: a
-   custom property cannot be mixed from itself. Change both together. */
-
 /* Product colours. On <html> for the few used outside a Stage (the well
    behind the verification cards), and on the Stage, which would otherwise
    re-declare the light ones. */
 html[data-theme="dark"],
 html[data-theme="dark"] .stage {
-  --ui-flag: color-mix(in oklab, var(--algo-flag) 52%, var(--algo-paper));
-  --ui-flag-soft: color-mix(in srgb, var(--algo-flag) 24%, transparent);
-  --ui-value: var(--algo-paper);
-  --ui-label: color-mix(in srgb, var(--algo-paper) 46%, transparent);
-  --ui-quiet: color-mix(in oklab, var(--algo-muted) 66%, var(--algo-paper));
-  --ui-rule: color-mix(in srgb, var(--algo-paper) 18%, transparent);
-  --ui-pill-text: linear-gradient(90deg, var(--algo-blue), var(--algo-sky));
-
-  /* The agent mark's darkest square disappears on night. */
-  --algo-dot-1: var(--algo-blue-mid);
-  --algo-dot-2: var(--algo-blue);
+  --ui-flag: var(--algo-white);
+  --ui-on-flag: var(--algo-navy);
+  --ui-good: var(--algo-green);
+  --ui-on-good: var(--algo-navy);
+  --ui-action: var(--algo-cyan);
+  --ui-on-action: var(--algo-navy);
+  --ui-value: var(--algo-white);
+  --ui-label: color-mix(in srgb, var(--algo-white) 62%, transparent);
+  --ui-quiet: color-mix(in oklab, var(--algo-white) 66%, var(--algo-navy));
+  --ui-rule: color-mix(in oklab, var(--algo-white) 46%, var(--algo-navy));
+  --ui-sheet: color-mix(in oklab, var(--algo-white) 10%, var(--algo-navy));
+  --ui-pill-text: linear-gradient(90deg, var(--algo-cyan), color-mix(in oklab, var(--algo-violet) 82%, var(--algo-white)));
 
   /* statement */
-  --algo-ui-slate: var(--algo-paper);
-  --algo-ui-cleared: color-mix(in oklab, #059669 55%, var(--algo-paper));
-  --algo-ui-warn-rule: color-mix(in srgb, var(--algo-ui-warn-badge) 50%, transparent);
+  --algo-ui-slate: var(--algo-white);
+  --algo-ui-cleared: var(--algo-green);
+  --algo-ui-warn-rule: color-mix(in srgb, var(--algo-white) 50%, transparent);
 
   /* scatter */
-  --algo-ui-doc-ink: var(--algo-paper);
-  --algo-ui-halftone: color-mix(in oklab, var(--algo-blue) 34%, var(--algo-night));
+  --algo-ui-doc-ink: var(--algo-white);
+  --algo-ui-faint: color-mix(in oklab, var(--algo-white) 62%, var(--algo-navy));
+  --algo-ui-halftone: color-mix(in oklab, var(--algo-cyan) 22%, var(--algo-navy));
+  --algo-ui-select: var(--algo-cyan);
 
   /* wells: a recess in the page, lit from above */
-  --algo-ui-well-bottom: color-mix(in oklab, var(--algo-night) 70%, #000);
+  --algo-ui-well-bottom: color-mix(in oklab, var(--algo-navy) 72%, #000);
   /* The veil must end on the colour the well has at that height, or it shows
      as a darker block: about two fifths of the way from the top tone to the
      bottom one. */
   --algo-ui-well-wash: color-mix(
     in oklab,
-    color-mix(in oklab, var(--algo-night) 72%, var(--algo-muted)) 46%,
-    color-mix(in oklab, var(--algo-night) 70%, #000)
+    color-mix(in oklab, var(--algo-white) 9%, var(--algo-navy)) 46%,
+    color-mix(in oklab, var(--algo-navy) 72%, #000)
   );
   --ui-well-wash: linear-gradient(to bottom, transparent, var(--algo-ui-well-wash));
   --ui-well: linear-gradient(
     to bottom,
-    color-mix(in oklab, var(--algo-night) 72%, var(--algo-muted)),
+    color-mix(in oklab, var(--algo-white) 9%, var(--algo-navy)),
     var(--algo-ui-well-bottom)
   );
-  --algo-ui-card-line: color-mix(in srgb, var(--algo-paper) 14%, transparent);
-  --algo-ui-code: color-mix(in oklab, #3b82f6 55%, var(--algo-paper));
-  --algo-ui-code-soft: color-mix(in srgb, #3b82f6 18%, transparent);
-  --algo-ui-amount-soft: color-mix(in srgb, var(--algo-ui-approved) 24%, transparent);
-  --algo-ui-pill-line: color-mix(in srgb, var(--algo-paper) 16%, transparent);
+  --algo-ui-card-line: color-mix(in srgb, var(--algo-white) 14%, transparent);
+  /* Violet itself is 4.15 on a raised navy card, so it is let up toward white. */
+  --algo-ui-code: color-mix(in oklab, var(--algo-violet) 82%, var(--algo-white)); /* 5.3 */
+  --algo-ui-code-soft: color-mix(in srgb, var(--algo-violet) 18%, transparent);
+  --algo-ui-amount-soft: color-mix(in srgb, var(--algo-green) 22%, transparent);
+  --algo-ui-pill-line: color-mix(in srgb, var(--algo-white) 16%, transparent);
 
   /* verification + exceptions */
-  --algo-ui-title: var(--algo-paper);
-  --algo-ui-row-text: color-mix(in oklab, var(--algo-paper) 92%, var(--algo-night));
-  --algo-ui-hairline: color-mix(in srgb, var(--algo-paper) 9%, transparent);
-  --algo-ui-approved-quiet: color-mix(in oklab, var(--algo-ui-approved) 60%, var(--algo-night));
-  --algo-ui-flag-quiet: color-mix(in oklab, var(--algo-flag) 62%, var(--algo-night));
-  --algo-ui-match: color-mix(in oklab, #2e7d32 45%, var(--algo-paper));
-  --algo-ui-match-soft: color-mix(in srgb, #2e7d32 28%, transparent);
-  --algo-ui-variance: color-mix(in oklab, #e65100 58%, var(--algo-paper));
-  --algo-ui-variance-soft: color-mix(in srgb, #e65100 22%, transparent);
-  --algo-ui-meta: color-mix(in oklab, var(--algo-muted) 70%, var(--algo-paper));
-  --ui-total-tint: color-mix(in srgb, var(--algo-paper) 5%, transparent);
+  --algo-ui-title: var(--algo-white);
+  --algo-ui-row-text: var(--algo-white);
+  --algo-ui-hairline: color-mix(in srgb, var(--algo-white) 9%, transparent);
+  --algo-ui-approved: var(--algo-green);
+  --algo-ui-approved-quiet: var(--algo-green);
+  --algo-ui-flag-quiet: color-mix(in oklab, var(--algo-white) 62%, var(--algo-navy));
+  --algo-ui-match: var(--algo-green);
+  --algo-ui-match-soft: color-mix(in srgb, var(--algo-green) 16%, transparent);
+  --algo-ui-variance: var(--algo-white);
+  --algo-ui-variance-soft: color-mix(in srgb, var(--algo-white) 9%, transparent);
+  --algo-ui-warn-badge: var(--algo-white);
+  --algo-ui-meta: color-mix(in oklab, var(--algo-white) 66%, var(--algo-navy));
+  --ui-row-tint: color-mix(in srgb, var(--algo-white) 6%, transparent);
+  --ui-total-tint: color-mix(in srgb, var(--algo-white) 5%, transparent);
 }
 
 /* The Stage's own ground. Three steps up from the page: the card, then the
-   pieces that float on it. `--bg` is what the drawings use for paper pills
+   pieces that float on it. `--bg` is what the drawings use for white pills
    and menus, so here it is the most raised surface, not the page ground. */
 html[data-theme="dark"] .stage {
   color-scheme: dark;
 
-  --surface: color-mix(in oklab, var(--algo-night) 86%, var(--algo-muted)); /* #191d28 */
-  --surface-raised: color-mix(in oklab, var(--algo-night) 72%, var(--algo-muted));
-  --bg: color-mix(in oklab, var(--algo-night) 72%, var(--algo-muted)); /* #292d37 */
-  --bg-subtle: color-mix(in oklab, var(--algo-night) 92%, var(--algo-muted));
-  /* White sheets (invoice ghosts, card bodies) become the raised surface. */
-  --algo-white: color-mix(in oklab, var(--algo-night) 78%, var(--algo-muted));
+  --surface: color-mix(in oklab, var(--algo-white) 7%, var(--algo-navy)); /* #112230 */
+  --surface-raised: color-mix(in oklab, var(--algo-white) 14%, var(--algo-navy));
+  --bg: color-mix(in oklab, var(--algo-white) 14%, var(--algo-navy)); /* #20303b */
+  --bg-subtle: color-mix(in oklab, var(--algo-white) 4%, var(--algo-navy));
 
-  --fg: var(--algo-paper);
-  --fg-muted: color-mix(in oklab, var(--algo-muted) 74%, var(--algo-paper));
-  --border: color-mix(in srgb, var(--algo-paper) 11%, transparent);
-  --border-strong: color-mix(in oklab, var(--algo-paper) 10%, var(--algo-muted));
+  --fg: var(--algo-white);
+  --fg-muted: color-mix(in oklab, var(--algo-white) 72%, var(--algo-navy));
+  --border: color-mix(in srgb, var(--algo-white) 11%, transparent);
+  --border-strong: color-mix(in oklab, var(--algo-white) 46%, var(--algo-navy));
 
-  /* The one filled control: bright blue carrying the card's own dark. */
-  --accent: var(--algo-blue);
-  --flow-3: var(--algo-sky);
+  --accent: var(--algo-cyan);
+  --flow-3: var(--algo-mint);
 
   /* The lit rim becomes a hairline of light; the drop goes deeper. */
   --card-shadow:
     0 calc(var(--u) * 24) calc(var(--u) * 56) 0 rgb(0 0 0 / 0.55),
-    inset 0 0 0 1px color-mix(in srgb, var(--algo-paper) 7%, transparent);
+    inset 0 0 0 1px color-mix(in srgb, var(--algo-white) 7%, transparent);
 }
 
 /* Third-party marks are the brand file's single dark grey. */
@@ -116,7 +116,7 @@ html[data-theme="dark"] .stage img {
 /* A well has no edge in the drawing; its two soft shadows define it on paper.
    Shadows do nothing on night, so a hairline of light takes over. */
 html[data-theme="dark"] .bg-well {
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--algo-paper) 8%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--algo-white) 8%, transparent);
 }
 
 /* A quiet control is the card's own colour with a soft inner edge, which is

@@ -89,7 +89,7 @@ export function Heading({
         <>
           {/* Tracking is restated because an em-based value inherits as a
               computed length, which would be far too tight at this size. */}
-          <span className="mb-[0.18em] block text-[0.6em] tracking-[-0.04em]">{lead}</span>{" "}
+          <span className="mb-[0.18em] block text-[0.6em] tracking-[-0.025em]">{lead}</span>{" "}
           <span className="text-grad-brand block">{children}</span>
         </>
       ) : (

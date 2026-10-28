@@ -32,11 +32,11 @@ export function HowItWorks() {
                   {Visual ? <Visual className="mx-auto" /> : null}
                   <span
                     aria-hidden="true"
-                    className="mt-8 block font-mono text-sm font-medium text-accent tabular-nums"
+                    className="mt-8 block font-data text-sm font-medium text-accent tabular-nums"
                   >
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="mt-2 font-display text-2xl font-bold tracking-[-0.03em] text-fg">
+                  <h3 className="mt-2 font-display text-2xl font-bold tracking-[-0.02em] text-fg">
                     {step.title}
                   </h3>
                   <Text tone="muted" measure={false} className="mt-3 max-w-[44ch]">

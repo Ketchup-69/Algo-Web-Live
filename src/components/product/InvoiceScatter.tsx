@@ -221,7 +221,7 @@ function GhostCard({
           return (
             <span key={index} className="flex shrink-0 items-center justify-between whitespace-nowrap opacity-30">
               <span style={{ fontSize: u(size.label) }}>{text.label}</span>
-              <span className="font-mono" style={{ fontSize: u(size.amount) }}>
+              <span className="font-data" style={{ fontSize: u(size.amount) }}>
                 {text.amount}
               </span>
             </span>
@@ -240,8 +240,8 @@ function GhostCard({
   );
 }
 
-const printed = "font-medium tracking-[-0.05em] text-ui-doc-ink";
-const figure = "font-mono text-[length:calc(var(--u)*22.634)] leading-[calc(var(--u)*29)]";
+const printed = "font-medium tracking-[-0.03em] text-ui-doc-ink";
+const figure = "font-data text-[length:calc(var(--u)*22.634)] leading-[calc(var(--u)*29)]";
 
 /**
  * The hero's invoice scatter, measurement for measurement from the brand
@@ -302,7 +302,7 @@ const NEXT: Record<Phase, { to: Phase; after: number }> = {
 
 const TONE = {
   code: { sub: "text-ui-code", tag: "bg-ui-match-soft text-ui-match" },
-  flag: { sub: "text-ui-variance", tag: "bg-ui-variance-soft text-ui-variance" },
+  flag: { sub: "text-ui-variance", tag: "bg-ui-flag text-ui-on-flag" },
 } as const;
 
 /**
@@ -322,7 +322,7 @@ function ResolvedRow({ line, inset }: { line: Line; inset: string }) {
       />
       <span
         className={cn(
-          "hero-b absolute top-1/2 right-175 flex -translate-y-1/2 items-center gap-6 font-mono fs-u-15 font-semibold whitespace-nowrap",
+          "hero-b absolute top-1/2 right-175 flex -translate-y-1/2 items-center gap-6 font-data fs-u-15 font-semibold whitespace-nowrap",
           line.flag ? "text-ui-variance" : "text-ui-code",
         )}
       >
@@ -467,13 +467,13 @@ export function InvoiceScatter({ maxScale = 0.62, className }: { maxScale?: numb
             <span className={cn(printed, "text-[length:calc(var(--u)*30.178)] leading-[calc(var(--u)*37)]")}>
               {invoice.supplier}
             </span>
-            <span className="relative font-mono text-[length:calc(var(--u)*16.975)] leading-[calc(var(--u)*22)] font-medium">
+            <span className="relative font-data text-[length:calc(var(--u)*16.975)] leading-[calc(var(--u)*22)] font-medium">
               <span className="hero-a block">
                 <span className="text-ui-faint opacity-45">{invoice.date}</span>
               </span>
               <span className={cn("hero-b absolute top-0 left-0 font-bold whitespace-nowrap", tone.sub)}>{invoice.sub}</span>
             </span>
-            <span className="absolute top-6 right-2 font-mono text-[length:calc(var(--u)*20.748)] leading-[calc(var(--u)*27)] font-semibold text-ui-value">
+            <span className="absolute top-6 right-2 font-data text-[length:calc(var(--u)*20.748)] leading-[calc(var(--u)*27)] font-semibold text-ui-value">
               {invoice.number}
             </span>
           </div>
@@ -482,7 +482,7 @@ export function InvoiceScatter({ maxScale = 0.62, className }: { maxScale?: numb
             {invoice.meta.map((field, fieldIndex) => (
               <div key={field.label} className={cn("flex flex-col gap-4", fieldIndex === 0 && "w-149")}>
                 <span className="text-ui-faint opacity-55">{field.label}</span>
-                <span className="font-mono font-semibold text-ui-value">{field.value}</span>
+                <span className="font-data font-semibold text-ui-value">{field.value}</span>
               </div>
             ))}
           </div>
@@ -524,11 +524,11 @@ export function InvoiceScatter({ maxScale = 0.62, className }: { maxScale?: numb
                   <span className={cn(printed, "text-[length:calc(var(--u)*30.178)] leading-[calc(var(--u)*37)]")}>
                     {invoice.total.label}
                   </span>
-                  <span className={cn("hero-b hero-late rounded-u-6 px-10 py-4 font-mono fs-u-14 font-bold", tone.tag)}>
+                  <span className={cn("hero-b hero-late rounded-u-6 px-10 py-4 font-data fs-u-14 font-bold", tone.tag)}>
                     {invoice.tag}
                   </span>
                 </span>
-                <span className="font-mono text-[length:calc(var(--u)*26.406)] leading-[calc(var(--u)*34)] font-semibold text-ui-value">
+                <span className="font-data text-[length:calc(var(--u)*26.406)] leading-[calc(var(--u)*34)] font-semibold text-ui-value">
                   {invoice.total.amount}
                 </span>
               </div>
@@ -563,7 +563,7 @@ export function InvoiceScatter({ maxScale = 0.62, className }: { maxScale?: numb
                 className="hero-line col-start-1 row-start-1 flex items-center gap-7 justify-self-center"
               >
                 <AgentMark live={lineIndex === 0} />
-                <span className="text-ui-pill fs-u-13.25 font-semibold tracking-[-0.05em]">{line}</span>
+                <span className="text-ui-pill fs-u-13.25 font-semibold tracking-[-0.03em]">{line}</span>
               </span>
             ))}
           </div>

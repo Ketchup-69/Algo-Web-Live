@@ -11,8 +11,9 @@
 
    Four tiers, strictly ordered. A component may only ever touch tier 3+.
 
-     1. Raw palette      — the exact brand hexes. Never edited, never
-                           referenced from a component.
+     1. Raw palette      — the exact brand hexes from the logo pack, plus the
+                           neutrals mixed from them. Never referenced from a
+                           component.
      2. Semantic aliases — what components actually consume. Light lives in
                            `:root`; dark remaps ONLY these aliases.
      3. Gradient tier    — derived surfaces, remapped per theme.
@@ -20,13 +21,13 @@
                            `text-fg-muted`, `border-border-strong` generate.
 
    CONTRAST
-   The raw palette is the brand file's, and not all of it clears WCAG AA on
-   screen (brand grey is 3.06 on the tinted band, bright blue is 3.16). Rather
-   than invent new brand shades, every AA-critical alias is derived with
-   `color-mix(in oklab, ...)` from two approved palette tokens.
-   No new hex literal exists in this file below tier 1. The comment beside each
-   derived alias is the computed result and its worst-case ratio, so the values
-   can be eyeballed without running the browser.
+   Navy carries all text on light grounds. Green, cyan, violet and mint are
+   fills with a navy label, never text on white: as text on white they measure
+   2.65, 2.14, 3.27 and 1.54. Where a brand hue has to be text or a thin line
+   on a light ground (links, focus, a "matched" word), it is that hue mixed
+   toward navy with `color-mix(in oklab, ...)` until it clears AA. No new hex
+   exists in this file below tier 1. The comment beside each derived alias is
+   the computed result and its worst-case ratio.
 
    `scripts/check-contrast.mts` re-derives this whole matrix and fails the
    build on any AA regression. Change a percentage here and that script is the
@@ -34,175 +35,167 @@
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   TIER 1 — RAW PALETTE (CLAUDE.md §4 — taken from the brand file, exact)
+   TIER 1 — RAW PALETTE (CLAUDE.md §4, from the official logo pack)
    -------------------------------------------------------------------------- */
 :root {
-  --algo-ink: #0c0a08;
-  --algo-night: #0a0e1a;
-  --algo-blue-deep: #004aad;
-  --algo-blue-mid: #236dff;
-  --algo-blue: #2c82fe;
-  --algo-sky: #72a9e9;
-  --algo-paper: #fffdf9;
-  --algo-card: #fcfbf9;
-  --algo-muted: #888888;
-  --algo-success: #48ba86;
-  --algo-warning: #f0ae3c;
-  --algo-danger: #e76c54;
-
-  /* Product UI, as drawn in the brand file. */
-  --algo-flag: #bf360c;
-  --algo-flag-tint: #ffd6c9;
-  --algo-rule: #9b9ca0;
+  --algo-navy: #031522; /* text, dark grounds, the "needs attention" badge */
+  --algo-green: #22b573; /* approved, matched, success */
+  --algo-cyan: #38bdf8; /* action: primary button fill, focus, links on dark grounds */
+  --algo-violet: #8b7cff; /* anything the AI did */
+  --algo-mint: #7de3c3; /* accents on navy grounds */
   --algo-white: #ffffff;
-  --algo-dot-1: #0d3399;
-  --algo-dot-2: #3373e5;
-  --algo-dot-3: #4d8cf2;
-  --algo-dot-4: #66a6ff;
-  --algo-dot-5: #80bfff;
+
+  /* Neutrals: navy let down into white, never a grey of their own. The
+     percentages land on the product dashboard kit's reference values. */
+  --algo-n-page: color-mix(in oklab, var(--algo-navy) 3%, var(--algo-white)); /* #f6f7f8 */
+  --algo-n-line: color-mix(in oklab, var(--algo-navy) 11%, var(--algo-white)); /* #dfe2e4 */
+  --algo-n-strong: color-mix(in oklab, var(--algo-navy) 46%, var(--algo-white)); /* #7f8a92 · 3.53 on white */
+  --algo-n-label: color-mix(in oklab, var(--algo-navy) 58%, var(--algo-white)); /* #616d77 · 5.30 on white */
+  --algo-n-support: color-mix(in oklab, var(--algo-navy) 71%, var(--algo-white)); /* #41505b · 8.32 on white */
+
+  /* Brand hues pulled toward navy until they read as text on white. */
+  --algo-cyan-deep: color-mix(in oklab, var(--algo-cyan) 58%, var(--algo-navy)); /* #1e7097 */
+  --algo-green-deep: color-mix(in oklab, var(--algo-green) 67%, var(--algo-navy)); /* #157b59 */
+  --algo-violet-deep: color-mix(in oklab, var(--algo-violet) 75%, var(--algo-navy)); /* #6660c2 */
 }
 
 /* --------------------------------------------------------------------------
    TIER 2 — SEMANTIC ALIASES · LIGHT (default)
 
    Ratios quoted are the MINIMUM across every light background a token can
-   legitimately land on: paper, card, bg-subtle and accent-soft.
+   legitimately land on: white, bg-subtle and accent-soft.
 
    Also matches `[data-theme="light"]`, so a subtree can hold the light theme
-   inside a dark page. The product visuals do: they are replicas of the brand
-   file's drawings, which exist in light only, so they stay light the way a
-   screenshot of a product would.
+   inside a dark page. The product visuals do.
    -------------------------------------------------------------------------- */
 :root,
 [data-theme="light"] {
   color-scheme: light;
 
-  /* Ground. The brand has one warm paper and one card white; the two tinted
-     bands are the bright blue let down into paper, not new shades. */
-  --bg: var(--algo-paper);
-  --bg-subtle: color-mix(in oklab, var(--algo-blue) 6%, var(--algo-paper)); /* #f3f6fa */
-  --surface: var(--algo-card);
+  /* Ground. White page, white cards lifted by shadow, one recessed band. */
+  --bg: var(--algo-white);
+  --bg-subtle: var(--algo-n-page);
+  --surface: var(--algo-white);
   /* Light mode elevates with shadow, not tint. */
-  --surface-raised: var(--algo-card);
+  --surface-raised: var(--algo-white);
 
-  /* Text. The brand grey is 3.06 on the tinted band, so secondary text is
-     that grey pulled toward ink until it clears AA everywhere. */
-  --fg: var(--algo-ink); /* min 17+ */
-  --fg-muted: color-mix(in oklab, var(--algo-muted) 70%, var(--algo-ink)); /* #5f5e5d · min 5.58 */
+  /* Text. Navy, and navy let down for secondary copy. */
+  --fg: var(--algo-navy); /* min 17.4 */
+  --fg-muted: var(--algo-n-support); /* min 7.8 */
 
-  /* Lines. `--border` is the brand hairline — night at 8%, as alpha so it
-     sits correctly on any ground. Decorative only. Anything that is a real UI
-     boundary (inputs, button outlines) uses `--border-strong` to clear the
-     3:1 non-text floor in WCAG 1.4.11. */
-  --border: color-mix(in srgb, var(--algo-night) 8%, transparent);
-  --border-strong: var(--algo-muted); /* #888888 · min 3.06 */
+  /* Lines. `--border` is the hairline, as alpha so it sits on any ground.
+     Decorative only. Anything that is a real UI boundary (inputs, button
+     outlines) uses `--border-strong` to clear the 3:1 non-text floor in
+     WCAG 1.4.11. */
+  --border: color-mix(in srgb, var(--algo-navy) 11%, transparent);
+  --border-strong: var(--algo-n-strong); /* min 3.3 */
 
-  /* Accent. Deep blue carries text and a paper label at AA on every ground,
-     so links, focus rings and the primary CTA are all the brand colour. The
-     bright blue is 3.16 at worst: large display type and decoration only. */
-  --accent: var(--algo-blue-deep); /* min 7.01 */
-  --accent-soft: color-mix(in oklab, var(--algo-blue) 12%, var(--algo-paper)); /* #e6effc */
-  --accent-contrast: var(--algo-paper); /* label on the primary CTA · min 6.29 */
+  /* Accent. Cyan is the action colour, but as text on white it is 2.14, so
+     links, focus rings and small accent text use the deep cyan. The primary
+     button is cyan itself, carrying a navy label. */
+  --accent: var(--algo-cyan-deep); /* min 4.6 */
+  --accent-soft: color-mix(in oklab, var(--algo-cyan) 10%, var(--algo-white)); /* #effafe */
+  --accent-contrast: var(--algo-navy); /* label on the cyan CTA · min 8.6 */
 
-  /* Status colours are FILLS carrying an ink label, never coloured text.
-     Identical in both themes. scripts/check-contrast.mts asserts it. */
-  --success: var(--algo-success); /* ink label 8.13 */
-  --warning: var(--algo-warning); /* ink label 10.19 */
-  --danger: var(--algo-danger); /* ink label 6.28 */
-  --status-contrast: var(--algo-ink);
+  /* Status. Each is a FILL with its own label, never coloured text.
+     Identical in light and band; dark flips attention to white. */
+  --success: var(--algo-green); /* navy label 6.99 */
+  --on-success: var(--algo-navy);
+  --attention: var(--algo-navy); /* white label 18.5 */
+  --on-attention: var(--algo-white);
+  --ai: var(--algo-violet); /* navy label 5.66 */
+  --on-ai: var(--algo-navy);
 
   /* Focus rings are always solid, never gradient. */
   --ring: var(--accent);
 
-  /* Product UI. Used only inside a <Stage>, which is always light. The
-     flag is coloured TEXT on its own tint (5.0), unlike the site's status
-     fills: that is how the brand file draws it. */
-  --ui-flag: var(--algo-flag);
-  --ui-flag-soft: var(--algo-flag-tint);
-  --ui-value: var(--algo-night);
-  --ui-label: color-mix(in srgb, var(--algo-night) 40%, transparent);
-  --ui-quiet: var(--algo-muted);
-  --ui-rule: var(--algo-rule);
-  --ui-pill-text: linear-gradient(90deg, var(--algo-blue-mid), var(--algo-sky));
+  /* Product UI. Used inside a <Stage>. Same roles as the status fills:
+     green for matched, navy for needs attention, violet for what the agent
+     did, cyan for the one action. `--ui-*` text clears 4.5 on the card. */
+  --ui-flag: var(--algo-navy);
+  --ui-on-flag: var(--algo-white);
+  --ui-good: var(--algo-green-deep); /* matched, as text · 4.76 */
+  --ui-on-good: var(--algo-navy); /* label or icon on a green fill */
+  --ui-action: var(--algo-cyan);
+  --ui-on-action: var(--algo-navy);
+  --ui-value: var(--algo-navy);
+  --ui-label: color-mix(in srgb, var(--algo-navy) 64%, transparent); /* 5.6 on white */
+  --ui-quiet: var(--algo-n-label); /* 5.30 */
+  --ui-rule: var(--algo-n-strong);
+  --ui-sheet: var(--algo-white);
+  /* The agent's own words: cyan into violet, both pulled to text depth. */
+  --ui-pill-text: linear-gradient(90deg, var(--algo-cyan-deep), var(--algo-violet-deep));
 
-  /* The logo. The two facets of the mark are fixed; the wordmark is deep blue
-     on paper and paper on the dark ground, as in the brand file. */
-  --logo-facet-deep: var(--algo-blue-deep);
-  --logo-facet-bright: var(--algo-blue);
-  --logo-wordmark: var(--algo-blue-deep);
+  /* The logo. The mark is fixed; the name follows the text colour, and the
+     "AI platform" line is the deep green on light, mint on navy. */
+  --logo-name: var(--algo-navy);
+  --logo-sub: var(--algo-green-deep);
 
   /* TIER 3 — GRADIENTS · LIGHT
      Text sitting on a gradient must clear AA at the gradient's WORST stop. */
   --grad-primary: linear-gradient(
     150deg,
-    var(--algo-blue-deep) 0%,
-    color-mix(in oklab, var(--algo-blue) 30%, var(--algo-blue-deep)) 100%
-  ); /* paper label · worst 6.29 */
-  --grad-surface: linear-gradient(180deg, var(--algo-card) 0%, var(--bg-subtle) 100%);
-  --grad-accent-soft: linear-gradient(160deg, var(--accent-soft) 0%, var(--algo-paper) 100%);
+    color-mix(in oklab, var(--algo-cyan) 80%, var(--algo-white)) 0%,
+    var(--algo-cyan) 100%
+  ); /* navy label · worst 8.6 */
+  --grad-surface: linear-gradient(180deg, var(--algo-white) 0%, var(--bg-subtle) 100%);
+  --grad-accent-soft: linear-gradient(160deg, var(--accent-soft) 0%, var(--algo-white) 100%);
+  /* The logo's gradient, as a 1px rule. Decorative only — never a focus ring,
+     never an input border. */
   --grad-hairline: linear-gradient(
     90deg,
     transparent 0%,
-    var(--algo-blue-deep) 20%,
-    var(--algo-blue) 50%,
-    var(--algo-sky) 80%,
+    var(--algo-green) 20%,
+    var(--algo-cyan) 50%,
+    var(--algo-violet) 80%,
     transparent 100%
-  ); /* decorative only — never a focus ring, never an input border */
-  /* The headline gradient from the brand file: saturated on the left, opening
-     up to the right. The print version ends on sky, which is 2.3 on paper;
-     on screen it ends on the bright blue so every stop clears 3:1, the floor
-     for large text. Display sizes only — see `text-grad-brand`. */
-  --grad-text: linear-gradient(
-    90deg,
-    var(--algo-blue-deep) 0%,
-    var(--algo-blue-mid) 22%,
-    var(--algo-blue) 50%,
-    var(--algo-blue-mid) 78%,
-    var(--algo-blue-deep) 100%
-  ); /* worst stop 3.16. Mirrored: the type shows half of it at a time, and
-        the bright middle is what follows the pointer. */
+  );
+  /* Display type. The brand gradient fails 3:1 on white at its cyan stop
+     (2.14), so on light grounds headings stay navy and the gradient lives on
+     navy grounds only (dark theme and the closing band). Kept as a gradient
+     so `text-grad-brand` needs no light-mode special case. */
+  --grad-text: linear-gradient(90deg, var(--algo-navy) 0%, var(--algo-navy) 100%);
 
-  /* The wash. Three lights per field; on paper they are tints, kept light
-     enough that secondary text still clears AA where one reaches it. */
-  --gf-a: color-mix(in srgb, var(--algo-sky) 34%, transparent);
-  --gf-b: color-mix(in srgb, var(--algo-blue) 14%, transparent);
-  --gf-c: color-mix(in srgb, var(--algo-blue-mid) 10%, transparent);
+  /* The wash. Three lights per field; on white they are faint tints of the
+     logo's three hues, light enough that secondary text keeps AA through
+     any two of them overlapping. */
+  --gf-a: color-mix(in srgb, var(--algo-cyan) 22%, transparent);
+  --gf-b: color-mix(in srgb, var(--algo-violet) 12%, transparent);
+  --gf-c: color-mix(in srgb, var(--algo-mint) 20%, transparent);
 
-  /* What the closing band rises out of. Declared here, not in the band, so
-     the band can still see the page ground after it remaps `--bg`. */
   /* The page ground's own lights: fainter than a section's, because body
-     copy sits on them everywhere. Worst case (two overlapping) leaves
-     secondary text at 4.7. */
-  --pw-a: color-mix(in srgb, var(--algo-sky) 26%, transparent);
-  --pw-b: color-mix(in srgb, var(--algo-blue) 10%, transparent);
-  --pw-c: color-mix(in srgb, var(--algo-blue-mid) 8%, transparent);
+     copy sits on them everywhere. */
+  --pw-a: color-mix(in srgb, var(--algo-cyan) 14%, transparent);
+  --pw-b: color-mix(in srgb, var(--algo-violet) 7%, transparent);
+  --pw-c: color-mix(in srgb, var(--algo-mint) 12%, transparent);
 
-  --band-rise-1: var(--algo-sky);
-  --band-rise-2: var(--algo-blue);
-  --band-cloud: color-mix(in srgb, var(--algo-paper) 46%, transparent);
+  /* The closing band is navy in both themes. These are the two tints the
+     white page passes through on its way down into it. */
+  --band-ground: var(--algo-navy);
+  --band-rise-1: color-mix(in oklab, var(--algo-cyan) 30%, var(--algo-white));
+  --band-rise-2: color-mix(in oklab, var(--algo-violet) 22%, var(--algo-navy));
   --grad-glow: radial-gradient(
     70% 55% at 50% 0%,
-    color-mix(in srgb, var(--algo-blue) 14%, transparent) 0%,
+    color-mix(in srgb, var(--algo-cyan) 12%, transparent) 0%,
     transparent 70%
   );
 
-  /* Diagram strokes and beams. Decorative lines, so 3:1 is the bar. */
-  --flow-1: var(--algo-blue-deep);
-  --flow-2: var(--algo-blue-mid);
-  --flow-3: var(--algo-blue);
-  --flow-warn: color-mix(in oklab, var(--algo-warning) 55%, var(--algo-ink));
-  --pulse: var(--accent);
+  /* Diagram strokes, beams and the light on a card's edge. Decorative lines,
+     so 3:1 is the bar. */
+  --flow-1: var(--algo-violet-deep);
+  --flow-2: var(--algo-cyan-deep);
+  --flow-3: var(--algo-cyan);
 
-  /* Elevation. `--shadow-card` is the brand card: one long soft shadow in
-     night, plus a white glow inside the edge that reads as a lit rim. */
-  --shadow-raised: 0 1px 2px -1px rgb(10 14 26 / 0.08), 0 4px 16px -4px rgb(10 14 26 / 0.1);
-  --shadow-card: 0 20px 48px 0 rgb(10 14 26 / 0.14), inset 0 0 20px 8px rgb(255 255 255 / 0.9);
-  --shadow-overlay: 0 8px 40px -8px rgb(10 14 26 / 0.18);
-  /* The brand's filled control: a short drop and a one-pixel bevel, lit from
-     the top left. Same in both themes. */
+  /* Elevation. `--shadow-card` is one long soft shadow in navy, plus a white
+     glow inside the edge that reads as a lit rim. */
+  --shadow-raised: 0 1px 2px -1px rgb(3 21 34 / 0.08), 0 4px 16px -4px rgb(3 21 34 / 0.1);
+  --shadow-card: 0 20px 48px 0 rgb(3 21 34 / 0.12), inset 0 0 20px 8px rgb(255 255 255 / 0.9);
+  --shadow-overlay: 0 8px 40px -8px rgb(3 21 34 / 0.18);
+  /* The filled control: a short drop and a one-pixel bevel, lit from the top
+     left. Same in both themes. */
   --shadow-control:
-    0 6px 16px -6px rgb(0 0 0 / 0.1), inset -1px -1px 2px 0 rgb(0 0 0 / 0.15),
-    inset 1px 1px 2px 0 rgb(255 255 255 / 0.2);
+    0 6px 16px -6px rgb(3 21 34 / 0.12), inset -1px -1px 2px 0 rgb(3 21 34 / 0.12),
+    inset 1px 1px 2px 0 rgb(255 255 255 / 0.35);
 
   /* Two radii for the whole site: panels and controls. */
   --radius-card: 0.875rem;
@@ -235,7 +228,7 @@
    TIER 2 — SEMANTIC ALIASES · DARK
 
    Deliberately not an inversion. Light elevates with shadow; dark elevates
-   with progressively lighter surfaces on the brand's night ground.
+   with progressively lighter surfaces on the navy ground.
 
    Selector is bare `[data-theme="dark"]`, not `html[data-theme="dark"]`, so
    any subtree can be themed independently.
@@ -243,138 +236,149 @@
 [data-theme="dark"] {
   color-scheme: dark;
 
-  --bg: var(--algo-night);
+  --bg: var(--algo-navy);
   /* Recessed rather than tinted — in dark, "subtle" means further back. */
-  --bg-subtle: color-mix(in oklab, var(--algo-night) 80%, #000); /* #050710 */
-  --surface: color-mix(in oklab, var(--algo-night) 88%, var(--algo-muted)); /* #171b26 · 1.12 off bg */
-  --surface-raised: color-mix(in oklab, var(--algo-night) 76%, var(--algo-muted)); /* #242832 · 1.17 off surface */
+  --bg-subtle: color-mix(in oklab, var(--algo-navy) 78%, #000); /* #020e17 */
+  --surface: color-mix(in oklab, var(--algo-white) 6%, var(--algo-navy)); /* #0f202c */
+  --surface-raised: color-mix(in oklab, var(--algo-white) 12%, var(--algo-navy)); /* #1c2b37 */
 
-  --fg: var(--algo-paper); /* min 14.51 */
-  --fg-muted: color-mix(in oklab, var(--algo-muted) 74%, var(--algo-paper)); /* #a6a5a4 · min 5.99 */
+  --fg: var(--algo-white); /* min 14.3 */
+  --fg-muted: color-mix(in oklab, var(--algo-white) 72%, var(--algo-navy)); /* #afb5ba · min 7.0 */
 
-  --border: color-mix(in srgb, var(--algo-paper) 10%, transparent);
-  --border-strong: color-mix(in oklab, var(--algo-paper) 10%, var(--algo-muted)); /* #939393 · min 4.8 */
+  --border: color-mix(in srgb, var(--algo-white) 11%, transparent);
+  --border-strong: color-mix(in oklab, var(--algo-white) 46%, var(--algo-navy)); /* #69737b · min 3.2 */
 
-  /* Deep blue disappears on night and the bright blue is 4.02 on the raised
-     surface, so dark text-accent is sky. */
-  --accent: var(--algo-sky); /* min 6.01 */
-  --accent-soft: color-mix(in oklab, var(--algo-blue) 16%, var(--algo-night)); /* #111e39 */
-  --accent-contrast: var(--algo-night); /* label on the bright CTA · min 5.25 */
+  /* On navy the cyan itself carries links, focus and accent text. */
+  --accent: var(--algo-cyan); /* min 6.7 */
+  --accent-soft: color-mix(in oklab, var(--algo-cyan) 14%, var(--algo-navy)); /* #08303f */
+  --accent-contrast: var(--algo-navy);
 
-  --success: var(--algo-success);
-  --warning: var(--algo-warning);
-  --danger: var(--algo-danger);
-  --status-contrast: var(--algo-ink);
+  --success: var(--algo-green);
+  --on-success: var(--algo-navy);
+  /* A navy badge vanishes on navy, so attention inverts. */
+  --attention: var(--algo-white);
+  --on-attention: var(--algo-navy);
+  --ai: var(--algo-violet);
+  --on-ai: var(--algo-navy);
 
   --ring: var(--accent);
-  --logo-wordmark: var(--algo-paper);
+  --logo-name: var(--algo-white);
+  --logo-sub: var(--algo-mint);
 
   /* TIER 3 — GRADIENTS · DARK */
-  --grad-primary: linear-gradient(150deg, var(--algo-blue) 0%, var(--algo-sky) 100%); /* night label · worst 5.25 */
+  --grad-primary: linear-gradient(
+    150deg,
+    color-mix(in oklab, var(--algo-cyan) 80%, var(--algo-white)) 0%,
+    var(--algo-cyan) 100%
+  ); /* navy label · worst 8.6 */
   --grad-surface: linear-gradient(180deg, var(--surface) 0%, var(--surface-raised) 100%);
-  --grad-accent-soft: linear-gradient(160deg, var(--accent-soft) 0%, var(--algo-night) 100%);
-  /* On night the brand's own stops pass as they are. */
+  --grad-accent-soft: linear-gradient(160deg, var(--accent-soft) 0%, var(--algo-navy) 100%);
+  /* On navy the logo's own gradient carries display type, mirrored so the
+     pointer can slide its bright middle under the cursor. */
   --grad-text: linear-gradient(
     90deg,
-    var(--algo-blue) 0%,
-    var(--algo-sky) 50%,
-    var(--algo-blue) 100%
-  ); /* worst stop 4.02 */
+    var(--algo-green) 0%,
+    var(--algo-cyan) 25%,
+    var(--algo-violet) 50%,
+    var(--algo-cyan) 75%,
+    var(--algo-green) 100%
+  ); /* worst stop 4.0 */
 
-  /* On night the lights are the deep blue coming up through the ground. */
-  --gf-a: color-mix(in srgb, var(--algo-blue-deep) 60%, transparent);
-  --gf-b: color-mix(in srgb, var(--algo-blue-mid) 18%, transparent);
-  --gf-c: color-mix(in srgb, var(--algo-blue) 14%, transparent);
+  /* On navy the lights are the logo's hues coming up through the ground. */
+  --gf-a: color-mix(in srgb, var(--algo-cyan) 16%, transparent);
+  --gf-b: color-mix(in srgb, var(--algo-violet) 16%, transparent);
+  --gf-c: color-mix(in srgb, var(--algo-green) 10%, transparent);
 
-  /* Night to deep blue with no pale step between: a sky stop here would read
-     as a stripe, not a rise. */
-  --pw-a: color-mix(in srgb, var(--algo-blue-deep) 42%, transparent);
-  --pw-b: color-mix(in srgb, var(--algo-blue-mid) 13%, transparent);
-  --pw-c: color-mix(in srgb, var(--algo-blue) 9%, transparent);
+  --pw-a: color-mix(in srgb, var(--algo-cyan) 10%, transparent);
+  --pw-b: color-mix(in srgb, var(--algo-violet) 10%, transparent);
+  --pw-c: color-mix(in srgb, var(--algo-green) 6%, transparent);
 
-  --page-bg: var(--bg);
-  --band-rise-1: color-mix(in oklab, var(--algo-blue-deep) 40%, var(--algo-night));
-  --band-rise-2: color-mix(in oklab, var(--algo-blue-deep) 78%, var(--algo-night));
-  --band-cloud: color-mix(in srgb, var(--algo-sky) 28%, transparent);
+  /* The page is already navy, so the band rises out of two faint tints of
+     it rather than out of white. */
+  --band-rise-1: color-mix(in oklab, var(--algo-cyan) 6%, var(--algo-navy));
+  --band-rise-2: color-mix(in oklab, var(--algo-violet) 8%, var(--algo-navy));
   --grad-glow: radial-gradient(
     70% 55% at 50% 0%,
-    color-mix(in srgb, var(--algo-blue) 18%, transparent) 0%,
+    color-mix(in srgb, var(--algo-cyan) 14%, transparent) 0%,
     transparent 70%
   );
 
-  --flow-1: var(--algo-blue-mid);
-  --flow-2: var(--algo-blue);
-  --flow-3: var(--algo-sky);
-  --flow-warn: var(--algo-warning);
-  --pulse: var(--algo-sky);
+  --flow-1: var(--algo-violet);
+  --flow-2: var(--algo-cyan);
+  --flow-3: var(--algo-mint);
 
   /* Shadows do almost nothing on a dark ground; the card keeps its long
      shadow for separation and swaps the white rim for a faint one. */
   --shadow-raised: 0 1px 2px -1px rgb(0 0 0 / 0.4), 0 4px 16px -4px rgb(0 0 0 / 0.45);
-  --shadow-card: 0 20px 48px 0 rgb(0 0 0 / 0.5), inset 0 0 0 1px rgb(255 253 249 / 0.04);
+  --shadow-card: 0 20px 48px 0 rgb(0 0 0 / 0.5), inset 0 0 0 1px rgb(255 255 255 / 0.05);
   --shadow-overlay: 0 8px 40px -8px rgb(0 0 0 / 0.6);
 }
 
 /* --------------------------------------------------------------------------
    TIER 2 — SEMANTIC ALIASES · BAND
 
-   The brand's blue ground with paper type, as on the brochure's closing
-   pages. A third theme scope rather than a set of one-off classes, so a form,
-   a button or a card dropped inside it needs no special case. It is the same
-   in the light and dark page themes.
+   The navy ground with white type, as on the logo pack's banner. A third
+   theme scope rather than a set of one-off classes, so a form, a button or a
+   card dropped inside it needs no special case. It is the same in the light
+   and dark page themes.
    -------------------------------------------------------------------------- */
 [data-theme="band"] {
   color-scheme: dark;
 
-  --bg: var(--algo-blue-deep);
-  --bg-subtle: color-mix(in oklab, var(--algo-blue-deep) 85%, var(--algo-night)); /* #03408f */
-  --surface: color-mix(in oklab, var(--algo-paper) 6%, var(--algo-blue-deep));
-  --surface-raised: color-mix(in oklab, var(--algo-paper) 11%, var(--algo-blue-deep));
+  --bg: var(--algo-navy);
+  --bg-subtle: color-mix(in oklab, var(--algo-navy) 78%, #000);
+  --surface: color-mix(in oklab, var(--algo-white) 6%, var(--algo-navy));
+  --surface-raised: color-mix(in oklab, var(--algo-white) 12%, var(--algo-navy));
 
-  --fg: var(--algo-paper);
-  --fg-muted: color-mix(in oklab, var(--algo-paper) 90%, var(--algo-blue-deep));
+  --fg: var(--algo-white);
+  --fg-muted: color-mix(in oklab, var(--algo-white) 72%, var(--algo-navy));
 
-  --border: color-mix(in srgb, var(--algo-paper) 16%, transparent);
-  --border-strong: color-mix(in oklab, var(--algo-paper) 74%, var(--algo-blue-deep));
+  --border: color-mix(in srgb, var(--algo-white) 14%, transparent);
+  --border-strong: color-mix(in oklab, var(--algo-white) 52%, var(--algo-navy));
 
-  --accent: var(--algo-paper);
-  --accent-soft: color-mix(in oklab, var(--algo-paper) 9%, var(--algo-blue-deep));
-  --accent-contrast: var(--algo-blue-deep);
+  --accent: var(--algo-cyan);
+  --accent-soft: color-mix(in oklab, var(--algo-cyan) 14%, var(--algo-navy));
+  --accent-contrast: var(--algo-navy);
 
-  --success: var(--algo-success);
-  --warning: var(--algo-warning);
-  --danger: var(--algo-danger);
-  --status-contrast: var(--algo-ink);
+  --success: var(--algo-green);
+  --on-success: var(--algo-navy);
+  --attention: var(--algo-white);
+  --on-attention: var(--algo-navy);
+  --ai: var(--algo-violet);
+  --on-ai: var(--algo-navy);
 
-  --ring: var(--algo-paper);
-  --logo-wordmark: var(--algo-paper);
+  --ring: var(--algo-cyan);
+  --logo-name: var(--algo-white);
+  --logo-sub: var(--algo-mint);
 
-  /* The filled control inverts: paper carrying a deep-blue label. */
   --grad-primary: linear-gradient(
     150deg,
-    var(--algo-paper) 0%,
-    color-mix(in oklab, var(--algo-sky) 22%, var(--algo-paper)) 100%
+    color-mix(in oklab, var(--algo-cyan) 80%, var(--algo-white)) 0%,
+    var(--algo-cyan) 100%
   );
   --grad-surface: linear-gradient(180deg, var(--surface) 0%, var(--surface-raised) 100%);
-  --grad-accent-soft: linear-gradient(160deg, var(--accent-soft) 0%, var(--algo-blue-deep) 100%);
+  --grad-accent-soft: linear-gradient(160deg, var(--accent-soft) 0%, var(--algo-navy) 100%);
   --grad-text: linear-gradient(
     90deg,
-    color-mix(in oklab, var(--algo-sky) 55%, var(--algo-paper)) 0%,
-    var(--algo-paper) 50%,
-    color-mix(in oklab, var(--algo-sky) 55%, var(--algo-paper)) 100%
+    var(--algo-green) 0%,
+    var(--algo-cyan) 25%,
+    var(--algo-violet) 50%,
+    var(--algo-cyan) 75%,
+    var(--algo-green) 100%
   );
 
-  --gf-a: var(--band-cloud);
-  --gf-b: color-mix(in srgb, var(--algo-sky) 60%, transparent);
-  --gf-c: color-mix(in srgb, var(--algo-blue) 50%, transparent);
+  /* The cloud in the band: the logo's three hues, low enough that white
+     secondary text keeps AA where two of them overlap. */
+  --gf-a: color-mix(in srgb, var(--algo-cyan) 18%, transparent);
+  --gf-b: color-mix(in srgb, var(--algo-violet) 22%, transparent);
+  --gf-c: color-mix(in srgb, var(--algo-green) 14%, transparent);
 
-  --flow-1: var(--algo-sky);
-  --flow-2: var(--algo-paper);
-  --flow-3: var(--algo-paper);
-  --pulse: var(--algo-paper);
+  --flow-1: var(--algo-violet);
+  --flow-2: var(--algo-cyan);
+  --flow-3: var(--algo-mint);
 
   --shadow-raised: 0 1px 2px -1px rgb(0 0 0 / 0.3), 0 4px 16px -4px rgb(0 0 0 / 0.3);
-  --shadow-card: 0 20px 48px 0 rgb(3 20 60 / 0.45), inset 0 0 0 1px rgb(255 253 249 / 0.06);
+  --shadow-card: 0 20px 48px 0 rgb(0 0 0 / 0.45), inset 0 0 0 1px rgb(255 255 255 / 0.06);
   --shadow-overlay: 0 8px 40px -8px rgb(0 0 0 / 0.5);
 }
 
@@ -400,28 +404,36 @@
   --color-accent-soft: var(--accent-soft);
   --color-accent-contrast: var(--accent-contrast);
   --color-success: var(--success);
-  --color-warning: var(--warning);
-  --color-danger: var(--danger);
-  --color-status-contrast: var(--status-contrast);
+  --color-on-success: var(--on-success);
+  --color-attention: var(--attention);
+  --color-on-attention: var(--on-attention);
+  --color-ai: var(--ai);
+  --color-on-ai: var(--on-ai);
   --color-ring: var(--ring);
   --color-ui-flag: var(--ui-flag);
-  --color-ui-flag-soft: var(--ui-flag-soft);
+  --color-ui-on-flag: var(--ui-on-flag);
+  --color-ui-good: var(--ui-good);
+  --color-ui-on-good: var(--ui-on-good);
+  --color-ui-action: var(--ui-action);
+  --color-ui-on-action: var(--ui-on-action);
   --color-ui-value: var(--ui-value);
   --color-ui-label: var(--ui-label);
   --color-ui-quiet: var(--ui-quiet);
   --color-ui-rule: var(--ui-rule);
-  --color-dot-1: var(--algo-dot-1);
-  --color-dot-2: var(--algo-dot-2);
-  --color-dot-3: var(--algo-dot-3);
-  --color-dot-4: var(--algo-dot-4);
-  --color-dot-5: var(--algo-dot-5);
+  /* The five squares of the agent mark run the logo's gradient, green at the
+     left through cyan in the middle to violet at the right. */
+  --color-dot-1: var(--algo-green);
+  --color-dot-2: color-mix(in oklab, var(--algo-green) 50%, var(--algo-cyan));
+  --color-dot-3: var(--algo-cyan);
+  --color-dot-4: color-mix(in oklab, var(--algo-cyan) 50%, var(--algo-violet));
+  --color-dot-5: var(--algo-violet);
 
-  /* One sans does display and body, as in the brand file. The two names stay
-     so a future pairing is still a one-file change in src/lib/fonts.ts. */
+  /* One typeface does everything (company rule, 28 Oct 2026). The names stay
+     separate so a future pairing is still a one-file change in
+     src/lib/fonts.ts. Data that used to be monospaced (amounts, document
+     numbers) is the same face with tabular figures: see `font-data`. */
   --font-display: var(--font-algo-sans), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-algo-sans), ui-sans-serif, system-ui, sans-serif;
-  /* Data only: document numbers, amounts, status tags inside product UI. */
-  --font-mono: var(--font-algo-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --radius-card: var(--radius-card);
   --radius-control: var(--radius-control);
@@ -432,8 +444,17 @@
   --shadow-overlay: var(--shadow-overlay);
 }
 
+/* Data inside product UI and the contact panel: amounts, document numbers,
+   times, status tags. The body face with tabular figures, so columns of
+   numbers line up. */
+@utility font-data {
+  font-family: var(--font-body);
+  font-variant-numeric: tabular-nums;
+}
+
 /* Type scale — ~1.25 ratio off a 16px base. Tracking tightens as size grows,
-   ending at the brand file's -0.05em; body sits at 1.6 line-height, display
+   ending at -0.035em: Plus Jakarta Sans is already close-set, and anything
+   tighter closes up its word spaces; body sits at 1.6 line-height, display
    close to solid. 7xl is the hero step, one size above the rest of the page. Everything from 3xl up is
    fluid so 360px never blows out. Literal values, so a plain `@theme`. */
 @theme {
@@ -451,35 +472,35 @@
 
   --text-lg: 1.25rem;
   --text-lg--line-height: 1.5;
-  --text-lg--letter-spacing: -0.015em;
+  --text-lg--letter-spacing: -0.01em;
 
   --text-xl: 1.5625rem;
   --text-xl--line-height: 1.35;
-  --text-xl--letter-spacing: -0.02em;
+  --text-xl--letter-spacing: -0.015em;
 
   --text-2xl: 1.9531rem;
   --text-2xl--line-height: 1.2;
-  --text-2xl--letter-spacing: -0.03em;
+  --text-2xl--letter-spacing: -0.02em;
 
   --text-3xl: clamp(2rem, 1.6rem + 1.7vw, 2.4414rem);
   --text-3xl--line-height: 1.15;
-  --text-3xl--letter-spacing: -0.035em;
+  --text-3xl--letter-spacing: -0.025em;
 
   --text-4xl: clamp(2.25rem, 1.6rem + 2.9vw, 3.0518rem);
   --text-4xl--line-height: 1.08;
-  --text-4xl--letter-spacing: -0.04em;
+  --text-4xl--letter-spacing: -0.028em;
 
   --text-5xl: clamp(2.5rem, 1.5rem + 4.5vw, 3.8147rem);
   --text-5xl--line-height: 1.05;
-  --text-5xl--letter-spacing: -0.045em;
+  --text-5xl--letter-spacing: -0.03em;
 
   --text-6xl: clamp(2.75rem, 1.2rem + 6.9vw, 4.7684rem);
   --text-6xl--line-height: 1.02;
-  --text-6xl--letter-spacing: -0.05em;
+  --text-6xl--letter-spacing: -0.032em;
 
   --text-7xl: clamp(2.75rem, 0.5rem + 6.6vw, 5.9605rem);
   --text-7xl--line-height: 1;
-  --text-7xl--letter-spacing: -0.05em;
+  --text-7xl--letter-spacing: -0.035em;
 }
 
 /* Tailwind v4 has no gradient namespace, so the gradient tier gets explicit
@@ -562,7 +583,7 @@
   --spacing: var(--u);
   --card-radius: calc(var(--u) * 14);
   --card-shadow:
-    0 calc(var(--u) * 20) calc(var(--u) * 48) 0 rgb(10 14 26 / 0.14),
+    0 calc(var(--u) * 20) calc(var(--u) * 48) 0 rgb(3 21 34 / 0.12),
     inset var(--u) var(--u) calc(var(--u) * 20) calc(var(--u) * 20) var(--algo-white);
   color: var(--fg);
   font-family: var(--font-body);
@@ -872,19 +893,19 @@
 .gfield-panel .gblob:nth-child(2) { --c: var(--gf-b); --x: 18%; --y: 70%; --s: min(80vw, 54rem); --reach: -120px; --lag: 2.6s; --drift: 27s; }
 .gfield-panel .gblob:nth-child(3) { --c: var(--gf-c); --x: 86%; --y: 64%; --s: min(80vw, 54rem); --reach: 220px; --lag: 1.3s; --drift: 18s; }
 
-/* The closing band rises out of the page ground into deep blue, and the
+/* The closing band rises out of the page ground into navy, and the
    lights are the bright cloud in that rise. Everything that carries text sits
-   below `--band-rise`, on the deep blue. */
+   below `--band-rise`, on the navy. */
 @utility bg-band {
   --band-rise: clamp(16rem, 40vw, 30rem);
-  /* One continuous ramp out of nothing into the deep blue. It starts from
+  /* One continuous ramp out of nothing into the navy. It starts from
      transparent, not from the page colour, because the section above shows
      the moving page wash through it and a solid first stop met that in a hard
      line. And it is EASED, not linear: a linear ramp has a corner where it
      starts and another where it stops, and the eye reads each corner as a
      line across the page (a Mach band). The stops below trace a smooth
      S-curve — barely anything for the first fifth, the change in the middle,
-     a long settle into the deep blue — mixed in oklab so the run through the
+     a long settle into the navy — mixed in oklab so the run through the
      pale stop has no grey in it. No background-color: the last stop carries
      on to the bottom. */
   background-image: linear-gradient(
@@ -897,16 +918,16 @@
     color-mix(in oklab, var(--band-rise-1) 88%, transparent) calc(var(--band-rise) * 0.5),
     color-mix(in oklab, var(--band-rise-2) 55%, var(--band-rise-1)) calc(var(--band-rise) * 0.62),
     var(--band-rise-2) calc(var(--band-rise) * 0.74),
-    color-mix(in oklab, var(--algo-blue-deep) 55%, var(--band-rise-2)) calc(var(--band-rise) * 0.86),
-    color-mix(in oklab, var(--algo-blue-deep) 88%, var(--band-rise-2)) calc(var(--band-rise) * 0.98),
-    var(--algo-blue-deep) calc(var(--band-rise) * 1.12)
+    color-mix(in oklab, var(--band-ground) 55%, var(--band-rise-2)) calc(var(--band-rise) * 0.86),
+    color-mix(in oklab, var(--band-ground) 88%, var(--band-rise-2)) calc(var(--band-rise) * 0.98),
+    var(--band-ground) calc(var(--band-rise) * 1.12)
   );
 }
 /* The cloud is wider than the rise is tall, so without this its top would be
    cut in a straight line where the section starts. */
 .gfield-band {
   /* …and its lower light would meet the footer in a line, so it lets go before
-     the band ends: the last stretch is the flat deep blue the footer picks up. */
+     the band ends: the last stretch is the flat navy the footer picks up. */
   mask-image: linear-gradient(
     180deg,
     transparent 0,
@@ -1117,23 +1138,22 @@
   );
   background-size: 22px 22px;
 }
-/* The footer takes the closing band's blue and lets it go, instead of meeting
+/* The footer takes the closing band's navy and lets it go, instead of meeting
    it in a hard line. */
 .footer-rise {
   /* A strip of its own above the footer's content, so the fall can be as long
-     as it needs to be and no text ever sits on it (ink on this blue fails in
-     the light theme). Eased like the band's rise, for the same reason. */
+     as it needs to be and no text ever sits on it. It runs the band's rise
+     backwards, through the same two tints: navy faded straight to white
+     passes through grey. */
   height: clamp(9rem, 22vw, 17rem);
   background-image: linear-gradient(
     in oklab 180deg,
-    var(--algo-blue-deep) 0,
-    color-mix(in oklab, var(--algo-blue-deep) 96%, transparent) 10%,
-    color-mix(in oklab, var(--algo-blue-deep) 86%, transparent) 20%,
-    color-mix(in oklab, var(--algo-blue-deep) 68%, transparent) 32%,
-    color-mix(in oklab, var(--algo-blue-deep) 46%, transparent) 45%,
-    color-mix(in oklab, var(--algo-blue-deep) 26%, transparent) 58%,
-    color-mix(in oklab, var(--algo-blue-deep) 12%, transparent) 72%,
-    color-mix(in oklab, var(--algo-blue-deep) 4%, transparent) 86%,
+    var(--band-ground) 0,
+    color-mix(in oklab, var(--band-rise-2) 70%, var(--band-ground)) 14%,
+    var(--band-rise-2) 30%,
+    color-mix(in oklab, var(--band-rise-2) 50%, var(--band-rise-1)) 46%,
+    color-mix(in oklab, var(--band-rise-1) 70%, transparent) 62%,
+    color-mix(in oklab, var(--band-rise-1) 30%, transparent) 80%,
     transparent 100%
   );
 }

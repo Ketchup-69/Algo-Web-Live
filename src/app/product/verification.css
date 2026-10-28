@@ -1,36 +1,37 @@
 /* Product-UI tokens for the verification visual. Imported by globals.css. */
 :root,
 [data-theme="light"] {
-  /* Verification cards (brand file node 1:17712). */
-  --algo-ui-title: #0e0c0a;
-  --algo-ui-row-text: #111214;
-  --algo-ui-hairline: #f0f0f2;
-  --algo-ui-approved: #00a44b;
-  --algo-ui-approved-quiet: #a5d6a7;
-  --algo-ui-flag-quiet: #ffccbc;
-  --algo-ui-match: #2e7d32;
-  --algo-ui-match-soft: #e8f5e9;
-  --algo-ui-variance: #e65100;
-  --algo-ui-variance-soft: #fff3e0;
+  /* Verification cards. Matched is green, a variance is the navy
+     "needs attention" badge. */
+  --algo-ui-title: var(--algo-navy);
+  --algo-ui-row-text: var(--algo-navy);
+  --algo-ui-hairline: color-mix(in oklab, var(--algo-navy) 5%, var(--algo-white));
+  --algo-ui-approved: var(--algo-green); /* a fill: carries a navy icon */
+  --algo-ui-approved-quiet: var(--algo-green-deep);
+  --algo-ui-flag-quiet: var(--algo-n-label);
+  --algo-ui-match: var(--algo-green-deep); /* text on the soft green · 4.5 */
+  --algo-ui-match-soft: color-mix(in oklab, var(--algo-green) 12%, var(--algo-white));
+  --algo-ui-variance: var(--algo-navy);
+  --algo-ui-variance-soft: color-mix(in oklab, var(--algo-navy) 6%, var(--algo-white));
 
   /* The ghost cards either side, drawn for a dark ground. */
-  --algo-ui-ghost-pill: #2e2e2e;
-  --algo-ui-ghost-body: #252525;
-  --algo-ui-ghost-mark: #3a3a3a;
-  --algo-ui-ghost-dot: #353535;
-  --algo-ui-ghost-sub: #333333;
-  --algo-ui-ghost-bar: #303030;
-  --algo-ui-ghost-text: #555555;
+  --algo-ui-ghost-pill: color-mix(in oklab, var(--algo-white) 14%, var(--algo-navy));
+  --algo-ui-ghost-body: color-mix(in oklab, var(--algo-white) 10%, var(--algo-navy));
+  --algo-ui-ghost-mark: color-mix(in oklab, var(--algo-white) 22%, var(--algo-navy));
+  --algo-ui-ghost-dot: color-mix(in oklab, var(--algo-white) 19%, var(--algo-navy));
+  --algo-ui-ghost-sub: color-mix(in oklab, var(--algo-white) 17%, var(--algo-navy));
+  --algo-ui-ghost-bar: color-mix(in oklab, var(--algo-white) 15%, var(--algo-navy));
+  --algo-ui-ghost-text: color-mix(in oklab, var(--algo-white) 34%, var(--algo-navy));
 
-  /* Exceptions panel (brand file node 1:17818). */
-  --algo-ui-warn-badge: #d97706;
-  --algo-ui-meta: #6b7280;
-  --ui-row-tint: color-mix(in srgb, var(--algo-ui-warn-badge) 10%, transparent);
-  --ui-total-tint: color-mix(in srgb, var(--algo-night) 3%, transparent);
+  /* Exceptions panel. */
+  --algo-ui-warn-badge: var(--algo-navy);
+  --algo-ui-meta: var(--algo-n-label);
+  --ui-row-tint: color-mix(in srgb, var(--algo-navy) 5%, transparent);
+  --ui-total-tint: color-mix(in srgb, var(--algo-navy) 3%, transparent);
 }
 
 @theme inline {
-  --color-ui-sheet: var(--algo-white);
+  --color-ui-sheet: var(--ui-sheet);
   --color-ui-title: var(--algo-ui-title);
   --color-ui-row-text: var(--algo-ui-row-text);
   --color-ui-hairline: var(--algo-ui-hairline);

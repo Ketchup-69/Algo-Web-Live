@@ -80,7 +80,7 @@ const mdxComponents = {
   ),
   code: (props: React.ComponentPropsWithoutRef<"code">) => (
     <code
-      className="rounded bg-bg-subtle px-1.5 py-0.5 font-mono text-sm text-fg"
+      className="rounded bg-bg-subtle px-1.5 py-0.5 font-data text-sm text-fg"
       {...props}
     />
   ),

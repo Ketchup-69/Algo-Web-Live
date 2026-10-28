@@ -18,7 +18,7 @@ export function Footer() {
       <div aria-hidden="true" className="footer-rise" />
       <Container width="wide" className="pt-8 pb-(--space-section-md)">
         <div className="flex flex-col items-start gap-8 lg:flex-row lg:items-end lg:justify-between">
-          <p className="max-w-[16ch] font-display text-4xl font-semibold tracking-[-0.025em] text-fg text-balance sm:text-5xl">
+          <p className="max-w-[16ch] font-display text-4xl font-semibold tracking-[-0.02em] text-fg text-balance sm:text-5xl">
             {site.tagline}
           </p>
           <Button href={site.footerCta.href} size="lg">
@@ -28,7 +28,7 @@ export function Footer() {
 
         <div className="mt-16 grid gap-12 border-t border-border pt-12 sm:grid-cols-2 lg:mt-20 lg:grid-cols-[minmax(0,1.2fr)_repeat(2,minmax(0,1fr))] lg:gap-16 lg:pt-14">
           <div className="max-w-xs">
-            <Logo />
+            <Logo withSubline gradientId="logo-gradient-footer" />
             <Text tone="muted" size="sm" className="mt-3">
               {site.description}
             </Text>

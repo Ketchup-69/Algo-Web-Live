@@ -97,9 +97,9 @@ export function StatementPanel({ maxScale = 1.4, className }: { maxScale?: numbe
             <div className="flex items-center justify-between whitespace-nowrap">
               <div>
                 <p className="fs-u-8 font-medium text-ui-meta">{data.period}</p>
-                <p className="fs-u-22 font-bold tracking-[-0.04em] text-ui-slate">{data.supplier}</p>
+                <p className="fs-u-22 font-bold tracking-[-0.025em] text-ui-slate">{data.supplier}</p>
               </div>
-              <div className="flex items-center gap-8 font-mono fs-u-10">
+              <div className="flex items-center gap-8 font-data fs-u-10">
                 <span className="font-medium text-ui-label">{data.lineCount}</span>
                 <span className="font-bold text-ui-value">{data.total}</span>
               </div>
@@ -108,10 +108,10 @@ export function StatementPanel({ maxScale = 1.4, className }: { maxScale?: numbe
 
           <div className="absolute top-84 right-20 left-20 h-272">
             <div className="flex h-18 items-center justify-between whitespace-nowrap">
-              <span className="font-mono fs-u-12 font-bold text-ui-label">{data.matchedLabel}</span>
+              <span className="font-data fs-u-12 font-bold text-ui-label">{data.matchedLabel}</span>
               <span className="flex items-center gap-4">
                 <span className="size-4 rounded-full bg-ui-cleared" />
-                <span className="font-mono fs-u-9 font-medium text-ui-cleared">{data.clearedTemplate.replace("{n}", String(data.clearedCount + doneCount))}</span>
+                <span className="font-data fs-u-9 font-medium text-ui-cleared">{data.clearedTemplate.replace("{n}", String(data.clearedCount + doneCount))}</span>
               </span>
             </div>
 
@@ -147,7 +147,7 @@ export function StatementPanel({ maxScale = 1.4, className }: { maxScale?: numbe
               <span
                 key={doneCount}
                 aria-live="polite"
-                className="ui-swap font-mono fs-u-9 font-bold tracking-[0.1333em] whitespace-nowrap text-ui-warn-badge"
+                className="ui-swap font-data fs-u-9 font-bold tracking-[0.1333em] whitespace-nowrap text-ui-warn-badge"
               >
                 {doneCount === data.exceptions.length
                   ? data.exceptionsNone
@@ -173,23 +173,23 @@ export function StatementPanel({ maxScale = 1.4, className }: { maxScale?: numbe
               >
                 <span
                   className={cn(
-                    "flex size-14 shrink-0 items-center justify-center rounded-u-7 text-ui-sheet transition-colors duration-200",
-                    done[index] ? "bg-ui-cleared" : "bg-ui-warn-badge",
+                    "flex size-14 shrink-0 items-center justify-center rounded-u-7 transition-colors duration-200",
+                    done[index] ? "bg-ui-approved text-ui-on-good" : "bg-ui-warn-badge text-ui-on-flag",
                   )}
                 >
                   <Icon name={done[index] ? "check" : "priority_high"} className="size-10" />
                 </span>
                 <div className="flex min-w-px flex-1 items-center justify-between pl-8">
-                  <span className="w-120 shrink-0 font-mono fs-u-11 font-medium text-ui-value">{row.document}</span>
-                  <span className="min-w-px flex-1 fs-u-12 font-semibold tracking-[-0.04em] text-ui-value/60">
+                  <span className="w-120 shrink-0 font-data fs-u-11 font-medium text-ui-value">{row.document}</span>
+                  <span className="min-w-px flex-1 fs-u-12 font-semibold tracking-[-0.025em] text-ui-value/60">
                     {row.reason}
                   </span>
                   <span
                     key={done[index] ?? row.tag}
                     className={cn(
-                      "ui-swap shrink-0 rounded-u-3 px-7 py-3 font-mono fs-u-9 font-bold whitespace-nowrap",
+                      "ui-swap shrink-0 rounded-u-3 px-7 py-3 font-data fs-u-9 font-bold whitespace-nowrap",
                       done[index]
-                        ? "bg-ui-cleared/10 text-ui-cleared"
+                        ? "bg-ui-match-soft text-ui-match"
                         : row.tone === "variance"
                           ? "bg-ui-warn-badge/10 text-ui-warn-badge"
                           : "bg-ui-value/6 text-ui-label",
@@ -218,10 +218,10 @@ export function StatementPanel({ maxScale = 1.4, className }: { maxScale?: numbe
             data-open={open !== null}
             data-up={up}
             onPointerLeave={() => setHovered(null)}
-            className="ui-menu absolute top-0 left-1271 flex w-[calc(var(--u)*349.84)] flex-col overflow-clip rounded-[calc(var(--u)*12.957)] [outline:calc(var(--u)*1.62)_solid_var(--border)] [outline-offset:calc(var(--u)*-1.62)] bg-bg py-[calc(var(--u)*9.718)] shadow-[0_calc(var(--u)*19.436)_calc(var(--u)*45.35)_0_rgb(10_14_26/0.14)]"
+            className="ui-menu absolute top-0 left-1271 flex w-[calc(var(--u)*349.84)] flex-col overflow-clip rounded-[calc(var(--u)*12.957)] [outline:calc(var(--u)*1.62)_solid_var(--border)] [outline-offset:calc(var(--u)*-1.62)] bg-bg py-[calc(var(--u)*9.718)] shadow-[0_calc(var(--u)*19.436)_calc(var(--u)*45.35)_0_rgb(3_21_34/0.14)]"
           >
             <div className="flex h-[calc(var(--u)*35.632)] items-center px-[calc(var(--u)*16.196)]">
-              <span className="font-mono [font-size:calc(var(--u)*13.767)] font-medium text-ui-label">{target ? `${target.document} · ${target.tag}` : data.menu.heading}</span>
+              <span className="font-data [font-size:calc(var(--u)*13.767)] font-medium text-ui-label">{target ? `${target.document} · ${target.tag}` : data.menu.heading}</span>
             </div>
             <div className="h-[calc(var(--u)*14.577)] px-[calc(var(--u)*12.957)] py-[calc(var(--u)*6.479)]">
               <div className="h-[calc(var(--u)*1.62)] bg-border" />
@@ -247,7 +247,7 @@ export function StatementPanel({ maxScale = 1.4, className }: { maxScale?: numbe
                 <Icon name={MENU_ICONS[item.icon]} className={cn("size-[calc(var(--u)*24)]", active ? "text-ui-value" : "text-ui-rule")} />
                 <span
                   className={cn(
-                    "[font-size:calc(var(--u)*19.436)] font-medium tracking-[-0.04em] whitespace-nowrap",
+                    "[font-size:calc(var(--u)*19.436)] font-medium tracking-[-0.025em] whitespace-nowrap",
                     active ? "text-ui-value" : "text-ui-label",
                   )}
                 >

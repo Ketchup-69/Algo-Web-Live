@@ -1,16 +1,17 @@
 /* Product-UI tokens for the scatter visual. Imported by globals.css. */
 :root,
 [data-theme="light"] {
-  --algo-ui-scan: #78dffb; /* the cyan reading band and its glow */
-  --algo-ui-doc-ink: #0a0a0a; /* names and line items printed on the front invoice */
-  --algo-ui-faint: #9ca3af; /* the invoice's date and field labels */
-  --algo-ui-halftone: #deecff; /* the dots of the ground */
+  --algo-ui-scan: var(--algo-violet); /* the agent's reading band and its glow */
+  --algo-ui-doc-ink: var(--algo-navy); /* names and line items printed on the front invoice */
+  --algo-ui-faint: var(--algo-n-label); /* the invoice's date and field labels · 5.30 */
+  --algo-ui-halftone: color-mix(in oklab, var(--algo-cyan) 16%, var(--algo-white)); /* the dots of the ground */
+  --algo-ui-select: var(--algo-cyan-deep); /* a choice the reader makes: outline, label */
 }
 @theme inline {
   --color-ui-scan: var(--algo-ui-scan);
   --color-ui-doc-ink: var(--algo-ui-doc-ink);
   --color-ui-faint: var(--algo-ui-faint);
-  --color-ui-select: var(--algo-blue);
+  --color-ui-select: var(--algo-ui-select);
 }
 
 /* The dotted ground. In the brand file it is a halftone shader over a

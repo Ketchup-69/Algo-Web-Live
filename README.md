@@ -25,9 +25,9 @@ touch the last two:
 
 | Tier | What | Rule |
 |---|---|---|
-| Raw palette | `--algo-*` | The exact brand hexes. Never edited, never referenced by a component. |
+| Raw palette | `--algo-*` | The six logo-pack hexes (navy, green, cyan, violet, mint, white), plus neutrals and deep hues mixed from them. Never referenced by a component. |
 | Semantic aliases | `--bg`, `--fg-muted`, `--accent`… | What components consume. Dark mode remaps only these. |
-| Gradients | `--grad-*` | Buttons, panels, hairlines, the blue band wash and the headline gradient (`text-grad-brand`, display sizes only). Never body copy. |
+| Gradients | `--grad-*` | Buttons, panels, hairlines, the navy band's rise and the headline gradient (`text-grad-brand`, display sizes only, and only on navy grounds). Never body copy. |
 | Tailwind | `@theme inline` | Turns the aliases into `bg-surface`, `text-fg-muted`, `border-border-strong`. |
 
 **No component ever writes a hex.** If you find yourself reaching for one, the
@@ -35,16 +35,22 @@ alias you need is missing — add it to the token layer instead.
 
 ### Contrast
 
-The raw palette is the brand file's, and not all of it clears WCAG AA on
-screen: the brand grey is 3.06 on the tinted band and the bright blue is 3.16.
-Deep blue (`#004aad`) is 7.01 at worst, which is why it carries links, focus
-and the primary button. Every other AA-critical alias is derived with `color-mix(in oklab, …)` from two approved
-palette tokens — no new hex enters the codebase, and a brand-book swap
-propagates automatically.
+The raw palette is the logo pack's. Navy carries all text on light grounds.
+Green, cyan, violet and mint are fills with a navy label, never text on white:
+as text on white they measure 2.65, 2.14, 3.27 and 1.54. Where a brand hue has
+to be text or a thin line on a light ground (links, focus rings, a "matched"
+label), it is that hue mixed toward navy until it clears AA — the deep cyan,
+green and violet in tier 1. Greys are navy let down into white. Every derived
+value is a `color-mix(in oklab, …)` of two palette tokens — no new hex enters
+the codebase, and a palette change propagates automatically.
 
-`src/lib/tokens.ts` mirrors those mixes as data. It is the single source for
-both the build gate and the /styleguide page, so the numbers on screen cannot
-drift from the numbers CI enforces. **Change a mix percentage in `globals.css`
+Colour carries meaning, the same way everywhere, product visuals included:
+green is approved or matched, navy is "needs attention", violet is anything
+the agent did, cyan is the action.
+
+`src/lib/tokens.ts` mirrors those mixes as data, including the text pairings
+inside the product visuals, and the build gate reads it, so the numbers on
+screen cannot drift from the numbers CI enforces. **Change a mix percentage in `globals.css`
 and you must change it in `tokens.ts` too** — the gate is what catches you.
 
 Text is checked at 4.5:1 against every ground it can land on. UI boundaries are
@@ -60,8 +66,8 @@ paint, so there is no flash of the wrong theme. It reads `localStorage`, falls
 back to `prefers-color-scheme`, and falls back again to light if storage throws.
 
 The dark selector is a bare `[data-theme="dark"]` rather than `html[...]`, so
-any subtree can be themed independently — which is how /styleguide shows both
-themes at once.
+any subtree can be themed independently — which is how the closing band carries its own
+theme.
 
 ## Layout
 
@@ -113,8 +119,8 @@ stage as each step reaches the reading line. Neither pins or hijacks the
 scroll.
 
 Both diagrams follow the theme. Their strokes and beams come through the
-`--flow-*` tokens in `globals.css`, which run deep blue to bright blue on paper
-and bright blue to sky on the night ground. The board is HTML nodes with an SVG
+`--flow-*` tokens in `globals.css`, which run the logo's violet and cyan,
+pulled to line depth on white and as they are on navy. The board is HTML nodes with an SVG
 overlay whose beams are measured from the nodes' positions; its motion is
 CSS keyed off a `data-stage` attribute (travelling beams, receding later
 stages, the tick drawing), so the scroll handler costs one attribute write.
@@ -182,5 +188,9 @@ commit history.
 | 4 | Motion and UI revamp: display type, masked line reveals, live pipeline, sticky process scene, approval console, logo strip, nav, footer, page transitions | Done |
 
 Still placeholders, by design: contact details, logo strip, the client
-quotation (disabled), legal pages, social links, brand mark, and the blog post
-(noindex until approved).
+quotation (disabled), legal pages, social links, and the blog post (noindex
+until approved).
+
+Type is Plus Jakarta Sans throughout (SIL Open Font License 1.1), served from
+the site by `next/font`. The logo mark, favicon and social card come from the
+official logo pack in `docs/brand/logo-pack/`.

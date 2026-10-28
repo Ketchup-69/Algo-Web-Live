@@ -28,8 +28,8 @@ export function DataTiersCard({ maxScale = 1.4, className }: { maxScale?: number
 
       <div data-ptr="" className="card flex flex-col p-[calc(var(--u)*22-1px)]">
         <div className="flex items-center justify-between px-12">
-          <span className="font-mono fs-u-10 font-bold text-ui-label">{data.classLabel}</span>
-          <span className="font-mono fs-u-10 font-bold text-ui-label">{data.routeLabel}</span>
+          <span className="font-data fs-u-10 font-bold text-ui-label">{data.classLabel}</span>
+          <span className="font-data fs-u-10 font-bold text-ui-label">{data.routeLabel}</span>
         </div>
 
         <div className="relative mt-10 flex flex-col gap-4" onPointerLeave={() => setSelected(data.initial)}>
@@ -51,14 +51,14 @@ export function DataTiersCard({ maxScale = 1.4, className }: { maxScale?: number
                 className="ui-press relative flex h-52 items-center justify-between px-12 text-left"
               >
                 <span className="flex flex-col gap-3">
-                  <span className={cn("font-mono fs-u-8 font-bold transition-colors duration-150", on ? "text-ui-code" : "text-ui-label")}>
+                  <span className={cn("font-data fs-u-8 font-bold transition-colors duration-150", on ? "text-ui-code" : "text-ui-label")}>
                     {row.name}
                   </span>
-                  <span className="fs-u-11 leading-[1.2] font-semibold tracking-[-0.05em] text-fg">{row.examples}</span>
+                  <span className="fs-u-11 leading-[1.2] font-semibold tracking-[-0.03em] text-fg">{row.examples}</span>
                 </span>
                 <span
                   className={cn(
-                    "fs-u-11 font-semibold tracking-[-0.04em] whitespace-nowrap transition-colors duration-150",
+                    "fs-u-11 font-semibold tracking-[-0.025em] whitespace-nowrap transition-colors duration-150",
                     on ? "text-ui-code" : "text-ui-quiet",
                   )}
                 >

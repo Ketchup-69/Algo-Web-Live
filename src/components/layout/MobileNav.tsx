@@ -136,7 +136,7 @@ export function MobileNav() {
           className="motion-safe:animate-sheet-in fixed inset-0 z-50 flex flex-col bg-bg lg:hidden"
         >
           <div className="flex h-16 shrink-0 items-center justify-between px-(--gutter)">
-            <Logo />
+            <Logo gradientId="logo-gradient-menu" />
             <button
               type="button"
               onClick={close}

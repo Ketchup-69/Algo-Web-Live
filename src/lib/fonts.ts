@@ -1,32 +1,27 @@
-import { JetBrains_Mono, Manrope } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 
 /**
  * Every font in the site is declared here and nowhere else.
  *
- * The pairing is the brand file's: Manrope for everything that is read, and
- * JetBrains Mono for data inside product UI (document numbers, amounts,
- * status tags). Nothing else in the codebase names a typeface — components
- * reach for the `font-display` / `font-body` / `font-mono` utilities, which
- * resolve through the CSS variables these expose.
+ * Company rule (28 Oct 2026): Plus Jakarta Sans for everything — display,
+ * headings, body, UI and numbers. Where figures have to line up (amounts,
+ * document numbers, times) the same face is set with tabular figures through
+ * the `font-data` utility in globals.css; there is no monospace.
  *
- * Both are variable fonts, so each is one file whatever weights the page uses.
+ * next/font downloads the files at build time and serves them from the site
+ * itself, so no request goes to a third party at runtime. Licence: SIL Open
+ * Font License 1.1.
  *
- * Google Sans / Product Sans are proprietary and must never appear (§2).
+ * The five weights the site uses, as the company rule lists them.
+ *
+ * If Arabic is added later, pair it with IBM Plex Sans Arabic here.
  */
-
-/** Headings, body copy and UI labels. */
-export const sansFont = Manrope({
+export const sansFont = Plus_Jakarta_Sans({
   variable: "--font-algo-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
-/** Data inside product UI. Never section labels, never body copy. */
-export const monoFont = JetBrains_Mono({
-  variable: "--font-algo-mono",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-/** Convenience for the root layout — applies both variables in one place. */
-export const fontVariables = `${sansFont.variable} ${monoFont.variable}`;
+/** Convenience for the root layout — applies the variable in one place. */
+export const fontVariables = sansFont.variable;
