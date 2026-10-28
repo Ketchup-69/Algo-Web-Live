@@ -43,7 +43,7 @@ export function FormatWell({ maxScale, className }: { maxScale?: number; classNa
           <span
             aria-hidden="true"
             // The highlight stops 14.333px short of the rows, as drawn.
-            className="ui-selection absolute top-0 left-0 h-[calc(var(--u)*51.333)] w-[calc(var(--u)*429.333)] rounded-[calc(var(--u)*9.333)] bg-ui-select/8"
+            className="ui-selection absolute top-0 left-0 h-[calc(var(--u)*51.333)] w-[calc(var(--u)*429.333)] rounded-[calc(var(--u)*9.333)] bg-ui-select/12"
             style={{ transform: `translateY(calc(var(--u) * ${53.666 * selected}))` }}
           />
           {data.rows.map((row, index) => {
@@ -58,11 +58,11 @@ export function FormatWell({ maxScale, className }: { maxScale?: number; classNa
                 onFocus={() => setSelected(index)}
                 className="ui-press relative flex h-[calc(var(--u)*51.333)] w-full shrink-0 items-center gap-[calc(var(--u)*16.333)] px-21 text-left"
               >
-                <Icon name={ICONS[row.icon]} className={cn("size-24 transition-colors duration-150", on ? "text-ui-select" : "text-ui-faint")} />
+                <Icon name={ICONS[row.icon]} className={cn("size-24 transition-colors duration-150", on ? "text-ui-value" : "text-ui-faint")} />
                 <span
                   className={cn(
                     "fs-u-21 font-medium tracking-[-0.025em] transition-colors duration-150",
-                    on ? "text-ui-select" : "text-ui-meta",
+                    on ? "text-ui-value" : "text-ui-meta",
                   )}
                 >
                   {row.label}

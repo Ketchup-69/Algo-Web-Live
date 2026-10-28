@@ -110,7 +110,7 @@ export function StatementPanel({ maxScale = 1.4, className }: { maxScale?: numbe
             <div className="flex h-18 items-center justify-between whitespace-nowrap">
               <span className="font-data fs-u-12 font-bold text-ui-label">{data.matchedLabel}</span>
               <span className="flex items-center gap-4">
-                <span className="size-4 rounded-full bg-ui-cleared" />
+                <span className="size-4 rounded-full bg-ui-approved" />
                 <span className="font-data fs-u-9 font-medium text-ui-cleared">{data.clearedTemplate.replace("{n}", String(data.clearedCount + doneCount))}</span>
               </span>
             </div>
@@ -189,7 +189,7 @@ export function StatementPanel({ maxScale = 1.4, className }: { maxScale?: numbe
                     className={cn(
                       "ui-swap shrink-0 rounded-u-3 px-7 py-3 font-data fs-u-9 font-bold whitespace-nowrap",
                       done[index]
-                        ? "bg-ui-match-soft text-ui-match"
+                        ? "bg-ui-approved text-ui-on-good"
                         : row.tone === "variance"
                           ? "bg-ui-warn-badge/10 text-ui-warn-badge"
                           : "bg-ui-value/6 text-ui-label",

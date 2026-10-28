@@ -2,7 +2,7 @@
 :root,
 [data-theme="light"] {
   --algo-ui-slate: var(--algo-navy); /* the supplier name heading the statement */
-  --algo-ui-cleared: var(--algo-green-deep); /* cleared lines: the tick and the count · 4.76 */
+  --algo-ui-cleared: var(--algo-navy); /* cleared lines: the tick and the count. The green is the dot beside them */
   --algo-ui-warn-rule: var(--algo-navy); /* the short rule under the divider label */
 }
 @theme inline {

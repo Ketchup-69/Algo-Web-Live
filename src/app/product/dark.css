@@ -20,7 +20,6 @@ html[data-theme="dark"],
 html[data-theme="dark"] .stage {
   --ui-flag: var(--algo-white);
   --ui-on-flag: var(--algo-navy);
-  --ui-good: var(--algo-green);
   --ui-on-good: var(--algo-navy);
   --ui-action: var(--algo-cyan);
   --ui-on-action: var(--algo-navy);
@@ -29,7 +28,7 @@ html[data-theme="dark"] .stage {
   --ui-quiet: color-mix(in oklab, var(--algo-white) 66%, var(--algo-navy));
   --ui-rule: color-mix(in oklab, var(--algo-white) 46%, var(--algo-navy));
   --ui-sheet: color-mix(in oklab, var(--algo-white) 10%, var(--algo-navy));
-  --ui-pill-text: linear-gradient(90deg, var(--algo-cyan), color-mix(in oklab, var(--algo-violet) 82%, var(--algo-white)));
+  --ui-pill-text: linear-gradient(90deg, var(--algo-cyan), var(--algo-mint));
 
   /* statement */
   --algo-ui-slate: var(--algo-white);
@@ -59,8 +58,8 @@ html[data-theme="dark"] .stage {
     var(--algo-ui-well-bottom)
   );
   --algo-ui-card-line: color-mix(in srgb, var(--algo-white) 14%, transparent);
-  /* Violet itself is 4.15 on a raised navy card, so it is let up toward white. */
-  --algo-ui-code: color-mix(in oklab, var(--algo-violet) 82%, var(--algo-white)); /* 5.3 */
+  /* Violet is 4.15 on a raised navy card: enough for an icon, not for words. */
+  --algo-ui-code: var(--algo-white);
   --algo-ui-code-soft: color-mix(in srgb, var(--algo-violet) 18%, transparent);
   --algo-ui-amount-soft: color-mix(in srgb, var(--algo-green) 22%, transparent);
   --algo-ui-pill-line: color-mix(in srgb, var(--algo-white) 16%, transparent);
@@ -70,10 +69,9 @@ html[data-theme="dark"] .stage {
   --algo-ui-row-text: var(--algo-white);
   --algo-ui-hairline: color-mix(in srgb, var(--algo-white) 9%, transparent);
   --algo-ui-approved: var(--algo-green);
-  --algo-ui-approved-quiet: var(--algo-green);
+  --algo-ui-approved-quiet: color-mix(in oklab, var(--algo-white) 62%, var(--algo-navy));
   --algo-ui-flag-quiet: color-mix(in oklab, var(--algo-white) 62%, var(--algo-navy));
   --algo-ui-match: var(--algo-green);
-  --algo-ui-match-soft: color-mix(in srgb, var(--algo-green) 16%, transparent);
   --algo-ui-variance: var(--algo-white);
   --algo-ui-variance-soft: color-mix(in srgb, var(--algo-white) 9%, transparent);
   --algo-ui-warn-badge: var(--algo-white);

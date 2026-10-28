@@ -104,7 +104,7 @@ function VerificationCard({ card }: { card: Card }) {
               <span
                 className={cn(
                   "flex size-22 shrink-0 items-center justify-center rounded-u-11 transition-colors duration-200",
-                  open ? "bg-ui-flag text-ui-on-flag" : "bg-ui-match-soft text-ui-match",
+                  open ? "bg-ui-flag text-ui-on-flag" : "bg-ui-approved text-ui-on-good",
                 )}
               >
                 <Icon name={open ? "priority_high" : "check"} className="size-14" />
@@ -115,7 +115,7 @@ function VerificationCard({ card }: { card: Card }) {
               key={String(open)}
               className={cn(
                 "ui-swap rounded-u-6 px-10 py-4 fs-u-11 font-bold tracking-[0.0455em] whitespace-nowrap",
-                open ? "bg-ui-flag text-ui-on-flag" : "bg-ui-match-soft text-ui-match",
+                open ? "bg-ui-flag text-ui-on-flag" : "bg-ui-approved text-ui-on-good",
               )}
             >
               {row.variance && accepted ? data.accepted.tag : row.tag}

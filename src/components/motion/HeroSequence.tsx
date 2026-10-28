@@ -83,29 +83,37 @@ export function HeroSequence({ children }: { children: React.ReactNode }) {
         },
       });
 
-      /* ---- the rest of the sentence ---- */
-      tl.to("[data-hero-seq='cta']", {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          stagger: 0.06,
-          startAt: { y: travel.sm },
-        }, 0.32)
-        .to("[data-hero-seq='supporting']", { opacity: 1, duration: 0.4 }, 0.5);
+      /* ---- the rest of the sentence ----
+         Each part is optional (an inner page's hero has no visual and may
+         have no supporting line), so a tween is only added for what is
+         there: GSAP warns about every empty target. */
+      const has = (selector: string) => element.querySelector(selector) !== null;
+      if (has("[data-hero-seq='cta']")) {
+        tl.to(
+          "[data-hero-seq='cta']",
+          { opacity: 1, y: 0, duration: 0.5, stagger: 0.06, startAt: { y: travel.sm } },
+          0.32,
+        );
+      }
+      if (has("[data-hero-seq='supporting']")) {
+        tl.to("[data-hero-seq='supporting']", { opacity: 1, duration: 0.4 }, 0.5);
+      }
 
       /* ---- the product visual, arriving against the same clock ---- */
-      // The scatter comes up as one piece, then its ghost invoices settle in
-      // behind the front card, furthest first. The scan, the selection and
-      // the pill have their own life in the visual itself.
-      tl.to(
-        "[data-hero-seq='visual']",
-        { opacity: 1, y: 0, duration: 0.9, startAt: { y: travel.lg } },
-        0.2,
-      ).from(
-        "[data-hero-seq='visual'] [data-ghost]",
-        { opacity: 0, scale: 0.94, duration: 0.9, stagger: 0.05, ease: ease.out },
-        0.3,
-      );
+      if (has("[data-hero-seq='visual']")) {
+        tl.to(
+          "[data-hero-seq='visual']",
+          { opacity: 1, y: 0, duration: 0.9, startAt: { y: travel.lg } },
+          0.2,
+        );
+        if (has("[data-hero-seq='visual'] [data-ghost]")) {
+          tl.from(
+            "[data-hero-seq='visual'] [data-ghost]",
+            { opacity: 0, scale: 0.94, duration: 0.9, stagger: 0.05, ease: ease.out },
+            0.3,
+          );
+        }
+      }
 
       return () => {
         tl.kill();

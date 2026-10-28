@@ -17,7 +17,7 @@ export const statementPanel = {
   clearedCount: 56,
   clearedTemplate: "{n} CLEARED",
   tick: "✓",
-  pill: "+47 analyzed & matched",
+  pill: "+47 analysed & matched",
   /** The divider; `{n}` is how many exceptions are still open. */
   exceptionsTemplate: "{n} EXCEPTIONS",
   exceptionsNone: "NOTHING LEFT TO REVIEW",

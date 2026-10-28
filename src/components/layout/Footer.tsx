@@ -1,13 +1,15 @@
 import NextLink from "next/link";
-import { Button, Container, Link, Text } from "@/components/ui";
+import { Container, Link, Text } from "@/components/ui";
 import { site } from "@/content/site";
 import { Logo } from "./Logo";
 
+const footerLink =
+  "inline-flex min-h-11 items-center text-sm text-fg-muted transition-colors hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring";
+
 /**
- * The footer opens with the invitation, at the size of a section heading,
- * and then gets quiet: three columns of small type on a hairline, and the
- * legal line at the bottom. It is the last thing a reader sees, so it carries
- * the one call to action once more and nothing else that competes with it.
+ * Quiet on purpose: the closing band above it already carries the one call
+ * to action. The lockup, every page, the two addresses and the portal, and
+ * the legal line at the bottom.
  */
 export function Footer() {
   // Same rule as the JSON-LD in the layout: a profile exists once it has a URL.
@@ -16,57 +18,51 @@ export function Footer() {
   return (
     <footer className="bg-bg-subtle">
       <div aria-hidden="true" className="footer-rise" />
-      <Container width="wide" className="pt-8 pb-(--space-section-md)">
-        <div className="flex flex-col items-start gap-8 lg:flex-row lg:items-end lg:justify-between">
-          <p className="max-w-[16ch] font-display text-4xl font-semibold tracking-[-0.02em] text-fg text-balance sm:text-5xl">
-            {site.tagline}
-          </p>
-          <Button href={site.footerCta.href} size="lg">
-            {site.footerCta.label}
-          </Button>
-        </div>
-
-        <div className="mt-16 grid gap-12 border-t border-border pt-12 sm:grid-cols-2 lg:mt-20 lg:grid-cols-[minmax(0,1.2fr)_repeat(2,minmax(0,1fr))] lg:gap-16 lg:pt-14">
+      <Container width="wide" className="pt-16 pb-(--space-section-sm)">
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))] lg:gap-12">
           <div className="max-w-xs">
             <Logo withSubline gradientId="logo-gradient-footer" />
-            <Text tone="muted" size="sm" className="mt-3">
+            <Text tone="muted" size="sm" className="mt-5">
               {site.description}
             </Text>
           </div>
 
-          <div>
-            <h2 className="text-sm font-semibold text-fg">{site.ui.footerSections}</h2>
-            <ul className="mt-2 flex flex-col">
-              {site.footerNav.map((item) => (
-                <li key={item.href}>
-                  <NextLink
-                    href={item.href}
-                    className="inline-flex min-h-11 items-center text-sm text-fg-muted transition-colors hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                  >
-                    {item.label}
-                  </NextLink>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {site.footer.map((column) => (
+            <div key={column.heading}>
+              <h2 className="text-sm font-semibold text-fg">{column.heading}</h2>
+              <ul className="mt-2 flex flex-col">
+                {column.links.map((item) => (
+                  <li key={item.href}>
+                    <NextLink href={item.href} className={footerLink}>
+                      {item.label}
+                    </NextLink>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
 
           <div>
             <h2 className="text-sm font-semibold text-fg">{site.ui.footerContact}</h2>
-            {/* PLACEHOLDER: the address lines say "pending" until the owner
-                fills them in. Edit src/content/site.ts → site.contact */}
-            <address className="mt-2 flex flex-col items-start text-sm text-fg-muted not-italic">
-              {site.contact.placeholder
-                ? null
-                : site.contact.addressLines.map((line) => <span key={line}>{line}</span>)}
-              {site.contact.phone ? (
-                <Link href={`tel:${site.contact.phone.replace(/\s/g, "")}`} external className="inline-flex min-h-11 items-center">
-                  {site.contact.phone}
+            <ul className="mt-4 flex flex-col gap-4 text-sm">
+              <li>
+                <span className="block text-fg-muted">{site.ui.salesLabel}</span>
+                <Link href={`mailto:${site.email.sales}`} external className="inline-flex min-h-11 items-center">
+                  {site.email.sales}
                 </Link>
-              ) : null}
-              <Link href={`mailto:${site.contact.email}`} external className="inline-flex min-h-11 items-center">
-                {site.contact.email}
-              </Link>
-            </address>
+              </li>
+              <li>
+                <span className="block text-fg-muted">{site.ui.helpdeskLabel}</span>
+                <Link href={`mailto:${site.email.helpdesk}`} external className="inline-flex min-h-11 items-center">
+                  {site.email.helpdesk}
+                </Link>
+              </li>
+              <li>
+                <Link href={site.portal.href} external className="inline-flex min-h-11 items-center">
+                  {site.portal.label}
+                </Link>
+              </li>
+            </ul>
 
             {/* PLACEHOLDER: only profiles with a real URL render; the block is
                 absent until then. Edit src/content/site.ts → site.social */}
@@ -94,19 +90,13 @@ export function Footer() {
           <ul className="flex flex-wrap gap-x-6">
             {site.legalNav.map((item) => (
               <li key={item.href}>
-                <NextLink
-                  href={item.href}
-                  className="inline-flex min-h-11 items-center text-sm text-fg-muted transition-colors hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                >
+                <NextLink href={item.href} className={footerLink}>
                   {item.label}
                 </NextLink>
               </li>
             ))}
             <li>
-              <a
-                href="#top"
-                className="inline-flex min-h-11 items-center text-sm text-fg-muted transition-colors hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-              >
+              <a href="#top" className={footerLink}>
                 {site.ui.backToTop}
               </a>
             </li>

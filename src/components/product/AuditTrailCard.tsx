@@ -14,8 +14,8 @@ type Filter = (typeof data.filters)[number]["id"];
 /** The approval is the one a person made, so it is the one in colour. */
 const TAG: Record<Kind, string> = {
   input: "bg-ui-value/6 text-ui-label",
-  decision: "bg-ui-code-soft text-ui-code",
-  approval: "bg-ui-match-soft text-ui-match",
+  decision: "bg-ui-ai text-ui-on-ai",
+  approval: "bg-ui-approved text-ui-on-good",
   output: "bg-ui-value/6 text-ui-label",
 };
 

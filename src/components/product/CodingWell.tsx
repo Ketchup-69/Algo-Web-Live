@@ -24,11 +24,11 @@ export function CodingWell({ maxScale, className }: { maxScale?: number; classNa
         <div className="flex flex-col gap-8">
           {data.lines.map((line) => (
             <div key={line.code} className="flex items-center gap-10 rounded-u-10 bg-ui-code-soft px-16 py-14">
-              <Icon name="check_circle" className="size-20 text-ui-code" />
+              <Icon name="check_circle" className="size-20 text-ui-ai" />
               <span className="min-w-0 flex-1 fs-u-16 font-semibold tracking-[-0.025em] text-ui-code">
                 {line.category}
               </span>
-              <Icon name="arrow_forward" className="size-16 text-ui-code" />
+              <Icon name="arrow_forward" className="size-16 text-ui-ai" />
               <span className="font-data fs-u-13 font-medium whitespace-nowrap text-ui-code">{line.code}</span>
             </div>
           ))}

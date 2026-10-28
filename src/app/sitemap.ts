@@ -1,25 +1,27 @@
 import type { MetadataRoute } from "next";
-import { site } from "@/content/site";
-import { getAllPosts } from "@/lib/posts";
+import { routes, site } from "@/content/site";
+import { productList } from "@/content/products";
 
 /** Static export: emitted once at build time as /sitemap.xml. */
 export const dynamic = "force-static";
 
+/**
+ * Every page in the approved page map. The legal placeholders and the stubs
+ * at the live site's old addresses are noindex, so they are left out.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = site.url.replace(/\/$/, "");
-  // Placeholder posts are noindex, like the legal placeholders, so they
-  // stay out of the sitemap and do not seed anyone's lastmod.
-  const posts = getAllPosts().filter((post) => !post.placeholder);
-  const newest = posts[0]?.date ? new Date(posts[0].date) : new Date();
-
-  return [
-    { url: `${base}/`, lastModified: newest, changeFrequency: "monthly", priority: 1 },
-    { url: `${base}/blog/`, lastModified: newest, changeFrequency: "weekly", priority: 0.7 },
-    ...posts.map((post) => ({
-      url: `${base}/blog/${post.slug}/`,
-      lastModified: post.date ? new Date(post.date) : newest,
-      changeFrequency: "yearly" as const,
-      priority: 0.6,
-    })),
+  const pages: { path: string; priority: number }[] = [
+    { path: routes.home, priority: 1 },
+    { path: routes.platform, priority: 0.9 },
+    ...productList.map((product) => ({ path: `/products/${product.slug}/`, priority: 0.9 })),
+    { path: routes.security, priority: 0.8 },
+    { path: routes.about, priority: 0.7 },
+    { path: routes.contact, priority: 0.7 },
   ];
+  return pages.map((page) => ({
+    url: `${base}${page.path}`,
+    changeFrequency: "monthly" as const,
+    priority: page.priority,
+  }));
 }

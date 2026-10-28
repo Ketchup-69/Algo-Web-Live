@@ -7,17 +7,16 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: `${site.name}: ${site.tagline}`,
-    template: `%s | ${site.name}`,
+    default: `${site.name} AI Platform`,
+    template: `%s | ${site.name} AI Platform`,
   },
-  // PLACEHOLDER: description comes from src/content/site.ts once approved
-  description: site.description || undefined,
+  description: site.description,
   // The ORIGIN only. Next prefixes basePath onto the social-card path itself,
   // so a metadataBase that already carried "/algo-web" doubled it up in the
   // deployed og:image URL.
   ...(site.url ? { metadataBase: new URL(new URL(site.url).origin) } : {}),
   openGraph: {
-    title: site.name,
+    title: `${site.name} AI Platform`,
     description: site.description,
     siteName: site.name,
     type: "website",
@@ -25,7 +24,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: site.name,
+    title: `${site.name} AI Platform`,
     description: site.description,
   },
   // DEMO BUILD (28 Oct 2026): the GitHub Pages demo must never be indexed, or
@@ -48,7 +47,7 @@ function jsonLd() {
     name: site.name,
     url: site.url,
     description: site.description,
-    email: site.contactEmail,
+    email: site.email.sales,
     ...(sameAs.length ? { sameAs } : {}),
   };
   const website = {

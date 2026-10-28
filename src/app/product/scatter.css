@@ -5,7 +5,7 @@
   --algo-ui-doc-ink: var(--algo-navy); /* names and line items printed on the front invoice */
   --algo-ui-faint: var(--algo-n-label); /* the invoice's date and field labels · 5.30 */
   --algo-ui-halftone: color-mix(in oklab, var(--algo-cyan) 16%, var(--algo-white)); /* the dots of the ground */
-  --algo-ui-select: var(--algo-cyan-deep); /* a choice the reader makes: outline, label */
+  --algo-ui-select: var(--algo-cyan); /* a choice the reader makes: tint and outline, never text */
 }
 @theme inline {
   --color-ui-scan: var(--algo-ui-scan);

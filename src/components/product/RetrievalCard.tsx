@@ -48,7 +48,7 @@ export function RetrievalCard({ maxScale = 1.4, className }: { maxScale?: number
                 {...hooks(part.cite)}
                 className={cn(
                   "mx-2 inline-flex h-12 min-w-12 items-center justify-center rounded-u-3 px-3 align-middle font-data fs-u-8 font-bold transition-colors duration-150",
-                  lit === part.cite ? "bg-ui-code text-surface" : "bg-ui-code-soft text-ui-code",
+                  lit === part.cite ? "bg-ui-ai text-ui-on-ai" : "bg-ui-code-soft text-ui-code",
                 )}
               >
                 {part.cite}
@@ -72,7 +72,7 @@ export function RetrievalCard({ maxScale = 1.4, className }: { maxScale?: number
                 {...hooks(n)}
                 className={cn(
                   "-mx-6 flex h-28 items-center justify-between rounded-u-4 px-6 text-left transition-colors duration-150",
-                  lit === n && "bg-ui-code/8",
+                  lit === n && "bg-ui-ai/8",
                 )}
               >
                 <span className="flex items-center gap-8">

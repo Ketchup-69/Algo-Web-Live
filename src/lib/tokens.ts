@@ -119,16 +119,13 @@ export type PaletteName = keyof typeof palette;
 
 const p = palette;
 
-/** The neutrals and deep hues of tier 1, mixed exactly as globals.css mixes them. */
+/** The neutrals of tier 1: navy let down into white, exactly as globals.css mixes them. */
 export const derived = {
   "n-page": mix(p.navy, p.white, 3),
   "n-line": mix(p.navy, p.white, 11),
   "n-strong": mix(p.navy, p.white, 46),
   "n-label": mix(p.navy, p.white, 58),
   "n-support": mix(p.navy, p.white, 71),
-  "cyan-deep": mix(p.cyan, p.navy, 58),
-  "green-deep": mix(p.green, p.navy, 67),
-  "violet-deep": mix(p.violet, p.navy, 75),
 } as const;
 
 const d = derived;
@@ -149,7 +146,7 @@ export const lightAliases = {
   "fg-muted": d["n-support"],
   border: over(p.navy, 0.11, p.white),
   "border-strong": d["n-strong"],
-  accent: d["cyan-deep"],
+  accent: p.navy,
   "accent-soft": mix(p.cyan, p.white, 10),
   "accent-contrast": p.navy,
   success: p.green,
@@ -301,14 +298,11 @@ export const productPairs: Record<"light" | "dark", ProductPair[]> = {
     { label: "ui-label on card", fg: over(p.navy, 0.64, lightCard), ground: lightCard, floor: 4.5 },
     { label: "ui-quiet / meta / faint on card", fg: d["n-label"], ground: lightCard, floor: 4.5 },
     { label: "ui-rule icon on card", fg: d["n-strong"], ground: lightCard, floor: 3 },
-    { label: "matched text on card", fg: d["green-deep"], ground: lightCard, floor: 4.5 },
-    { label: "matched text on match-soft", fg: d["green-deep"], ground: mix(p.green, p.white, 12), floor: 4.5 },
-    { label: "coded text on card", fg: d["violet-deep"], ground: lightCard, floor: 4.5 },
-    { label: "coded text on code-soft", fg: d["violet-deep"], ground: mix(p.violet, p.white, 9), floor: 4.5 },
-    { label: "white on lit citation", fg: p.white, ground: d["violet-deep"], floor: 4.5 },
-    { label: "selected text on selection", fg: d["cyan-deep"], ground: over(d["cyan-deep"], 0.08, lightCard), floor: 4.5 },
-    { label: "agent pill text, cyan end", fg: d["cyan-deep"], ground: lightCard, floor: 4.5 },
-    { label: "agent pill text, violet end", fg: d["violet-deep"], ground: lightCard, floor: 4.5 },
+    { label: "coded text on violet tint", fg: p.navy, ground: mix(p.violet, p.white, 6), floor: 4.5 },
+    { label: "violet icon on card", fg: p.violet, ground: lightCard, floor: 3 },
+    { label: "violet icon on violet tint", fg: p.violet, ground: mix(p.violet, p.white, 6), floor: 3 },
+    { label: "navy on violet chip", fg: p.navy, ground: p.violet, floor: 4.5 },
+    { label: "navy on cyan selection tint", fg: p.navy, ground: over(p.cyan, 0.12, lightCard), floor: 4.5 },
     { label: "variance text on variance-soft", fg: p.navy, ground: mix(p.navy, p.white, 6), floor: 4.5 },
     { label: "white on attention badge", fg: p.white, ground: p.navy, floor: 4.5 },
     { label: "navy on approved fill", fg: p.navy, ground: p.green, floor: 4.5 },
@@ -320,14 +314,12 @@ export const productPairs: Record<"light" | "dark", ProductPair[]> = {
     { label: "ui-label on raised", fg: over(p.white, 0.62, darkRaised), ground: darkRaised, floor: 4.5 },
     { label: "ui-quiet / meta / faint on raised", fg: mix(p.white, p.navy, 62), ground: darkRaised, floor: 4.5 },
     { label: "ui-rule icon on card", fg: mix(p.white, p.navy, 46), ground: darkCard, floor: 3 },
-    { label: "matched text on raised", fg: p.green, ground: darkRaised, floor: 4.5 },
-    { label: "matched text on match-soft", fg: p.green, ground: over(p.green, 0.16, darkCard), floor: 4.5 },
-    { label: "coded text on raised", fg: mix(p.violet, p.white, 82), ground: darkRaised, floor: 4.5 },
-    { label: "coded text on code-soft", fg: mix(p.violet, p.white, 82), ground: over(p.violet, 0.18, darkCard), floor: 4.5 },
-    { label: "card colour on lit citation", fg: darkCard, ground: mix(p.violet, p.white, 82), floor: 4.5 },
-    { label: "selected text on raised", fg: p.cyan, ground: darkRaised, floor: 4.5 },
+    { label: "matched text (green) on raised", fg: p.green, ground: darkRaised, floor: 4.5 },
+    { label: "coded text on violet tint", fg: p.white, ground: over(p.violet, 0.18, darkCard), floor: 4.5 },
+    { label: "violet icon on card", fg: p.violet, ground: darkCard, floor: 3 },
+    { label: "navy on violet chip", fg: p.navy, ground: p.violet, floor: 4.5 },
     { label: "agent pill text, cyan end", fg: p.cyan, ground: darkRaised, floor: 4.5 },
-    { label: "agent pill text, violet end", fg: mix(p.violet, p.white, 82), ground: darkRaised, floor: 4.5 },
+    { label: "agent pill text, mint end", fg: p.mint, ground: darkRaised, floor: 4.5 },
     { label: "navy on attention badge", fg: p.navy, ground: p.white, floor: 4.5 },
     { label: "navy on approved fill", fg: p.navy, ground: p.green, floor: 4.5 },
     { label: "navy on action button", fg: p.navy, ground: p.cyan, floor: 4.5 },

@@ -1,16 +1,13 @@
-import type { Metadata } from "next";
 import { Container, Heading, Lede, Section } from "@/components/ui";
-import { legalPages } from "@/content/sections";
+import { legalPages } from "@/content/legal";
+import { pageMetadata } from "@/lib/metadata";
 
 const page = legalPages.privacy;
 
-export const metadata: Metadata = {
-  title: page.title,
-  // Placeholder pages should not be indexed while they say nothing.
-  robots: { index: false, follow: true },
-};
+// Placeholder pages should not be indexed while they say nothing.
+export const metadata = pageMetadata(page.meta, { index: false });
 
-/** PLACEHOLDER: edit src/content/sections.ts → legalPages.privacy */
+/** PLACEHOLDER: edit src/content/legal.ts → legalPages.privacy (draft in Phase 4) */
 export default function PrivacyPage() {
   return (
     <main id="main" className="flex-1">

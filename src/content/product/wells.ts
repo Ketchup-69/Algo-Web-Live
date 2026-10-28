@@ -31,25 +31,15 @@ export const codingWell = {
 } as const;
 
 export const systemsWell = {
-  alt: "Illustration of property-management, ERP and accounting systems fading downward, with a confirmation reading Posted, GL updated.",
+  alt: "Illustration of the systems an agent works with, shown as generic tiles for ERP, property management, accounting and payments, with procurement, CRM, documents, data, cloud and custom APIs further back, and a confirmation reading Posted, GL updated.",
+  /**
+   * Generic system categories, never product names (CLAUDE.md §2). Nearest
+   * row first; each row further back is smaller and fainter.
+   */
+  rows: [
+    ["ERP", "PMS", "Accounting", "Payments"],
+    ["Procurement", "CRM", "Documents"],
+    ["Data", "Cloud", "Custom APIs"],
+  ],
   posted: "Posted · GL updated",
 } as const;
-
-/**
- * PLACEHOLDER (28 Oct 2026): third-party logo files removed before the repo went public.
- * Replace this visual with generic system tiles (ERP, PMS, Accounting) - see CLAUDE.md §2.
- */
-export const vendorLogos = [
-  { name: "PMS A", src: "" },
-  { name: "PMS B", src: "" },
-  { name: "ERP A", src: "" },
-  { name: "ERP F", src: "" },
-  { name: "ERP E", src: "" },
-  { name: "Accounting B", src: "" },
-  { name: "Accounting C", src: "" },
-  { name: "Accounting D", src: "" },
-  { name: "Accounting A", src: "" },
-  { name: "ERP B", src: "" },
-  { name: "ERP C", src: "" },
-  { name: "ERP D", src: "" },
-] as const;

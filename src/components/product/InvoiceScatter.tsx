@@ -301,7 +301,7 @@ const NEXT: Record<Phase, { to: Phase; after: number }> = {
 };
 
 const TONE = {
-  code: { sub: "text-ui-code", tag: "bg-ui-match-soft text-ui-match" },
+  code: { sub: "text-ui-code", tag: "bg-ui-approved text-ui-on-good" },
   flag: { sub: "text-ui-variance", tag: "bg-ui-flag text-ui-on-flag" },
 } as const;
 
@@ -318,7 +318,7 @@ function ResolvedRow({ line, inset }: { line: Line; inset: string }) {
       <span className={cn("hero-b absolute -inset-x-14 rounded-u-8", inset, line.flag ? "bg-ui-variance-soft" : "bg-ui-code-soft")} />
       <Icon
         name={line.flag ? "error" : "check_circle"}
-        className={cn("hero-b absolute top-1/2 left-0 size-26 -translate-y-1/2", line.flag ? "text-ui-variance" : "text-ui-code")}
+        className={cn("hero-b absolute top-1/2 left-0 size-26 -translate-y-1/2", line.flag ? "text-ui-variance" : "text-ui-ai")}
       />
       <span
         className={cn(
@@ -327,7 +327,7 @@ function ResolvedRow({ line, inset }: { line: Line; inset: string }) {
         )}
       >
         {/* A reason is not a destination, so it carries no arrow. */}
-        {line.flag ? null : <Icon name="arrow_forward" className="size-16" />}
+        {line.flag ? null : <Icon name="arrow_forward" className="size-16 text-ui-ai" />}
         {line.code}
       </span>
     </>
@@ -509,7 +509,7 @@ export function InvoiceScatter({ maxScale = 0.62, className }: { maxScale?: numb
                     className="stroke-ui-select"
                   />
                 </svg>
-                <span className={cn(figure, "relative font-semibold text-ui-select")}>{first?.amount}</span>
+                <span className={cn(figure, "relative font-semibold text-ui-value")}>{first?.amount}</span>
               </span>
             </div>
 

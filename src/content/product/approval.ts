@@ -9,7 +9,7 @@
 export const approvalCard = {
   /** What a screen reader hears in place of the whole card. */
   alt: "Try it: an approval card for an invoice flagged for review because one line exceeds the contracted rate, with the matching evidence listed and Approve, Reject and Query supplier actions.",
-  pill: "Summarized invoice",
+  pill: "Summarised invoice",
   status: "Flagged for review",
   reference: "INV-2024-0947 · Northgate Linen Services",
   summaryLabel: "SUMMARY",

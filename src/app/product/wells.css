@@ -4,8 +4,8 @@
   --algo-ui-well-bottom: color-mix(in oklab, var(--algo-navy) 17%, var(--algo-white)); /* what the well's ground falls to */
   --algo-ui-well-wash: color-mix(in oklab, var(--algo-navy) 12%, var(--algo-white)); /* the veil the grid fades into */
   --algo-ui-card-line: var(--algo-n-line); /* the floating cards' edge, drawn at 50–60% */
-  --algo-ui-code: var(--algo-violet-deep); /* what the agent coded: category and code · 4.7 */
-  --algo-ui-code-soft: color-mix(in oklab, var(--algo-violet) 9%, var(--algo-white)); /* the pill behind a coded line */
+  --algo-ui-code: var(--algo-navy); /* what the agent coded: category and code. Violet is the tint and the icon */
+  --algo-ui-code-soft: color-mix(in oklab, var(--algo-violet) 6%, var(--algo-white)); /* the pill behind a coded line: light enough for a violet icon on it */
   --algo-ui-amount-soft: color-mix(in oklab, var(--algo-green) 14%, var(--algo-white)); /* the tag behind the invoice amount */
   --algo-ui-pill-line: color-mix(in oklab, var(--algo-navy) 16%, var(--algo-white)); /* the posted pill's edge */
 

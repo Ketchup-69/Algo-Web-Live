@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Button, Container, Heading, Section, Text } from "@/components/ui";
-import { notFound } from "@/content/sections";
+import { notFound } from "@/content/legal";
 
 export const metadata: Metadata = {
   title: notFound.title,
