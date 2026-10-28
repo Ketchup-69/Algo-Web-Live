@@ -4,8 +4,8 @@
  * same four choices. No phone number (owner decision, 28 Oct 2026).
  * Source: docs/live-site-content.md, PAGE /contact.
  *
- * PLACEHOLDER: the CRM form embed replaces this form in Phase 4 (CLAUDE.md §7).
- * Until then the form composes an email; it stays as the fallback after.
+ * The form itself is the CRM's embedded form (`contactEmbed` below). The
+ * two addresses beside it stay on the page as the fallback (§7).
  */
 
 import type { Item, PageMeta, SectionCopy } from "./types";
@@ -16,6 +16,28 @@ export const contactMeta: PageMeta = {
   description:
     "Contact Algomotive about enterprise AI agents, governed workflows, intelligent products, implementation and customer support.",
 };
+
+/**
+ * The embedded CRM form, exactly as the CRM's embed code gives it. Portal and
+ * form IDs are public by design (CLAUDE.md §2). The form's fields, styling,
+ * reCAPTCHA, thank-you message and notifications are set in the CRM, not here.
+ */
+export const contactEmbed = {
+  scriptSrc: "https://js-eu1.hsforms.net/forms/embed/149413164.js",
+  region: "eu1",
+  portalId: "149413164",
+  formId: "21d2fbac-14c3-47f7-a9f8-037ce191a309",
+  /** Read by screen readers while the form loads. */
+  loading: "Loading the contact form.",
+  /**
+   * Shown if the form cannot load: the script is blocked, or the network
+   * fails. `{sales}` and `{helpdesk}` become the two addresses, as links.
+   */
+  failed: {
+    title: "The form could not load.",
+    body: "Email {sales} about a new opportunity, or {helpdesk} for help with an existing environment.",
+  },
+} as const;
 
 export type RequestType = "opportunity" | "product" | "resource" | "support";
 
