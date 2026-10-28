@@ -28,7 +28,7 @@ export default function ContactPage() {
               </Text>
             </div>
 
-            <HubSpotContactForm className="lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:justify-self-end" />
+            <HubSpotContactForm className="lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-start lg:justify-self-end" />
 
             <div className="lg:col-start-1 lg:row-start-2">
               <h2 className="font-display text-xl font-semibold text-balance text-fg">{channels.heading}</h2>

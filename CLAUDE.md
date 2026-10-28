@@ -11,6 +11,7 @@ The plan, in order:
 4. Work through `WEBSITE-CHECKLIST.md`.
 5. When the Sales Director approves, the repo is deleted from GitHub, a zip goes to the Sales Director, and the CEO and the in-house developer take over hosting on the real domain. Leave the code clean enough for them to pick up cold.
 The repo is PUBLIC (free GitHub plan). Treat every commit as published to the world.
+Current status, owner decisions and open items: `docs/progress.md`. Read it after this file. All work goes to `main` (owner decision, 28 Oct 2026).
 ---
 1. What this is
 A marketing site for Algomotive, a UAE company that builds and deploys AI agents for enterprise finance and operations teams. Products: AlgoPO (procurement and accounts payable), AlgoCash (receivables and DSO), AlgoPay (payments), AlgoCapital AI (finance and capital), and Custom AI Solutions. The agents sit on top of the systems a company already runs, read from them, prepare the work, and wait for a human to approve before anything is recorded.
