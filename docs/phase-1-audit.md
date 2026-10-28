@@ -115,8 +115,9 @@ Nav: Platform, Products (a menu of the four products plus Custom AI Solutions), 
 
 ---
 
-## 4. Needed from the owner before Phase 2
+## 4. Owner decisions, 28 Oct 2026
 
-1. Approve or change the page map (§3).
-2. The official logo pack as SVG (mark and wordmark). The favicon, header logo and social card all need it. Only the old blue mark is in the repo.
-3. Decide C1 (approve every action, or exceptions only) and C2 (read-only). These shape every page's copy.
+- **C1, C2:** follow the live site exactly. People review exceptions and sensitive or high-impact decisions; clean items go straight through. No read-only claim. Recorded in `CLAUDE.md` §1.
+- **C4:** dropped. No self-hosted inference, no data-tier routing (`DataTiersCard` goes), no seven and thirty-day forecasts.
+- **Page map:** approved as one site under one link. The redirect pages are invisible stubs in the same build and the same zip.
+- **Logo pack:** supplied, stored in `docs/brand/logo-pack/` (SVGs only; the PNGs listed in its README were not supplied).

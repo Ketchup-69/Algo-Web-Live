@@ -80,4 +80,4 @@ Verified 28 Oct 2026: none of these exist in the repo. All `n/a`.
 | D1 Floating contact button | Decided 28 Oct 2026: no |
 | D2 Announcement banner | Thin bar at the top (for example a launch or event note): yes or no, and the text |
 | D3 Phone number | Decided 28 Oct 2026: no phone number on the site. Do not use "800 ALGOMOTIVE" (unconfirmed). Email only |
-| D4 Page map | Phase 1 proposes it, owner approves. Proposal: `docs/phase-1-audit.md` §3 |
+| D4 Page map | Approved 28 Oct 2026: nine pages, one site, one link. See `docs/phase-1-audit.md` §3 |

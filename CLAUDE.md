@@ -19,6 +19,7 @@ Credibility. A CFO or finance director looks Algomotive up after a call or an em
 Inbound. Findable in search and in AI-assistant answers, and interesting enough that a cold visitor scrolls the whole thing.
 Audience: CFOs, financial controllers, finance managers and IT directors at multi-entity operations in the UAE and GCC: hotel groups, restaurant chains, food distribution, retail, and any company running several entities on one finance team.
 Tone: precise, calm, technically literate, zero hype. They are impressed by "read-only, human sign-off, full audit trail", never by "revolutionary".
+Owner decision, 28 Oct 2026: on approvals and system access, follow the live site exactly. People review exceptions and sensitive or high-impact decisions (human authority when required); clean items can go straight through. Never claim read-only access. Where the two sentences above say otherwise, this line wins.
 ---
 2. Hard rules — never break these
 Algomotive is the only brand name that appears anywhere. No other vendor, platform, partner or parent company is named or shown: not in copy, alt text, metadata, code comments or commit messages. This includes ERP and software vendor names and logos. The vendor logo files were removed on 28 Oct 2026; the integrations list is switched off (`showSystems: false`) and the systems visual in "How it works" is a PLACEHOLDER until it is redrawn with generic system tiles (ERP, PMS, Accounting, Payments).
