@@ -27,8 +27,8 @@ Owner, in the CRM:
 - The "Create your own free forms" badge is the free plan's; it goes once the paid plan includes branding removal. It cannot be hidden from the site's side.
 
 Owner, legal pages:
-- The CEO signs off both drafts. Before that, fill every `[bracket]` and clear every "To be confirmed" note (`grep -n "PLACEHOLDER\|toConfirm" src/content/privacy.ts src/content/terms.ts`). Biggest open question: is the company licensed on the UAE mainland or in DIFC or ADGM? Those free zones have their own data-protection law, and the privacy notice and the terms' governing law change with it.
-- Also needed: registered name, licence number and address; a privacy contact address; retention period; response time; transfer basis; the form's exact fields.
+- The CEO signs off both drafts. Before that, fill every `[bracket]` and clear every "To be confirmed" note (`grep -n "PLACEHOLDER\|toConfirm" src/content/privacy.ts src/content/terms.ts`). Owner confirmed 28 Oct 2026: mainland (so the federal PDPL applies), registered name Algomotive Global Technologies - L.L.C - S.P.C, trade licence CN-4452938, retention 12 months.
+- Still needed: registered address; the emirate that issued the licence (sets the terms' governing law and courts); a privacy contact address; response time; transfer basis; the form's exact fields.
 - On approval: delete the `draft` block and set `updated` in each file. The page then drops its draft notice, becomes indexable and joins the sitemap on its own. CI checks for the draft notice, so remove that check in `.github/workflows/ci.yml` at the same time.
 
 Owner, cookies:

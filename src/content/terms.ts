@@ -27,10 +27,10 @@ export const termsOfUse: LegalDoc = {
       id: "who-we-are",
       heading: "Who we are",
       blocks: [
-        // PLACEHOLDER: the company's registered name, licence number and registered address
-        "This website is run by Algomotive [registered company name, licence number and registered address]. In these terms, “we” and “us” mean Algomotive.",
+        // PLACEHOLDER: the registered address, as on the trade licence
+        "This website is run by Algomotive Global Technologies - L.L.C - S.P.C, a company licensed in the United Arab Emirates (trade licence CN-4452938), [registered address]. In these terms, “we” and “us” mean Algomotive.",
       ],
-      toConfirm: "The registered company name, licence number and address.",
+      toConfirm: "The registered address, as it appears on the trade licence.",
     },
     {
       id: "information",
@@ -101,10 +101,10 @@ export const termsOfUse: LegalDoc = {
       heading: "Governing law",
       blocks: [
         // PLACEHOLDER: the governing law and the courts, set by legal counsel
-        "These terms are governed by [the laws of the United Arab Emirates as applied in the Emirate of …]. The courts of [the emirate or free zone] have exclusive jurisdiction over any dispute about them.",
+        "These terms are governed by the laws of the United Arab Emirates as applied in the Emirate of [emirate that issued the trade licence]. The courts of [that emirate] have exclusive jurisdiction over any dispute about them.",
       ],
       toConfirm:
-        "Legal counsel to set the governing law and the courts. Both follow from where the company is licensed: the UAE mainland, DIFC or ADGM.",
+        "Legal counsel to confirm the governing law and the courts. The company is licensed on the mainland, so both follow the emirate that issued the trade licence.",
     },
     {
       id: "changes",

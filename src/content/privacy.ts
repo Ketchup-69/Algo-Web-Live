@@ -37,11 +37,11 @@ export const privacyNotice: LegalDoc = {
       id: "who-we-are",
       heading: "Who we are",
       blocks: [
-        // PLACEHOLDER: the company's registered name, licence number and registered address
-        "This website is run by Algomotive [registered company name, licence number and registered address]. In this notice, “we” and “us” mean Algomotive.",
+        // PLACEHOLDER: the registered address, as on the trade licence
+        "This website is run by Algomotive Global Technologies - L.L.C - S.P.C, a company licensed in the United Arab Emirates (trade licence CN-4452938), [registered address]. In this notice, “we” and “us” mean Algomotive.",
       ],
       toConfirm:
-        "The registered company name, licence number and address. Also whether the company is licensed on the UAE mainland or in a free zone with its own data-protection law (DIFC or ADGM). In a free zone, this notice must follow that law instead of the federal one.",
+        "The registered address, as it appears on the trade licence.",
     },
     {
       id: "scope",
@@ -86,7 +86,7 @@ export const privacyNotice: LegalDoc = {
         "We use the details in your enquiry because you asked us to reply, and to take the steps you ask for before any agreement with us. Where the law requires your consent, we will ask for it before we collect the data.",
       ],
       toConfirm:
-        "Legal counsel to confirm the lawful basis for each use under the law that applies (see “Who we are”), and whether the spam check needs consent.",
+        "Legal counsel to confirm the lawful basis for each use under the UAE PDPL, and whether the spam check needs consent.",
     },
     {
       id: "who-receives-it",
@@ -148,10 +148,9 @@ export const privacyNotice: LegalDoc = {
       id: "retention",
       heading: "How long we keep it",
       blocks: [
-        // PLACEHOLDER: the retention period for form submissions and correspondence
-        "We keep enquiries and our correspondence about them for [retention period], or longer only where the law requires it. Then we delete them.",
+        "We keep enquiries and our correspondence about them for 12 months after our last contact with you, or longer only where the law requires it. Then we delete them.",
       ],
-      toConfirm: "Set the retention period, and how old enquiries are deleted from the CRM.",
+      toConfirm: "Set up how enquiries older than 12 months are deleted from the CRM, and who checks that it happens.",
     },
     {
       id: "security",
@@ -182,7 +181,7 @@ export const privacyNotice: LegalDoc = {
         frameworks.disclaimer,
       ],
       toConfirm:
-        "Legal counsel to confirm the rights wording and the response time. Choose the privacy contact address (a dedicated address is usual). In a free zone with its own law, the rights and the authority change.",
+        "Legal counsel to confirm the rights wording and the response time. Choose the privacy contact address (a dedicated address is usual).",
     },
     {
       id: "children",
