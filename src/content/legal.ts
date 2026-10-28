@@ -1,24 +1,16 @@
 /**
- * The pages that are not part of the story: legal, not found, and the stubs
- * left at the live site's old addresses.
+ * The pages that are not part of the story: the words the legal pages share,
+ * not found, and the stubs left at the live site's old addresses. The privacy
+ * notice and the terms themselves are in `privacy.ts` and `terms.ts`.
  */
 
-import type { Cta, PageMeta } from "./types";
+import type { Cta } from "./types";
 import { routes } from "./site";
 
-export const legalPages = {
-  privacy: {
-    meta: { title: "Privacy", description: "How Algomotive handles personal information." } as PageMeta,
-    title: "Privacy",
-    // PLACEHOLDER: the reviewed privacy policy (draft in Phase 4, the CEO approves before launch)
-    note: "This page is a placeholder. The privacy policy is pending review and will be published before launch.",
-  },
-  terms: {
-    meta: { title: "Terms", description: "The terms of use for this website." } as PageMeta,
-    title: "Terms",
-    // PLACEHOLDER: the reviewed terms of use (draft in Phase 4, the CEO approves before launch)
-    note: "This page is a placeholder. The terms of use are pending review and will be published before launch.",
-  },
+/** Labels the legal pages share. */
+export const legalUi = {
+  /** On each note that lists what is still open in a draft section. */
+  toConfirm: "To be confirmed",
 } as const;
 
 export const notFound = {
@@ -31,13 +23,14 @@ export const notFound = {
  * Pages the live site has that this one folds into others (approved page map,
  * 28 Oct 2026). Each old address gets a small page that sends the visitor on,
  * so links and search results pointing at the live site keep working once
- * this site replaces it. `to` is a route on this site.
+ * this site replaces it. `to` is a route on this site. The live /resources
+ * page goes to the blog, which carries its copy.
  */
 export const movedPages = [
   { slug: "ai-agents", name: "AI agents", to: routes.agents },
   { slug: "products", name: "our products", to: routes.products },
   { slug: "solutions", name: "industry solutions", to: routes.industries },
-  { slug: "resources", name: "resources", to: routes.contact },
+  { slug: "resources", name: "resources", to: routes.blog },
 ] as const;
 
 export const moved = {

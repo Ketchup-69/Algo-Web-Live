@@ -38,6 +38,12 @@ jobs:
           # The single switch between user.github.io/Algo-Web-Live and a custom
           # domain. Blank this out (and add a CNAME) to move to an apex domain.
           NEXT_PUBLIC_BASE_PATH: /Algo-Web-Live
+          # Blog posts are read from the CRM at build time (src/lib/posts.ts).
+          # Until the repository secret and variable are set, both are empty
+          # and the blog shows its "published only after review and approval"
+          # line. A new post goes live on the next deploy: run this by hand.
+          BLOG_API_TOKEN: ${{ secrets.BLOG_API_TOKEN }}
+          BLOG_ID: ${{ vars.BLOG_ID }}
         run: npm run build
 
       - name: Ensure .nojekyll

@@ -9,3 +9,5 @@ export { CtaBand } from "./CtaBand";
 export { PageHero } from "./PageHero";
 export { Figure } from "./Figure";
 export { MovedPage, movedMetadata } from "./MovedPage";
+export { LegalDocument } from "./LegalDocument";
+export { RichText } from "./RichText";

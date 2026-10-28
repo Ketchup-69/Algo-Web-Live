@@ -42,7 +42,7 @@ jobs:
           test -f out/index.html || { echo "missing out/index.html"; exit 1; }
           # Every page in the approved page map, and the stubs at the live
           # site's old addresses.
-          for page in platform products/algopo products/algocash products/algopay products/algocapital-ai security about contact ai-agents products solutions resources; do
+          for page in platform products/algopo products/algocash products/algopay products/algocapital-ai security about contact blog privacy terms ai-agents products solutions resources; do
             test -f "out/$page/index.html" || { echo "missing out/$page/index.html"; exit 1; }
           done
           test -f out/sitemap.xml || { echo "missing sitemap.xml"; exit 1; }
@@ -51,6 +51,10 @@ jobs:
           test -f out/.nojekyll || { echo "missing .nojekyll — Pages will drop _next/"; exit 1; }
           # Every string must be in the static HTML at load (CLAUDE.md §5).
           grep -q "Your Business, Engineered to Think." out/index.html || { echo "hero copy missing from static HTML"; exit 1; }
+          # The legal pages stay marked as drafts until the CEO approves them.
+          for page in privacy terms; do
+            grep -q "Draft, not yet approved" "out/$page/index.html" || { echo "$page lost its draft notice"; exit 1; }
+          done
           # The only brand name on the site is Algomotive (§2): no Google Sans.
           if grep -rqi "google sans\|product sans" out/_next/static; then echo "proprietary font reference found"; exit 1; fi
 

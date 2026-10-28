@@ -46,3 +46,36 @@ export type HeroCopy = {
 
 /** The navy band that closes every page. */
 export type ClosingCopy = { heading: string; primary: Cta; secondary?: Cta };
+
+/**
+ * One block of a legal page. A string is a paragraph. Inside any text,
+ * `[label](href)` becomes a link; square brackets without an address stay as
+ * they are, which is how a draft marks a gap ("[retention period]").
+ */
+export type LegalBlock =
+  | string
+  | { list: string[] }
+  | { table: { caption: string; head: string[]; rows: string[][] } };
+
+export type LegalSection = {
+  id: string;
+  heading: string;
+  blocks: LegalBlock[];
+  /**
+   * While the page is a draft: what has to be confirmed before this section
+   * can be approved. Shown on the page, marked, so the reviewer sees it.
+   */
+  toConfirm?: string;
+};
+
+/** A privacy notice or terms page: a draft until it is approved. */
+export type LegalDoc = {
+  meta: PageMeta;
+  title: string;
+  /** The draft notice at the top. Remove it once the page is approved. */
+  draft?: { label: string; body: string };
+  /** ISO date, `YYYY-MM-DD`, with the words shown before it. */
+  updated: { label: string; date: string };
+  intro: string[];
+  sections: LegalSection[];
+};

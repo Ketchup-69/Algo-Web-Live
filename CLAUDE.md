@@ -24,6 +24,7 @@ Owner decision, 28 Oct 2026: on approvals and system access, follow the live sit
 ---
 2. Hard rules — never break these
 Algomotive is the only brand name that appears anywhere. No other vendor, platform, partner or parent company is named or shown: not in copy, alt text, metadata, code comments or commit messages. This includes ERP and software vendor names and logos. The vendor logo files were removed on 28 Oct 2026; the integrations list is switched off (`showSystems: false`) and the systems visual in "How it works" is a PLACEHOLDER until it is redrawn with generic system tiles (ERP, PMS, Accounting, Payments).
+The one exception (owner decision, 28 Oct 2026): the privacy notice (`/privacy`, copy in `src/content/privacy.ts`) names HubSpot and Google reCAPTCHA as the processors behind the contact form, with links to their privacy terms, because privacy law requires processors to be named. Nowhere else: not in other pages' copy, alt text, metadata or commit messages, and no other vendor on the privacy page either (the hosting and email providers stay unnamed).
 No customer names, client names or client logos.
 No pricing. No numbers, tiers or "starting from". The next step is always a conversation.
 No testimonials, case studies or performance metrics presented as real. Sample amounts inside product illustrations are fine only if the illustration is clearly a sample.
