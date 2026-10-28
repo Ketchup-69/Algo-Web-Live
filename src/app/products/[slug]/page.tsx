@@ -4,6 +4,12 @@ import { Block, CtaBand, ItemGrid, Note, PageHero, RelatedLinks, Steps, TermList
 import { Container, Heading, Section } from "@/components/ui";
 import { PointerTracker } from "@/components/motion";
 import { AlgoPOChecks, AlgoPOWells } from "@/components/sections/AlgoPOVisuals";
+import {
+  AlgoCapitalWorkflowVisual,
+  AlgoCashWorkflowVisual,
+  AlgoPayWorkflowVisual,
+  AlgoPOHeroVisual,
+} from "@/components/sections/DashboardVisuals";
 import { productList, type ProductSlug } from "@/content/products";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -23,16 +29,18 @@ export async function generateMetadata({ params }: PageProps<"/products/[slug]">
 }
 
 /**
- * The drawings each product has. AlgoPO has the brand file's full set; the
- * other three have none yet and read as text.
- * PLACEHOLDER: product illustrations for AlgoCash, AlgoPay and AlgoCapital AI
- * (to be drawn from the brand file with the product-visual agent).
+ * The drawings each product has: the brand file's set on AlgoPO, and one
+ * drawing in the product dashboard's language on each page.
  */
-const VISUALS: Partial<Record<ProductSlug, { workflow?: ReactNode; checks?: ReactNode }>> = {
+const VISUALS: Record<ProductSlug, { hero?: ReactNode; workflow?: ReactNode; checks?: ReactNode }> = {
   algopo: {
+    hero: <AlgoPOHeroVisual />,
     workflow: <AlgoPOWells />,
     checks: <AlgoPOChecks />,
   },
+  algopay: { workflow: <AlgoPayWorkflowVisual /> },
+  algocash: { workflow: <AlgoCashWorkflowVisual /> },
+  "algocapital-ai": { workflow: <AlgoCapitalWorkflowVisual /> },
 };
 
 /**
@@ -44,12 +52,12 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
   const { slug } = await params;
   const product = find(slug);
   if (!product) notFound();
-  const visuals = VISUALS[product.slug] ?? {};
+  const visuals = VISUALS[product.slug];
 
   return (
     <main id="main" className="flex-1">
       <PointerTracker />
-      <PageHero copy={product.hero} />
+      <PageHero copy={product.hero} visual={visuals.hero} />
 
       <Block copy={product.workflow}>
         {visuals.workflow ? <div className="mb-20">{visuals.workflow}</div> : null}

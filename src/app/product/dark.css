@@ -78,6 +78,11 @@ html[data-theme="dark"] .stage {
   --algo-ui-meta: color-mix(in oklab, var(--algo-white) 66%, var(--algo-navy));
   --ui-row-tint: color-mix(in srgb, var(--algo-white) 6%, transparent);
   --ui-total-tint: color-mix(in srgb, var(--algo-white) 5%, transparent);
+
+  /* dashboard visuals */
+  --algo-ui-wait-soft: color-mix(in srgb, var(--algo-cyan) 20%, transparent);
+  --algo-ui-ai-soft: color-mix(in srgb, var(--algo-violet) 22%, transparent);
+  --algo-ui-step-todo: color-mix(in srgb, var(--algo-white) 14%, transparent);
 }
 
 /* The Stage's own ground. Three steps up from the page: the card, then the

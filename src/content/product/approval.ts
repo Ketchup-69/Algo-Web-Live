@@ -11,17 +11,17 @@ export const approvalCard = {
   alt: "Try it: an approval card for an invoice flagged for review because one line exceeds the contracted rate, with the matching evidence listed and Approve, Reject and Query supplier actions.",
   pill: "Summarised invoice",
   status: "Flagged for review",
-  reference: "INV-2024-0947 · Northgate Linen Services",
+  reference: "INV-2026-0947, Northgate Linen Services",
   summaryLabel: "SUMMARY",
   summary: [
-    "The AED 3,400 line from Northgate Linen exceeds the contracted rate of AED 3,100.",
+    "The AED 3,486.40 line from Northgate Linen exceeds the contracted rate of AED 3,182.60.",
     "Everything else on this invoice matched.",
   ],
   evidence: [
-    { label: "LPO-8821", value: "14 of 14 lines", flagged: false },
-    { label: "Goods receipt", value: "received 15 Nov", flagged: false },
-    { label: "Vendor history", value: "38 invoices · 0 disputes", flagged: false },
-    { label: "Contracted rate", value: "3,400 billed · 3,100 agreed", flagged: true },
+    { label: "LPO-8821", value: "2 of 2 lines", flagged: false },
+    { label: "Goods receipt", value: "received 15 Oct", flagged: false },
+    { label: "Vendor history", value: "38 invoices, 0 disputes", flagged: false },
+    { label: "Contracted rate", value: "3,486.40 billed, 3,182.60 agreed", flagged: true },
   ],
   actions: { approve: "Approve", reject: "Reject", query: "Query supplier" },
   /**
@@ -29,8 +29,8 @@ export const approvalCard = {
    * the same control again takes the decision back.
    */
   outcomes: {
-    approve: { status: "Approved", pill: "Approved · logged to the audit trail" },
-    reject: { status: "Rejected", pill: "Returned to the supplier · logged" },
+    approve: { status: "Approved", pill: "Approved and logged to the audit trail" },
+    reject: { status: "Rejected", pill: "Returned to the supplier and logged" },
     query: { status: "Query sent", pill: "Drafting the query to the supplier..." },
   },
 } as const;

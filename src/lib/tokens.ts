@@ -307,6 +307,12 @@ export const productPairs: Record<"light" | "dark", ProductPair[]> = {
     { label: "white on attention badge", fg: p.white, ground: p.navy, floor: 4.5 },
     { label: "navy on approved fill", fg: p.navy, ground: p.green, floor: 4.5 },
     { label: "navy on action button", fg: p.navy, ground: p.cyan, floor: 4.5 },
+    // The dashboard visuals (src/app/product/dashboard.css).
+    { label: "chip text on wait-soft", fg: p.navy, ground: mix(p.cyan, p.white, 14), floor: 4.5 },
+    { label: "chip and note text on ai-soft", fg: p.navy, ground: mix(p.violet, p.white, 11), floor: 4.5 },
+    { label: "chip text on good-soft", fg: p.navy, ground: mix(p.green, p.white, 14), floor: 4.5 },
+    { label: "ui-quiet on row tint", fg: d["n-label"], ground: over(p.navy, 0.05, lightCard), floor: 4.5 },
+    { label: "ui-quiet on table band", fg: d["n-label"], ground: d["n-page"], floor: 4.5 },
   ],
   dark: [
     { label: "ui-value on card", fg: p.white, ground: darkCard, floor: 4.5 },
@@ -323,6 +329,12 @@ export const productPairs: Record<"light" | "dark", ProductPair[]> = {
     { label: "navy on attention badge", fg: p.navy, ground: p.white, floor: 4.5 },
     { label: "navy on approved fill", fg: p.navy, ground: p.green, floor: 4.5 },
     { label: "navy on action button", fg: p.navy, ground: p.cyan, floor: 4.5 },
+    // The dashboard visuals (src/app/product/dashboard.css).
+    { label: "chip text on wait-soft", fg: p.white, ground: over(p.cyan, 0.2, darkCard), floor: 4.5 },
+    { label: "chip and note text on ai-soft", fg: p.white, ground: over(p.violet, 0.22, darkCard), floor: 4.5 },
+    { label: "chip text on good-soft", fg: p.white, ground: over(p.green, 0.22, darkCard), floor: 4.5 },
+    { label: "ui-quiet on row tint", fg: mix(p.white, p.navy, 66), ground: over(p.white, 0.06, darkCard), floor: 4.5 },
+    { label: "ui-quiet on table band", fg: mix(p.white, p.navy, 66), ground: mix(p.white, p.navy, 4), floor: 4.5 },
   ],
 };
 

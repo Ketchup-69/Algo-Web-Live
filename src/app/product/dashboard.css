@@ -1,0 +1,16 @@
+/* Product-UI tokens for the dashboard visuals (purchase requests, invoice
+   checks, collections, cash timing). Imported by globals.css; dark values in
+   dark.css. Status chips are tints with navy words: cyan while a person has
+   the item, violet for what the agent did, green when it is done, and the
+   navy "needs attention" fill from the --ui-flag pair. */
+:root,
+[data-theme="light"] {
+  --algo-ui-wait-soft: color-mix(in oklab, var(--algo-cyan) 14%, var(--algo-white)); /* chip: waiting for a person */
+  --algo-ui-ai-soft: color-mix(in oklab, var(--algo-violet) 11%, var(--algo-white)); /* chip and note: the agent did it */
+  --algo-ui-step-todo: var(--algo-n-line); /* a step or bar not reached yet */
+}
+@theme inline {
+  --color-ui-wait-soft: var(--algo-ui-wait-soft);
+  --color-ui-ai-soft: var(--algo-ui-ai-soft);
+  --color-ui-step-todo: var(--algo-ui-step-todo);
+}

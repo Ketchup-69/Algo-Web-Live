@@ -98,7 +98,6 @@ From `grep -rn "PLACEHOLDER" src content`, 28 Oct 2026:
 | `src/content/site.ts:90` | `site.url`: the real domain |
 | `src/content/site.ts:147` and `src/components/layout/Footer.tsx:67` | LinkedIn and other public profiles, once confirmed |
 | `src/content/site.ts:151` | Footer legal line: brand or registered name (owner decision) |
-| `src/app/products/[slug]/page.tsx:28` | Illustrations for AlgoCash, AlgoPay and AlgoCapital AI |
 | `src/content/privacy.ts:26`, `src/content/terms.ts:16` | Remove the draft notice on approval |
 | `src/content/privacy.ts:40`, `src/content/terms.ts:30` | Registered address, as on the trade licence |
 | `src/content/terms.ts:103` | Governing law and courts (the emirate that issued the licence) |

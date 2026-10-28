@@ -62,6 +62,13 @@ The hero invoice has a second state (`hero-a` / `hero-b` in `motion.css`):
 after the band reads it, the same card gains its GL codes. That is also the
 site's, extrapolated from the brand file's coding card.
 
+**Drawn from the product dashboard (28 Oct 2026).** `PurchaseRequests`,
+`InvoiceChecks`, `CollectionsList` and `CashTiming` follow screenshots of the
+product dashboard (or, for the last two, its language where it has no such
+screen), measured by eye. They share `Dash.tsx` (chips, agent note, check
+marks, step bars), data in `src/content/product/dashboard.ts`, tokens in
+`src/app/product/dashboard.css`. Each has a stacked Stage at 340 for phones.
+
 `ExceptionsPanel.tsx` (`1:17818`, 378) and `AgentPill.tsx` follow the same
 pattern. `ApprovalCard.tsx` is the reference implementation: copy its
 conventions.

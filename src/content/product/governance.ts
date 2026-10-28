@@ -9,10 +9,10 @@ export const retrievalCard = {
   pill: "Answered from 3 records",
   roleLabel: "ACTING AS",
   role: "AP CLERK ROLE",
-  question: "Why is INV-2024-0947 on hold?",
+  question: "Why is INV-2026-0947 on hold?",
   /** The answer, in order. A `cite` is the 1-based number of a source below. */
   answer: [
-    { text: "The Linen & Laundry line was billed at AED 3,400 against a contracted AED 3,100" },
+    { text: "The Linen & Laundry line was billed at AED 3,486.40 against a contracted AED 3,182.60" },
     { cite: 1 },
     { text: ". The goods receipt" },
     { cite: 2 },
@@ -22,9 +22,9 @@ export const retrievalCard = {
   ],
   sourcesLabel: "SOURCES",
   sources: [
-    { title: "Supplier contract", detail: "rate schedule · line 4" },
-    { title: "Goods receipt", detail: "received 15 Nov" },
-    { title: "LPO-8821", detail: "14 of 14 lines" },
+    { title: "Supplier contract", detail: "rate schedule, line 4" },
+    { title: "Goods receipt", detail: "received 15 Oct" },
+    { title: "LPO-8821", detail: "2 of 2 lines" },
   ],
   locked: { title: "Payroll ledger", tag: "NOT VISIBLE TO THIS ROLE" },
 } as const;
@@ -33,7 +33,7 @@ export const auditTrailCard = {
   alt: "Try it: the audit trail for one invoice. Four entries, one each for the input, the decision, the approval and the output, each with its time. The list can be filtered by kind.",
   pill: "Every step logged",
   title: "AUDIT TRAIL",
-  reference: "INV-2024-0947",
+  reference: "INV-2026-0947",
   /**
    * The kinds are the four words the page copy uses for this point: "every
    * input, decision, approval and output is logged". Keep them in step.

@@ -567,3 +567,23 @@ export const algopoVisuals = {
     },
   ],
 } as const;
+
+/**
+ * Captions for the dashboard illustrations in the workflow sections of the
+ * other three product pages. Each is the live page's own workflow step for
+ * the moment the drawing shows.
+ */
+export const productFigures = {
+  algopay: {
+    title: "Prepare authorisation",
+    body: "Assemble the payment summary, supporting evidence, validation results, exceptions, required approvals and proposed next action.",
+  },
+  algocash: {
+    title: "Coordinate follow-up",
+    body: "Prepare the approved account context, outstanding items, supporting evidence, next action, ownership and follow-up sequence.",
+  },
+  "algocapital-ai": {
+    title: "Surface risk signals",
+    body: "Highlight approved indicators such as liquidity pressure, forecast differences, concentration, timing gaps and working-capital movement.",
+  },
+} as const;

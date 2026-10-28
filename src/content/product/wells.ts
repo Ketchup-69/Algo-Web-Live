@@ -20,13 +20,13 @@ export const formatWell = {
 } as const;
 
 export const codingWell = {
-  alt: "Illustration of an auto-coded invoice for AED 3,750: Linen & Laundry coded to 6210-HK and Pool Chemicals coded to 6240-ENG.",
-  supplier: "Harlow Linen Supply",
+  alt: "Illustration of an auto-coded invoice for AED 4,299.15: Linen & Laundry coded to 6210-HK and F&B Supplies coded to 6120-FB.",
+  supplier: "Northgate Linen Services",
   status: "Auto-coded",
-  amount: "AED 3,750",
+  amount: "AED 4,299.15",
   lines: [
     { category: "Linen & Laundry", code: "6210-HK" },
-    { category: "Pool Chemicals", code: "6240-ENG" },
+    { category: "F&B Supplies", code: "6120-FB" },
   ],
 } as const;
 
@@ -41,5 +41,5 @@ export const systemsWell = {
     ["Procurement", "CRM", "Documents"],
     ["Data", "Cloud", "Custom APIs"],
   ],
-  posted: "Posted · GL updated",
+  posted: "Posted, GL updated",
 } as const;

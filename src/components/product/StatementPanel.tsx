@@ -221,7 +221,7 @@ export function StatementPanel({ maxScale = 1.4, className }: { maxScale?: numbe
             className="ui-menu absolute top-0 left-1271 flex w-[calc(var(--u)*349.84)] flex-col overflow-clip rounded-[calc(var(--u)*12.957)] [outline:calc(var(--u)*1.62)_solid_var(--border)] [outline-offset:calc(var(--u)*-1.62)] bg-bg py-[calc(var(--u)*9.718)] shadow-[0_calc(var(--u)*19.436)_calc(var(--u)*45.35)_0_rgb(3_21_34/0.14)]"
           >
             <div className="flex h-[calc(var(--u)*35.632)] items-center px-[calc(var(--u)*16.196)]">
-              <span className="font-data [font-size:calc(var(--u)*13.767)] font-medium text-ui-label">{target ? `${target.document} · ${target.tag}` : data.menu.heading}</span>
+              <span className="font-data [font-size:calc(var(--u)*13.767)] font-medium text-ui-label">{target ? `${target.document}, ${target.tag}` : data.menu.heading}</span>
             </div>
             <div className="h-[calc(var(--u)*14.577)] px-[calc(var(--u)*12.957)] py-[calc(var(--u)*6.479)]">
               <div className="h-[calc(var(--u)*1.62)] bg-border" />

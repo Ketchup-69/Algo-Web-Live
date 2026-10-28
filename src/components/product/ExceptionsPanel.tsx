@@ -25,7 +25,7 @@ export function ExceptionsPanel({ maxScale = 1.4, className }: { maxScale?: numb
     });
   const held = data.rows.reduce((sum, row) => (released.has(row.kind) ? sum : sum + row.value), 0);
   const paid = data.rows.reduce((sum, row) => (released.has(row.kind) ? sum + row.value : sum), 0);
-  const money = (value: number) => `${data.currency} ${value.toLocaleString("en-US")}`;
+  const money = (value: number) => `${data.currency} ${value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   // Second state: the run has been sent. The lines lock, the footer says what
   // happened, and the only thing left to do is go back and edit it.
   const [submitted, setSubmitted] = useState(false);

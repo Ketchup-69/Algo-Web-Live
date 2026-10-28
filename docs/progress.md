@@ -11,6 +11,9 @@ Last updated 28 Oct 2026. Read this after `CLAUDE.md` when picking the work up i
 
 ## Owner decisions to keep
 
+- Products and sample data (28 Oct 2026, recorded in `CLAUDE.md` §1): AlgoPay = accounts payable, AlgoPO = purchase requests to POs, AlgoCash = receivables, AlgoCapital AI = DSO, but the copy keeps the live site's definitions. Sample names invented and checked, amounts with fils that add up, Oct to Nov 2026 dates, no performance-claim numbers, no product chrome.
+- From 28 Oct 2026 the owner wants work built and pushed straight to `main`, without mocks or approval rounds; report when done.
+
 - Copy follows the live site exactly, including on approvals: people review exceptions and high-impact decisions; never claim read-only access (`CLAUDE.md` §1).
 - Brand colours only. No derived darker shades: on white, text and links are navy; green, cyan and violet appear as fills with navy labels, icons, or text on navy. Neutrals are navy mixed with white.
 - No phone number, no floating contact button.
@@ -47,7 +50,7 @@ Phase 5 (sweep and handover):
 - Sweep done 28 Oct 2026 (checklist A28, A30). Layout clean at every width. Fixed: the form falls back to the two addresses when its frame loads but the form never draws; the hero paragraph shows from the first frame (owner decision); clickable illustrations are static pictures below 640px, so phones get no tiny tap targets (owner decision). Mobile performance now 93 to 98 on every page measured. Faint sample text inside illustrations keeps accessibility at 96 on home and AlgoPO (owner decision: keep, WCAG exempts text in pictures). Still to do: PageSpeed Insights on the live demo's home and contact pages.
 - Name scan: `docs/reference-site-patterns.md` names a competitor; `docs/product-visuals/README.md` and `.claude/agents/product-visual.md` name the design tool and carry a private file key; code comments name the icon set's maker. Clear before the handover zip.
 - Write `HANDOVER.md` (`CLAUDE.md` §10). Run Lighthouse on the export.
-- Illustrations for AlgoCash, AlgoPay and AlgoCapital AI are still to be drawn.
+- Product illustrations done 28 Oct 2026: one drawing in the product dashboard's language on each product page (`src/components/product/` PurchaseRequests, InvoiceChecks, CollectionsList, CashTiming; parts in `Dash.tsx`; data in `src/content/product/dashboard.ts`; tokens in `src/app/product/dashboard.css`). AlgoPO hero: purchase requests (one interaction, Check workbook). AlgoPay workflow: invoice checks (one interaction, the decision). AlgoCash and AlgoCapital AI workflow: collections worklist and cash timing, static; the dashboard has no such screens, so these are the site's own (owner approved). The existing visuals were audited: dates moved to Oct 2026, one invoice story (INV-2026-0947, Northgate Linen Services) across hero, wells, statement, approval, retrieval and audit trail, uneven amounts with fils, three risky names replaced, the "+47" pill and the counts that did not add up fixed, middle-dot strings replaced.
 
 ## Testing note
 
