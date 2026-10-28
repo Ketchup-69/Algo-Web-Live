@@ -21,7 +21,7 @@ Last updated 28 Oct 2026. Read this after `CLAUDE.md` when picking the work up i
 
 Owner, in the CRM:
 - Add the demo domain (`ketchup-69.github.io`), and later the real domain, as an additional site domain in the tracking-code settings, so submissions stop being filed as "Unregistered site domain" spam. Release the test submission from spam.
-- In the form's Style tab, set the submit button to the brand cyan (#38BDF8) with navy text (#031522); it is still the default orange.
+- Form styling (button colour) is paywalled on the free plan. On day one of the paid plan, set the submit button to the brand cyan (#38BDF8) with navy text (#031522) in the form's Style tab; until then it stays the default orange. It cannot be restyled from the site's side.
 - The "Create your own free forms" badge is the free plan's; it goes once the paid plan includes branding removal. It cannot be hidden from the site's side.
 
 Phase 4 (build):
