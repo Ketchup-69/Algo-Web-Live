@@ -1,0 +1,1295 @@
+@import "tailwindcss";
+@import "./product/statement.css";
+@import "./product/scatter.css";
+@import "./product/wells.css";
+@import "./product/verification.css";
+@import "./product/dark.css";
+@import "./product/motion.css";
+
+/* ==========================================================================
+   ALGOMOTIVE TOKEN SYSTEM
+
+   Four tiers, strictly ordered. A component may only ever touch tier 3+.
+
+     1. Raw palette      — the exact brand hexes. Never edited, never
+                           referenced from a component.
+     2. Semantic aliases — what components actually consume. Light lives in
+                           `:root`; dark remaps ONLY these aliases.
+     3. Gradient tier    — derived surfaces, remapped per theme.
+     4. @theme inline    — exposes 2 and 3 to Tailwind so `bg-surface`,
+                           `text-fg-muted`, `border-border-strong` generate.
+
+   CONTRAST
+   The raw palette is the brand file's, and not all of it clears WCAG AA on
+   screen (brand grey is 3.06 on the tinted band, bright blue is 3.16). Rather
+   than invent new brand shades, every AA-critical alias is derived with
+   `color-mix(in oklab, ...)` from two approved palette tokens.
+   No new hex literal exists in this file below tier 1. The comment beside each
+   derived alias is the computed result and its worst-case ratio, so the values
+   can be eyeballed without running the browser.
+
+   `scripts/check-contrast.mts` re-derives this whole matrix and fails the
+   build on any AA regression. Change a percentage here and that script is the
+   thing that tells you if you broke it.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   TIER 1 — RAW PALETTE (CLAUDE.md §4 — taken from the brand file, exact)
+   -------------------------------------------------------------------------- */
+:root {
+  --algo-ink: #0c0a08;
+  --algo-night: #0a0e1a;
+  --algo-blue-deep: #004aad;
+  --algo-blue-mid: #236dff;
+  --algo-blue: #2c82fe;
+  --algo-sky: #72a9e9;
+  --algo-paper: #fffdf9;
+  --algo-card: #fcfbf9;
+  --algo-muted: #888888;
+  --algo-success: #48ba86;
+  --algo-warning: #f0ae3c;
+  --algo-danger: #e76c54;
+
+  /* Product UI, as drawn in the brand file. */
+  --algo-flag: #bf360c;
+  --algo-flag-tint: #ffd6c9;
+  --algo-rule: #9b9ca0;
+  --algo-white: #ffffff;
+  --algo-dot-1: #0d3399;
+  --algo-dot-2: #3373e5;
+  --algo-dot-3: #4d8cf2;
+  --algo-dot-4: #66a6ff;
+  --algo-dot-5: #80bfff;
+}
+
+/* --------------------------------------------------------------------------
+   TIER 2 — SEMANTIC ALIASES · LIGHT (default)
+
+   Ratios quoted are the MINIMUM across every light background a token can
+   legitimately land on: paper, card, bg-subtle and accent-soft.
+
+   Also matches `[data-theme="light"]`, so a subtree can hold the light theme
+   inside a dark page. The product visuals do: they are replicas of the brand
+   file's drawings, which exist in light only, so they stay light the way a
+   screenshot of a product would.
+   -------------------------------------------------------------------------- */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* Ground. The brand has one warm paper and one card white; the two tinted
+     bands are the bright blue let down into paper, not new shades. */
+  --bg: var(--algo-paper);
+  --bg-subtle: color-mix(in oklab, var(--algo-blue) 6%, var(--algo-paper)); /* #f3f6fa */
+  --surface: var(--algo-card);
+  /* Light mode elevates with shadow, not tint. */
+  --surface-raised: var(--algo-card);
+
+  /* Text. The brand grey is 3.06 on the tinted band, so secondary text is
+     that grey pulled toward ink until it clears AA everywhere. */
+  --fg: var(--algo-ink); /* min 17+ */
+  --fg-muted: color-mix(in oklab, var(--algo-muted) 70%, var(--algo-ink)); /* #5f5e5d · min 5.58 */
+
+  /* Lines. `--border` is the brand hairline — night at 8%, as alpha so it
+     sits correctly on any ground. Decorative only. Anything that is a real UI
+     boundary (inputs, button outlines) uses `--border-strong` to clear the
+     3:1 non-text floor in WCAG 1.4.11. */
+  --border: color-mix(in srgb, var(--algo-night) 8%, transparent);
+  --border-strong: var(--algo-muted); /* #888888 · min 3.06 */
+
+  /* Accent. Deep blue carries text and a paper label at AA on every ground,
+     so links, focus rings and the primary CTA are all the brand colour. The
+     bright blue is 3.16 at worst: large display type and decoration only. */
+  --accent: var(--algo-blue-deep); /* min 7.01 */
+  --accent-soft: color-mix(in oklab, var(--algo-blue) 12%, var(--algo-paper)); /* #e6effc */
+  --accent-contrast: var(--algo-paper); /* label on the primary CTA · min 6.29 */
+
+  /* Status colours are FILLS carrying an ink label, never coloured text.
+     Identical in both themes. scripts/check-contrast.mts asserts it. */
+  --success: var(--algo-success); /* ink label 8.13 */
+  --warning: var(--algo-warning); /* ink label 10.19 */
+  --danger: var(--algo-danger); /* ink label 6.28 */
+  --status-contrast: var(--algo-ink);
+
+  /* Focus rings are always solid, never gradient. */
+  --ring: var(--accent);
+
+  /* Product UI. Used only inside a <Stage>, which is always light. The
+     flag is coloured TEXT on its own tint (5.0), unlike the site's status
+     fills: that is how the brand file draws it. */
+  --ui-flag: var(--algo-flag);
+  --ui-flag-soft: var(--algo-flag-tint);
+  --ui-value: var(--algo-night);
+  --ui-label: color-mix(in srgb, var(--algo-night) 40%, transparent);
+  --ui-quiet: var(--algo-muted);
+  --ui-rule: var(--algo-rule);
+  --ui-pill-text: linear-gradient(90deg, var(--algo-blue-mid), var(--algo-sky));
+
+  /* The logo. The two facets of the mark are fixed; the wordmark is deep blue
+     on paper and paper on the dark ground, as in the brand file. */
+  --logo-facet-deep: var(--algo-blue-deep);
+  --logo-facet-bright: var(--algo-blue);
+  --logo-wordmark: var(--algo-blue-deep);
+
+  /* TIER 3 — GRADIENTS · LIGHT
+     Text sitting on a gradient must clear AA at the gradient's WORST stop. */
+  --grad-primary: linear-gradient(
+    150deg,
+    var(--algo-blue-deep) 0%,
+    color-mix(in oklab, var(--algo-blue) 30%, var(--algo-blue-deep)) 100%
+  ); /* paper label · worst 6.29 */
+  --grad-surface: linear-gradient(180deg, var(--algo-card) 0%, var(--bg-subtle) 100%);
+  --grad-accent-soft: linear-gradient(160deg, var(--accent-soft) 0%, var(--algo-paper) 100%);
+  --grad-hairline: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--algo-blue-deep) 20%,
+    var(--algo-blue) 50%,
+    var(--algo-sky) 80%,
+    transparent 100%
+  ); /* decorative only — never a focus ring, never an input border */
+  /* The headline gradient from the brand file: saturated on the left, opening
+     up to the right. The print version ends on sky, which is 2.3 on paper;
+     on screen it ends on the bright blue so every stop clears 3:1, the floor
+     for large text. Display sizes only — see `text-grad-brand`. */
+  --grad-text: linear-gradient(
+    90deg,
+    var(--algo-blue-deep) 0%,
+    var(--algo-blue-mid) 22%,
+    var(--algo-blue) 50%,
+    var(--algo-blue-mid) 78%,
+    var(--algo-blue-deep) 100%
+  ); /* worst stop 3.16. Mirrored: the type shows half of it at a time, and
+        the bright middle is what follows the pointer. */
+
+  /* The wash. Three lights per field; on paper they are tints, kept light
+     enough that secondary text still clears AA where one reaches it. */
+  --gf-a: color-mix(in srgb, var(--algo-sky) 34%, transparent);
+  --gf-b: color-mix(in srgb, var(--algo-blue) 14%, transparent);
+  --gf-c: color-mix(in srgb, var(--algo-blue-mid) 10%, transparent);
+
+  /* What the closing band rises out of. Declared here, not in the band, so
+     the band can still see the page ground after it remaps `--bg`. */
+  /* The page ground's own lights: fainter than a section's, because body
+     copy sits on them everywhere. Worst case (two overlapping) leaves
+     secondary text at 4.7. */
+  --pw-a: color-mix(in srgb, var(--algo-sky) 26%, transparent);
+  --pw-b: color-mix(in srgb, var(--algo-blue) 10%, transparent);
+  --pw-c: color-mix(in srgb, var(--algo-blue-mid) 8%, transparent);
+
+  --band-rise-1: var(--algo-sky);
+  --band-rise-2: var(--algo-blue);
+  --band-cloud: color-mix(in srgb, var(--algo-paper) 46%, transparent);
+  --grad-glow: radial-gradient(
+    70% 55% at 50% 0%,
+    color-mix(in srgb, var(--algo-blue) 14%, transparent) 0%,
+    transparent 70%
+  );
+
+  /* Diagram strokes and beams. Decorative lines, so 3:1 is the bar. */
+  --flow-1: var(--algo-blue-deep);
+  --flow-2: var(--algo-blue-mid);
+  --flow-3: var(--algo-blue);
+  --flow-warn: color-mix(in oklab, var(--algo-warning) 55%, var(--algo-ink));
+  --pulse: var(--accent);
+
+  /* Elevation. `--shadow-card` is the brand card: one long soft shadow in
+     night, plus a white glow inside the edge that reads as a lit rim. */
+  --shadow-raised: 0 1px 2px -1px rgb(10 14 26 / 0.08), 0 4px 16px -4px rgb(10 14 26 / 0.1);
+  --shadow-card: 0 20px 48px 0 rgb(10 14 26 / 0.14), inset 0 0 20px 8px rgb(255 255 255 / 0.9);
+  --shadow-overlay: 0 8px 40px -8px rgb(10 14 26 / 0.18);
+  /* The brand's filled control: a short drop and a one-pixel bevel, lit from
+     the top left. Same in both themes. */
+  --shadow-control:
+    0 6px 16px -6px rgb(0 0 0 / 0.1), inset -1px -1px 2px 0 rgb(0 0 0 / 0.15),
+    inset 1px 1px 2px 0 rgb(255 255 255 / 0.2);
+
+  /* Two radii for the whole site: panels and controls. */
+  --radius-card: 0.875rem;
+  --radius-control: 0.625rem;
+
+  /* Body measure — CLAUDE.md §4 wants line length under 75 characters. */
+  --measure: 68ch;
+
+  /* MOTION. Two curves for the whole site. Built-in keywords are too weak
+     to read as deliberate: `--ease-out` for anything entering, leaving or
+     answering the user; `--ease-in-out` for something already on screen that
+     moves. Never `ease-in` — it spends its first frames doing nothing, which
+     is exactly when the user is watching. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+
+  /* LAYOUT. One fluid gutter for the whole site — the header, every section
+     and the footer share it, so there is exactly one left edge. Three section
+     rhythms, all fluid, all on the 8px grid at their ends: the page should
+     breathe more as the screen gets larger, not just get wider. Spacing inside
+     a section stays on Tailwind's 4px scale: 16/24 within a group, 48/64
+     between groups. */
+  --gutter: clamp(1.25rem, 5vw, 5rem);
+  --space-section-sm: clamp(3rem, 6vw, 5rem);
+  --space-section-md: clamp(4.5rem, 9vw, 8rem);
+  --space-section-lg: clamp(6rem, 12vw, 11rem);
+}
+
+/* --------------------------------------------------------------------------
+   TIER 2 — SEMANTIC ALIASES · DARK
+
+   Deliberately not an inversion. Light elevates with shadow; dark elevates
+   with progressively lighter surfaces on the brand's night ground.
+
+   Selector is bare `[data-theme="dark"]`, not `html[data-theme="dark"]`, so
+   any subtree can be themed independently.
+   -------------------------------------------------------------------------- */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: var(--algo-night);
+  /* Recessed rather than tinted — in dark, "subtle" means further back. */
+  --bg-subtle: color-mix(in oklab, var(--algo-night) 80%, #000); /* #050710 */
+  --surface: color-mix(in oklab, var(--algo-night) 88%, var(--algo-muted)); /* #171b26 · 1.12 off bg */
+  --surface-raised: color-mix(in oklab, var(--algo-night) 76%, var(--algo-muted)); /* #242832 · 1.17 off surface */
+
+  --fg: var(--algo-paper); /* min 14.51 */
+  --fg-muted: color-mix(in oklab, var(--algo-muted) 74%, var(--algo-paper)); /* #a6a5a4 · min 5.99 */
+
+  --border: color-mix(in srgb, var(--algo-paper) 10%, transparent);
+  --border-strong: color-mix(in oklab, var(--algo-paper) 10%, var(--algo-muted)); /* #939393 · min 4.8 */
+
+  /* Deep blue disappears on night and the bright blue is 4.02 on the raised
+     surface, so dark text-accent is sky. */
+  --accent: var(--algo-sky); /* min 6.01 */
+  --accent-soft: color-mix(in oklab, var(--algo-blue) 16%, var(--algo-night)); /* #111e39 */
+  --accent-contrast: var(--algo-night); /* label on the bright CTA · min 5.25 */
+
+  --success: var(--algo-success);
+  --warning: var(--algo-warning);
+  --danger: var(--algo-danger);
+  --status-contrast: var(--algo-ink);
+
+  --ring: var(--accent);
+  --logo-wordmark: var(--algo-paper);
+
+  /* TIER 3 — GRADIENTS · DARK */
+  --grad-primary: linear-gradient(150deg, var(--algo-blue) 0%, var(--algo-sky) 100%); /* night label · worst 5.25 */
+  --grad-surface: linear-gradient(180deg, var(--surface) 0%, var(--surface-raised) 100%);
+  --grad-accent-soft: linear-gradient(160deg, var(--accent-soft) 0%, var(--algo-night) 100%);
+  /* On night the brand's own stops pass as they are. */
+  --grad-text: linear-gradient(
+    90deg,
+    var(--algo-blue) 0%,
+    var(--algo-sky) 50%,
+    var(--algo-blue) 100%
+  ); /* worst stop 4.02 */
+
+  /* On night the lights are the deep blue coming up through the ground. */
+  --gf-a: color-mix(in srgb, var(--algo-blue-deep) 60%, transparent);
+  --gf-b: color-mix(in srgb, var(--algo-blue-mid) 18%, transparent);
+  --gf-c: color-mix(in srgb, var(--algo-blue) 14%, transparent);
+
+  /* Night to deep blue with no pale step between: a sky stop here would read
+     as a stripe, not a rise. */
+  --pw-a: color-mix(in srgb, var(--algo-blue-deep) 42%, transparent);
+  --pw-b: color-mix(in srgb, var(--algo-blue-mid) 13%, transparent);
+  --pw-c: color-mix(in srgb, var(--algo-blue) 9%, transparent);
+
+  --page-bg: var(--bg);
+  --band-rise-1: color-mix(in oklab, var(--algo-blue-deep) 40%, var(--algo-night));
+  --band-rise-2: color-mix(in oklab, var(--algo-blue-deep) 78%, var(--algo-night));
+  --band-cloud: color-mix(in srgb, var(--algo-sky) 28%, transparent);
+  --grad-glow: radial-gradient(
+    70% 55% at 50% 0%,
+    color-mix(in srgb, var(--algo-blue) 18%, transparent) 0%,
+    transparent 70%
+  );
+
+  --flow-1: var(--algo-blue-mid);
+  --flow-2: var(--algo-blue);
+  --flow-3: var(--algo-sky);
+  --flow-warn: var(--algo-warning);
+  --pulse: var(--algo-sky);
+
+  /* Shadows do almost nothing on a dark ground; the card keeps its long
+     shadow for separation and swaps the white rim for a faint one. */
+  --shadow-raised: 0 1px 2px -1px rgb(0 0 0 / 0.4), 0 4px 16px -4px rgb(0 0 0 / 0.45);
+  --shadow-card: 0 20px 48px 0 rgb(0 0 0 / 0.5), inset 0 0 0 1px rgb(255 253 249 / 0.04);
+  --shadow-overlay: 0 8px 40px -8px rgb(0 0 0 / 0.6);
+}
+
+/* --------------------------------------------------------------------------
+   TIER 2 — SEMANTIC ALIASES · BAND
+
+   The brand's blue ground with paper type, as on the brochure's closing
+   pages. A third theme scope rather than a set of one-off classes, so a form,
+   a button or a card dropped inside it needs no special case. It is the same
+   in the light and dark page themes.
+   -------------------------------------------------------------------------- */
+[data-theme="band"] {
+  color-scheme: dark;
+
+  --bg: var(--algo-blue-deep);
+  --bg-subtle: color-mix(in oklab, var(--algo-blue-deep) 85%, var(--algo-night)); /* #03408f */
+  --surface: color-mix(in oklab, var(--algo-paper) 6%, var(--algo-blue-deep));
+  --surface-raised: color-mix(in oklab, var(--algo-paper) 11%, var(--algo-blue-deep));
+
+  --fg: var(--algo-paper);
+  --fg-muted: color-mix(in oklab, var(--algo-paper) 90%, var(--algo-blue-deep));
+
+  --border: color-mix(in srgb, var(--algo-paper) 16%, transparent);
+  --border-strong: color-mix(in oklab, var(--algo-paper) 74%, var(--algo-blue-deep));
+
+  --accent: var(--algo-paper);
+  --accent-soft: color-mix(in oklab, var(--algo-paper) 9%, var(--algo-blue-deep));
+  --accent-contrast: var(--algo-blue-deep);
+
+  --success: var(--algo-success);
+  --warning: var(--algo-warning);
+  --danger: var(--algo-danger);
+  --status-contrast: var(--algo-ink);
+
+  --ring: var(--algo-paper);
+  --logo-wordmark: var(--algo-paper);
+
+  /* The filled control inverts: paper carrying a deep-blue label. */
+  --grad-primary: linear-gradient(
+    150deg,
+    var(--algo-paper) 0%,
+    color-mix(in oklab, var(--algo-sky) 22%, var(--algo-paper)) 100%
+  );
+  --grad-surface: linear-gradient(180deg, var(--surface) 0%, var(--surface-raised) 100%);
+  --grad-accent-soft: linear-gradient(160deg, var(--accent-soft) 0%, var(--algo-blue-deep) 100%);
+  --grad-text: linear-gradient(
+    90deg,
+    color-mix(in oklab, var(--algo-sky) 55%, var(--algo-paper)) 0%,
+    var(--algo-paper) 50%,
+    color-mix(in oklab, var(--algo-sky) 55%, var(--algo-paper)) 100%
+  );
+
+  --gf-a: var(--band-cloud);
+  --gf-b: color-mix(in srgb, var(--algo-sky) 60%, transparent);
+  --gf-c: color-mix(in srgb, var(--algo-blue) 50%, transparent);
+
+  --flow-1: var(--algo-sky);
+  --flow-2: var(--algo-paper);
+  --flow-3: var(--algo-paper);
+  --pulse: var(--algo-paper);
+
+  --shadow-raised: 0 1px 2px -1px rgb(0 0 0 / 0.3), 0 4px 16px -4px rgb(0 0 0 / 0.3);
+  --shadow-card: 0 20px 48px 0 rgb(3 20 60 / 0.45), inset 0 0 0 1px rgb(255 253 249 / 0.06);
+  --shadow-overlay: 0 8px 40px -8px rgb(0 0 0 / 0.5);
+}
+
+/* --------------------------------------------------------------------------
+   TIER 4 — TAILWIND EXPOSURE
+
+   `@theme inline` is mandatory here, not stylistic. A plain `@theme` would
+   emit `--color-bg: var(--bg)` into `:root`, which resolves ONCE against the
+   light values and then inherits that computed colour into the dark subtree —
+   the theme switch would silently do nothing. `inline` substitutes at the
+   usage site, so `var(--bg)` re-resolves per theme.
+   -------------------------------------------------------------------------- */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-subtle: var(--bg-subtle);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-contrast: var(--accent-contrast);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-status-contrast: var(--status-contrast);
+  --color-ring: var(--ring);
+  --color-ui-flag: var(--ui-flag);
+  --color-ui-flag-soft: var(--ui-flag-soft);
+  --color-ui-value: var(--ui-value);
+  --color-ui-label: var(--ui-label);
+  --color-ui-quiet: var(--ui-quiet);
+  --color-ui-rule: var(--ui-rule);
+  --color-dot-1: var(--algo-dot-1);
+  --color-dot-2: var(--algo-dot-2);
+  --color-dot-3: var(--algo-dot-3);
+  --color-dot-4: var(--algo-dot-4);
+  --color-dot-5: var(--algo-dot-5);
+
+  /* One sans does display and body, as in the brand file. The two names stay
+     so a future pairing is still a one-file change in src/lib/fonts.ts. */
+  --font-display: var(--font-algo-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-algo-sans), ui-sans-serif, system-ui, sans-serif;
+  /* Data only: document numbers, amounts, status tags inside product UI. */
+  --font-mono: var(--font-algo-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius-card: var(--radius-card);
+  --radius-control: var(--radius-control);
+
+  --shadow-card: var(--shadow-card);
+  --shadow-control: var(--shadow-control);
+  --shadow-raised: var(--shadow-raised);
+  --shadow-overlay: var(--shadow-overlay);
+}
+
+/* Type scale — ~1.25 ratio off a 16px base. Tracking tightens as size grows,
+   ending at the brand file's -0.05em; body sits at 1.6 line-height, display
+   close to solid. 7xl is the hero step, one size above the rest of the page. Everything from 3xl up is
+   fluid so 360px never blows out. Literal values, so a plain `@theme`. */
+@theme {
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.6;
+  --text-xs--letter-spacing: 0em;
+
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.6;
+  --text-sm--letter-spacing: 0em;
+
+  --text-base: 1rem;
+  --text-base--line-height: 1.6;
+  --text-base--letter-spacing: 0em;
+
+  --text-lg: 1.25rem;
+  --text-lg--line-height: 1.5;
+  --text-lg--letter-spacing: -0.015em;
+
+  --text-xl: 1.5625rem;
+  --text-xl--line-height: 1.35;
+  --text-xl--letter-spacing: -0.02em;
+
+  --text-2xl: 1.9531rem;
+  --text-2xl--line-height: 1.2;
+  --text-2xl--letter-spacing: -0.03em;
+
+  --text-3xl: clamp(2rem, 1.6rem + 1.7vw, 2.4414rem);
+  --text-3xl--line-height: 1.15;
+  --text-3xl--letter-spacing: -0.035em;
+
+  --text-4xl: clamp(2.25rem, 1.6rem + 2.9vw, 3.0518rem);
+  --text-4xl--line-height: 1.08;
+  --text-4xl--letter-spacing: -0.04em;
+
+  --text-5xl: clamp(2.5rem, 1.5rem + 4.5vw, 3.8147rem);
+  --text-5xl--line-height: 1.05;
+  --text-5xl--letter-spacing: -0.045em;
+
+  --text-6xl: clamp(2.75rem, 1.2rem + 6.9vw, 4.7684rem);
+  --text-6xl--line-height: 1.02;
+  --text-6xl--letter-spacing: -0.05em;
+
+  --text-7xl: clamp(2.75rem, 0.5rem + 6.6vw, 5.9605rem);
+  --text-7xl--line-height: 1;
+  --text-7xl--letter-spacing: -0.05em;
+}
+
+/* Tailwind v4 has no gradient namespace, so the gradient tier gets explicit
+   utilities. Keeping them named after the token means a component still never
+   writes a colour. */
+@utility bg-grad-primary {
+  background-image: var(--grad-primary);
+}
+@utility bg-grad-surface {
+  background-image: var(--grad-surface);
+}
+@utility bg-grad-accent-soft {
+  background-image: var(--grad-accent-soft);
+}
+@utility bg-grad-glow {
+  background-image: var(--grad-glow);
+}
+/* The brand headline gradient, clipped to the glyphs. Large display type
+   only: its lightest stop is 3.16 on the tinted band, which is the large-text
+   floor and nowhere near the body one. The masked line reveal moves each line
+   on its own layer, and a clipped background does not paint through a
+   transformed child in Safari, so split lines carry the gradient themselves.
+   `box-decoration-break` keeps a wrapped line from restarting the ramp. */
+@utility text-grad-brand {
+  background-image: var(--grad-text);
+  /* The ramp is mirrored and twice the width of the type, so the type shows
+     half of it. At rest that is the brand's dark-to-bright; with a pointer
+     over the section the bright middle slides to sit under the cursor. */
+  background-size: 200% 100%;
+  background-position: calc((1 - var(--px, 1)) * 100%) 0;
+  transition: background-position 0.7s var(--ease-out);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  & .rl {
+    background-image: var(--grad-text);
+    background-size: 200% 100%;
+    background-position: calc((1 - var(--px, 1)) * 100%) 0;
+    transition: background-position 0.7s var(--ease-out);
+    background-clip: text;
+    -webkit-background-clip: text;
+  }
+}
+/* The brand card: hairline, long soft shadow, lit rim.
+
+   The border is three background layers rather than a `border-color`, so a
+   card marked `data-ptr` can carry a light on its edge that follows the
+   cursor: the surface on the padding box, then the light and the hairline on
+   the border box beneath it. A faint wash of the same light sits on the
+   surface. With no pointer the light is parked far off the card and what is
+   left is exactly the static recipe. */
+@utility card {
+  --spot: calc(var(--px, -9) * 100%) calc(var(--py, -9) * 100%);
+  border: 1px solid transparent;
+  border-radius: var(--card-radius, var(--radius-card));
+  background:
+    radial-gradient(30rem circle at var(--spot), color-mix(in srgb, var(--flow-3) 7%, transparent), transparent 60%) padding-box,
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    radial-gradient(22rem circle at var(--spot), var(--flow-3), transparent 70%) border-box,
+    linear-gradient(var(--border), var(--border)) border-box;
+  box-shadow: var(--card-shadow, var(--shadow-card));
+}
+
+/* --------------------------------------------------------------------------
+   THE STAGE — product visuals at the brand file's own measurements
+
+   A product visual is built in the brand file's pixels and scaled as one
+   piece, the way a frame scales in a design tool. `--u` is one design pixel:
+   the stage's width divided by the width the visual was drawn at. Inside a
+   stage Tailwind's spacing unit IS `--u`, so `p-22` is the 22px of padding in
+   the drawing, at whatever size the stage happens to be; `fs-u-10` and
+   `rounded-u-14` do the same for type and corners. Nothing reflows and
+   nothing is transformed, so text stays sharp at every size. (`fs-`, not
+   `text-`: tailwind-merge reads an unknown `text-*` as a colour and drops it
+   when a real text colour follows.)
+   -------------------------------------------------------------------------- */
+.stage {
+  --spacing: var(--u);
+  --card-radius: calc(var(--u) * 14);
+  --card-shadow:
+    0 calc(var(--u) * 20) calc(var(--u) * 48) 0 rgb(10 14 26 / 0.14),
+    inset var(--u) var(--u) calc(var(--u) * 20) calc(var(--u) * 20) var(--algo-white);
+  color: var(--fg);
+  font-family: var(--font-body);
+  line-height: normal;
+}
+@utility fs-u-* {
+  font-size: calc(var(--u) * --value(number));
+}
+@utility rounded-u-* {
+  border-radius: calc(var(--u) * --value(number));
+}
+@utility text-ui-pill {
+  background-image: var(--ui-pill-text);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* --------------------------------------------------------------------------
+   GRADIENT FIELDS
+
+   Three soft lights on a section's ground. Each light is an element that only
+   ever changes `transform`: the outer box eases toward the pointer (a long
+   transition that the tracker keeps retargeting, which is what gives the
+   lag), and its ::before drifts slowly on a keyframe so the field is alive on
+   touch too. The falloff is in the gradient itself, so there is no `filter:
+   blur` to re-rasterise. `--reach` is how far a light travels across the
+   section's width; a negative reach moves against the cursor, which is what
+   makes the three read as depth rather than one sheet sliding.
+   -------------------------------------------------------------------------- */
+.gfield {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  contain: layout paint;
+}
+.gblob {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--s);
+  aspect-ratio: 1;
+  margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+  transform: translate3d(
+    calc((var(--px, 0.5) - 0.5) * var(--reach, 120px)),
+    calc((var(--py, 0.5) - 0.5) * var(--reach, 120px)),
+    0
+  );
+  transition: transform var(--lag, 1.6s) var(--ease-out);
+  will-change: transform;
+}
+.gblob::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    var(--c) 0%,
+    color-mix(in srgb, var(--c) 50%, transparent) 42%,
+    transparent 100%
+  );
+}
+@keyframes gblob-drift {
+  0% { transform: translate3d(-4%, -3%, 0) scale(1); }
+  50% { transform: translate3d(5%, 4%, 0) scale(1.1); }
+  100% { transform: translate3d(-4%, -3%, 0) scale(1); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .gblob::before {
+    animation: gblob-drift var(--drift, 22s) ease-in-out infinite;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   PINNED STEPS — one pair at a time (see PinnedSteps.tsx)
+
+   Default: four pairs in a column, text then visual. That is what a phone, a
+   visitor with motion reduced, a crawler and a browser without JavaScript
+   all get, and it is complete.
+
+   Wide screen + JavaScript + no reduced-motion preference: the track grows
+   tall, the panel sticks for its length, and the pairs share one cell of a
+   grid, swapping as the page travels. `html.js` is stamped before first
+   paint, so the pinned layout is there from the start — nothing shifts when
+   the script arrives. Scroll speed is never touched; the page just has
+   further to go.
+   -------------------------------------------------------------------------- */
+.steps-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  padding-block: var(--space-section-lg);
+}
+.steps [data-step] {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+.steps-nav,
+.steps [data-sentinel] {
+  display: none;
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  html.js .steps {
+    position: relative;
+    /* A screen for the panel, then 80svh of travel per step. The last step
+       needs only half of that before the panel lets go. */
+    height: calc(100svh + var(--steps) * 80svh - 40svh);
+  }
+  html.js .steps [data-sentinel] {
+    display: block;
+    position: absolute;
+    left: 0;
+    width: 1px;
+    /* Offset by half a screen so each boundary is crossed by the MIDDLE of
+       the viewport exactly as the panel has travelled i × 80svh. */
+    top: calc(var(--i) * 80svh + 50svh);
+    height: 80svh;
+    pointer-events: none;
+  }
+  html.js .steps [data-sentinel]:first-child {
+    top: 0;
+    height: 130svh;
+  }
+  html.js .steps-pin {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    display: flex;
+    align-items: center;
+    /* Clear of the fixed header. */
+    padding-top: 4rem;
+  }
+  html.js .steps-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-rows: auto;
+    column-gap: 5rem;
+    align-items: center;
+    padding-block: 0;
+  }
+  /* The pair dissolves into the grid: every text shares one cell, every
+     visual shares the other. */
+  html.js .steps [data-step] {
+    display: contents;
+  }
+  html.js .step-text {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  html.js .step-visual {
+    grid-column: 2;
+    grid-row: 1;
+    /* Never taller than the screen it is pinned in: the cards are about
+       1.2 wide to 1 tall, so their width is capped from the height. */
+    width: min(100%, calc((100svh - 11rem) * 1.18));
+    justify-self: center;
+  }
+
+  /* Arriving is unhurried, leaving is quick, and both are the same path run
+     in opposite directions: what came up from below leaves upward. Opacity
+     and transform only. `visibility` follows the fade so a hidden pair
+     cannot be pointed at. */
+  html.js .step-text,
+  html.js .step-visual {
+    transition:
+      opacity 520ms var(--ease-out),
+      transform 620ms var(--ease-out),
+      visibility 0s linear 0s;
+  }
+  html.js [data-step]:not([data-state="active"]) > .step-text,
+  html.js [data-step]:not([data-state="active"]) > .step-visual {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 220ms var(--ease-out),
+      transform 220ms var(--ease-out),
+      visibility 0s linear 220ms;
+  }
+  html.js [data-step][data-state="after"] > .step-text { transform: translateY(1rem); }
+  html.js [data-step][data-state="before"] > .step-text { transform: translateY(-1rem); }
+  html.js [data-step][data-state="after"] > .step-visual { transform: translateY(2.5rem) scale(0.97); }
+  html.js [data-step][data-state="before"] > .step-visual { transform: translateY(-2.5rem) scale(0.97); }
+  /* The visual follows its sentence by a beat. */
+  html.js [data-step][data-state="active"] > .step-visual {
+    transition-delay: 70ms, 70ms, 0s;
+  }
+
+  /* Where you are: four marks down the right edge of the panel. */
+  html.js .steps-nav {
+    position: absolute;
+    top: 50%;
+    right: calc(var(--gutter) / 2 - 0.25rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    transform: translateY(-50%);
+  }
+  html.js .steps-nav button {
+    /* A 44px target around a 2px mark. */
+    position: relative;
+    width: 1.5rem;
+    height: 2.75rem;
+    cursor: pointer;
+  }
+  html.js .steps-nav button::before {
+    content: "";
+    position: absolute;
+    top: 0.25rem;
+    bottom: 0.25rem;
+    left: 50%;
+    width: 2px;
+    margin-left: -1px;
+    border-radius: 1px;
+    background: var(--border-strong);
+    opacity: 0.45;
+    transition:
+      opacity 200ms var(--ease-out),
+      background-color 200ms ease;
+  }
+  html.js .steps-nav button[aria-current="step"]::before {
+    background: var(--accent);
+    opacity: 1;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   THE PAGE GROUND — always slowly moving
+
+   A fixed layer behind the whole page: three very large lights, each on its
+   own long loop (48s, 62s, 75s — no common period, so the arrangement never
+   visibly repeats). Fixed and transform-only, so it is composited once and
+   costs nothing as the page scrolls over it. Sections with their own ground
+   (the tinted band, the dark panel, the closing band) simply cover it.
+   -------------------------------------------------------------------------- */
+.page-wash {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  contain: strict;
+}
+.page-wash i {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--s);
+  aspect-ratio: 1;
+  margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    var(--c) 0%,
+    color-mix(in srgb, var(--c) 50%, transparent) 42%,
+    transparent 100%
+  );
+  will-change: transform;
+}
+.page-wash i:nth-child(1) { --c: var(--pw-a); --x: 78%; --y: 12%; --s: max(80vw, 60rem); }
+.page-wash i:nth-child(2) { --c: var(--pw-b); --x: 12%; --y: 58%; --s: max(70vw, 52rem); }
+.page-wash i:nth-child(3) { --c: var(--pw-c); --x: 60%; --y: 96%; --s: max(64vw, 48rem); }
+@keyframes wash-1 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(-22vw, 14vh, 0) scale(1.15); }
+  66% { transform: translate3d(-6vw, 34vh, 0) scale(0.92); }
+}
+@keyframes wash-2 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  40% { transform: translate3d(26vw, -18vh, 0) scale(1.12); }
+  75% { transform: translate3d(12vw, 16vh, 0) scale(0.94); }
+}
+@keyframes wash-3 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  30% { transform: translate3d(-24vw, -22vh, 0) scale(1.1); }
+  70% { transform: translate3d(14vw, -36vh, 0) scale(1.18); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .page-wash i:nth-child(1) { animation: wash-1 48s ease-in-out infinite; }
+  .page-wash i:nth-child(2) { animation: wash-2 62s ease-in-out infinite; }
+  .page-wash i:nth-child(3) { animation: wash-3 75s ease-in-out infinite; }
+}
+
+/* A field stops where its section stops, and a light cut off in a straight
+   line is a seam. The hero's fades out at the bottom; `gfield-soft` fades at
+   both ends, for a section with others above and below it. */
+.gfield-glow {
+  mask-image: linear-gradient(180deg, black 0, black 62%, transparent 100%);
+}
+.gfield-glow.gfield-soft {
+  mask-image: linear-gradient(180deg, transparent 0, black 22%, black 78%, transparent 100%);
+}
+
+.gfield-glow .gblob:nth-child(1) { --c: var(--gf-a); --x: 82%; --y: 0%; --s: min(92vw, 70rem); --reach: 150px; --lag: 1.8s; }
+.gfield-glow .gblob:nth-child(2) { --c: var(--gf-b); --x: 52%; --y: -6%; --s: min(72vw, 52rem); --reach: -110px; --lag: 2.6s; --drift: 28s; }
+.gfield-glow .gblob:nth-child(3) { --c: var(--gf-c); --x: 100%; --y: 46%; --s: min(64vw, 46rem); --reach: 240px; --lag: 1.2s; --drift: 17s; }
+
+.gfield-panel {
+  overflow: visible;
+  contain: none;
+}
+.gfield-panel .gblob:nth-child(1) { --c: var(--gf-a); --x: 50%; --y: 92%; --s: min(120vw, 84rem); --reach: 160px; --lag: 1.9s; }
+.gfield-panel .gblob:nth-child(2) { --c: var(--gf-b); --x: 18%; --y: 70%; --s: min(80vw, 54rem); --reach: -120px; --lag: 2.6s; --drift: 27s; }
+.gfield-panel .gblob:nth-child(3) { --c: var(--gf-c); --x: 86%; --y: 64%; --s: min(80vw, 54rem); --reach: 220px; --lag: 1.3s; --drift: 18s; }
+
+/* The closing band rises out of the page ground into deep blue, and the
+   lights are the bright cloud in that rise. Everything that carries text sits
+   below `--band-rise`, on the deep blue. */
+@utility bg-band {
+  --band-rise: clamp(16rem, 40vw, 30rem);
+  /* One continuous ramp out of nothing into the deep blue. It starts from
+     transparent, not from the page colour, because the section above shows
+     the moving page wash through it and a solid first stop met that in a hard
+     line. And it is EASED, not linear: a linear ramp has a corner where it
+     starts and another where it stops, and the eye reads each corner as a
+     line across the page (a Mach band). The stops below trace a smooth
+     S-curve — barely anything for the first fifth, the change in the middle,
+     a long settle into the deep blue — mixed in oklab so the run through the
+     pale stop has no grey in it. No background-color: the last stop carries
+     on to the bottom. */
+  background-image: linear-gradient(
+    in oklab 180deg,
+    transparent 0,
+    color-mix(in oklab, var(--band-rise-1) 4%, transparent) calc(var(--band-rise) * 0.1),
+    color-mix(in oklab, var(--band-rise-1) 14%, transparent) calc(var(--band-rise) * 0.2),
+    color-mix(in oklab, var(--band-rise-1) 34%, transparent) calc(var(--band-rise) * 0.3),
+    color-mix(in oklab, var(--band-rise-1) 62%, transparent) calc(var(--band-rise) * 0.4),
+    color-mix(in oklab, var(--band-rise-1) 88%, transparent) calc(var(--band-rise) * 0.5),
+    color-mix(in oklab, var(--band-rise-2) 55%, var(--band-rise-1)) calc(var(--band-rise) * 0.62),
+    var(--band-rise-2) calc(var(--band-rise) * 0.74),
+    color-mix(in oklab, var(--algo-blue-deep) 55%, var(--band-rise-2)) calc(var(--band-rise) * 0.86),
+    color-mix(in oklab, var(--algo-blue-deep) 88%, var(--band-rise-2)) calc(var(--band-rise) * 0.98),
+    var(--algo-blue-deep) calc(var(--band-rise) * 1.12)
+  );
+}
+/* The cloud is wider than the rise is tall, so without this its top would be
+   cut in a straight line where the section starts. */
+.gfield-band {
+  /* …and its lower light would meet the footer in a line, so it lets go before
+     the band ends: the last stretch is the flat deep blue the footer picks up. */
+  mask-image: linear-gradient(
+    180deg,
+    transparent 0,
+    rgb(0 0 0 / 0.08) calc(var(--band-rise) * 0.2),
+    rgb(0 0 0 / 0.45) calc(var(--band-rise) * 0.45),
+    black calc(var(--band-rise) * 0.75),
+    black calc(100% - 16rem),
+    transparent calc(100% - 2rem)
+  );
+}
+.gfield-band .gblob:nth-child(1) { --c: var(--gf-a); --x: 30%; --y: calc(var(--band-rise) * 0.55); --s: min(80vw, 56rem); --reach: 180px; --lag: 1.9s; }
+.gfield-band .gblob:nth-child(2) { --c: var(--gf-b); --x: 74%; --y: calc(var(--band-rise) * 0.68); --s: min(70vw, 48rem); --reach: -130px; --lag: 2.6s; --drift: 27s; }
+.gfield-band .gblob:nth-child(3) { --c: var(--gf-c); --x: 96%; --y: 78%; --s: min(70vw, 50rem); --reach: 260px; --lag: 1.3s; --drift: 18s; }
+
+/* A 1px accent rule. Decorative by definition — it is never load-bearing for
+   meaning, and never doubles as a focus indicator. */
+@utility rule-accent {
+  block-size: 1px;
+  border: 0;
+  background-image: var(--grad-hairline);
+}
+
+@utility measure {
+  max-inline-size: var(--measure);
+}
+
+/* --------------------------------------------------------------------------
+   BASE
+   -------------------------------------------------------------------------- */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+
+  /* One visible focus style for the whole site. Solid accent, offset against
+     the current ground so it reads on any surface. */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: var(--accent-soft);
+    color: var(--fg);
+  }
+
+  /*
+    Hero load sequence: hide the animated parts so GSAP can bring them in
+    without a flash of the final state first.
+
+    The three conditions matter and are all load-bearing:
+      html.js   - stamped by the pre-paint script, so a visitor with
+                  JavaScript off never has anything hidden from them.
+      no-preference - a visitor who asked for reduced motion sees the final
+                  state immediately, which is what CLAUDE.md §5 requires.
+      opacity   - compositor-only, and the text stays in the DOM and in the
+                  accessibility tree throughout. Nothing is gated (§5).
+
+    If GSAP ever fails to load, this would leave the hero invisible — so the
+    sequence component also clears these inline as its first act, before it
+    builds the timeline.
+  */
+  @media (prefers-reduced-motion: no-preference) {
+    html.js [data-hero-seq] {
+      opacity: 0;
+    }
+  }
+
+  /*
+    Masked line reveals. SplitText wraps each line in a clipping mask; the
+    line rises out of it. Display type sits at line-height 1.05, so a glyph's
+    descender would be cut by the mask edge — the line carries a little extra
+    room at the bottom and the mask gives it straight back, so the rhythm of
+    the heading does not change.
+  */
+  .rl {
+    padding-bottom: 0.14em;
+  }
+  .rl-mask {
+    margin-bottom: -0.14em;
+  }
+
+  /* Every non-essential animation resolves instantly and renders its final
+     state. GSAP is guarded separately via gsap.matchMedia(), which this rule
+     cannot reach because GSAP writes inline styles. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   THEME WIPE
+
+   Switching theme runs through the View Transitions API when the browser has
+   it: the new theme opens as a circle from the toggle, over the old one. The
+   old snapshot holds still, the new one is clipped; nothing else animates.
+   The toggle writes --vt-x / --vt-y from its own position before it starts
+   the transition, and never starts one at all under reduced motion — so this
+   CSS is only ever reached by a visitor who has not opted out.
+   -------------------------------------------------------------------------- */
+::view-transition-old(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+  animation: theme-wipe 0.55s var(--ease-out) both;
+  mix-blend-mode: normal;
+}
+::view-transition-image-pair(root) {
+  isolation: auto;
+}
+@keyframes theme-wipe {
+  from {
+    clip-path: circle(0 at var(--vt-x, 100%) var(--vt-y, 0%));
+  }
+  to {
+    clip-path: circle(160vmax at var(--vt-x, 100%) var(--vt-y, 0%));
+  }
+}
+
+/* --------------------------------------------------------------------------
+   INTERACTION MOTION — CSS keyframes, not a JS library.
+
+   All enter-only. An exit animation needs the element kept mounted past its
+   own removal, which is the one thing a library genuinely buys, and it is not
+   worth 43KB for these. `motion-safe:` applies them, so a reduced-motion
+   visitor gets the final state with no keyframes at all.
+   -------------------------------------------------------------------------- */
+@keyframes sheet-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes sheet-item-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes field-error {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* A route change. The new page settles in from 8px; the header is not part
+   of the template, so it stays exactly where it was.
+   Fill mode is `backwards`, not `both`: `both` would leave an identity
+   transform on the wrapper after the animation, which makes it the
+   containing block for every position:fixed descendant — the reading
+   progress line on a post would scroll away with the page. */
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* The contact composer swapping in for the form. */
+@keyframes panel-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.995); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@utility animate-sheet-in {
+  animation: sheet-in 0.24s var(--ease-out) both;
+}
+@utility animate-sheet-item-in {
+  animation: sheet-item-in 0.5s var(--ease-out) both;
+}
+@utility animate-field-error {
+  animation: field-error 0.2s var(--ease-out) both;
+}
+@utility animate-page-in {
+  animation: page-in 0.45s var(--ease-out) backwards;
+}
+@utility animate-panel-in {
+  animation: panel-in 0.5s var(--ease-out) backwards;
+}
+
+/* --------------------------------------------------------------------------
+   SURFACES USED BY THE TWO DIAGRAMS
+   -------------------------------------------------------------------------- */
+/* A faint dot grid behind the pipeline. Token-derived, so it is legible on
+   either ground and invisible enough to be felt rather than seen. */
+@utility bg-dot-grid {
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--fg) 9%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+}
+/* The footer takes the closing band's blue and lets it go, instead of meeting
+   it in a hard line. */
+.footer-rise {
+  /* A strip of its own above the footer's content, so the fall can be as long
+     as it needs to be and no text ever sits on it (ink on this blue fails in
+     the light theme). Eased like the band's rise, for the same reason. */
+  height: clamp(9rem, 22vw, 17rem);
+  background-image: linear-gradient(
+    in oklab 180deg,
+    var(--algo-blue-deep) 0,
+    color-mix(in oklab, var(--algo-blue-deep) 96%, transparent) 10%,
+    color-mix(in oklab, var(--algo-blue-deep) 86%, transparent) 20%,
+    color-mix(in oklab, var(--algo-blue-deep) 68%, transparent) 32%,
+    color-mix(in oklab, var(--algo-blue-deep) 46%, transparent) 45%,
+    color-mix(in oklab, var(--algo-blue-deep) 26%, transparent) 58%,
+    color-mix(in oklab, var(--algo-blue-deep) 12%, transparent) 72%,
+    color-mix(in oklab, var(--algo-blue-deep) 4%, transparent) 86%,
+    transparent 100%
+  );
+}
+
+/* A third-party mark in the integrations grid. The files are the brand
+   file's single muted grey, which vanishes on night, so the dark theme flips
+   them to that grey's light counterpart. Inside a product visual (always
+   light) they stay as supplied. */
+.logo-mark {
+  opacity: 0.8;
+}
+[data-theme="dark"] .logo-mark {
+  filter: invert(1) brightness(1.5);
+}
+[data-theme="light"] .logo-mark {
+  filter: none;
+}
+/* Placeholder tiles for the logo strip: a dashed hairline, nothing inside. */
+@utility border-dashed-placeholder {
+  border: 1px dashed var(--border-strong);
+}
+
+/* --------------------------------------------------------------------------
+   THE TWO DIAGRAMS AND THE HERO GROUND
+
+   Everything here is CSS-driven so that it costs nothing on the main thread:
+   the beams travel with a stroke-dashoffset keyframe on a tiny SVG overlay,
+   the border light rides an offset-path, the stage of the process board is a
+   data attribute that these rules turn into transitions. JavaScript only
+   flips the attribute. All of it is theme-aware through the tokens above, and
+   all of it is absent under reduced motion.
+   -------------------------------------------------------------------------- */
+
+/* A dot pattern with a radial mask, for the hero ground. */
+@utility bg-dot-pattern {
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--fg) 14%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 24px 24px;
+  mask-image: radial-gradient(70% 60% at 50% 0%, black 30%, transparent 100%);
+}
+
+/* The slow light behind the hero: the glow token, drifting. Transform only. */
+@keyframes spotlight-drift {
+  0% { transform: translate3d(-6%, -4%, 0) scale(1); }
+  50% { transform: translate3d(6%, 4%, 0) scale(1.08); }
+  100% { transform: translate3d(-6%, -4%, 0) scale(1); }
+}
+@utility animate-spotlight {
+  animation: spotlight-drift 18s ease-in-out infinite;
+}
+
+/* A light that rides the border of a card. The overlay is masked to its own
+   1.5px ring (padding-box out of border-box), and the ::after is a short
+   gradient bar carried around the rectangle on an offset path. */
+.border-beam {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1.5px solid transparent;
+  pointer-events: none;
+  mask-image: linear-gradient(black, black), linear-gradient(black, black);
+  mask-clip: padding-box, border-box;
+  mask-composite: exclude;
+  -webkit-mask-image: linear-gradient(black, black), linear-gradient(black, black);
+  -webkit-mask-clip: padding-box, border-box;
+  -webkit-mask-composite: xor;
+}
+.border-beam::after {
+  content: "";
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  background: linear-gradient(
+    to left,
+    color-mix(in srgb, var(--flow-3) 85%, transparent),
+    color-mix(in srgb, var(--flow-1) 60%, transparent) 40%,
+    transparent
+  );
+  offset-path: rect(0 auto auto 0 round var(--beam-radius, 16px));
+  offset-anchor: 100% 50%;
+  opacity: 0;
+}
+@keyframes border-beam {
+  from { offset-distance: 0%; }
+  to { offset-distance: 100%; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .border-beam::after {
+    opacity: 1;
+    animation: border-beam 9s linear infinite;
+  }
+}
+
+/* A traveling beam along an SVG path: a short dash moving through a long gap.
+   The dasharray is set on the element; the keyframe moves it one full period. */
+@keyframes beam-travel {
+  to { stroke-dashoffset: -420; }
+}
+.beam {
+  stroke-dasharray: 36 384;
+  stroke-dashoffset: 0;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-out);
+}
+
+/* The agent node's breathing ring. Transform and opacity only. */
+@keyframes ring-breathe {
+  0% { transform: scale(0.9); opacity: 0.6; }
+  70% { transform: scale(1.35); opacity: 0; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
+/* The process board: one data attribute, three stages. Before the reader
+   reaches the section (stage 0) the board shows the whole picture with the
+   beams off. From stage 1 on, everything later than the current stage recedes
+   — half opacity and a few pixels low, still legible — and beams up to the
+   current stage are lit and travelling. Under reduced motion nothing recedes
+   and nothing travels; the markup's default is the finished picture. */
+.process-board [data-at] {
+  transition:
+    opacity 0.55s var(--ease-out),
+    transform 0.55s var(--ease-out),
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .process-board[data-stage="1"] [data-at="2"],
+  .process-board[data-stage="1"] [data-at="3"],
+  .process-board[data-stage="2"] [data-at="3"] {
+    opacity: 0.5;
+    transform: translateY(6px);
+  }
+  .process-board[data-stage="1"] .beam[data-at="1"],
+  .process-board[data-stage="2"] .beam[data-at="1"],
+  .process-board[data-stage="2"] .beam[data-at="2"],
+  .process-board[data-stage="3"] .beam[data-at="1"],
+  .process-board[data-stage="3"] .beam[data-at="2"],
+  .process-board[data-stage="3"] .beam[data-at="3"] {
+    opacity: 1;
+    animation: beam-travel 2.6s linear infinite;
+  }
+  .process-board[data-stage="1"] .ring,
+  .process-board[data-stage="2"] .ring,
+  .process-board[data-stage="3"] .ring {
+    animation: ring-breathe 2.4s var(--ease-out) infinite;
+  }
+  .process-board[data-stage="3"] .tick {
+    stroke-dashoffset: 0;
+  }
+  .process-board:not([data-stage="3"]) .tick {
+    stroke-dashoffset: 24;
+  }
+}
+.tick {
+  stroke-dasharray: 24;
+  transition: stroke-dashoffset 0.5s var(--ease-out) 0.35s;
+}

@@ -1,0 +1,28 @@
+/* Product-UI tokens for the wells visual. Imported by globals.css. */
+:root,
+[data-theme="light"] {
+  --algo-ui-well-bottom: #cfcece; /* the grey the well's ground falls to */
+  --algo-ui-well-wash: #dcdbdc; /* the veil the logo grid fades into */
+  --algo-ui-card-line: #e5e7eb; /* the floating cards' edge, drawn at 50–60% */
+  --algo-ui-code: #3b82f6; /* the chosen row, GL category and code */
+  --algo-ui-code-soft: #eff6ff; /* the pill behind a coded line */
+  --algo-ui-amount-soft: #e0ffd7; /* the tag behind the invoice amount */
+  --algo-ui-pill-line: #d6d6d6; /* the posted pill's edge */
+
+  /* The ground: paper at the top, grey at the bottom. */
+  --ui-well: linear-gradient(to bottom, var(--algo-paper), var(--algo-ui-well-bottom));
+  --ui-well-wash: linear-gradient(to bottom, transparent, var(--algo-ui-well-wash));
+}
+@theme inline {
+  --color-ui-card-line: var(--algo-ui-card-line);
+  --color-ui-code: var(--algo-ui-code);
+  --color-ui-code-soft: var(--algo-ui-code-soft);
+  --color-ui-amount-soft: var(--algo-ui-amount-soft);
+  --color-ui-pill-line: var(--algo-ui-pill-line);
+}
+@utility bg-well {
+  background-image: var(--ui-well);
+}
+@utility bg-well-wash {
+  background-image: var(--ui-well-wash);
+}

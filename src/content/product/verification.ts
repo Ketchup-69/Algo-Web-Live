@@ -1,0 +1,82 @@
+/**
+ * Sample data drawn inside the verification visuals. None of it is page copy
+ * and none of it is real: supplier names are invented, document numbers and
+ * amounts are illustrative.
+ */
+
+export const verificationCards = {
+  alt: "Try it: two document checks. Press the variance line to accept it and the flagged invoice clears. one invoice approved by the agent with its purchase order, goods receipt and line quantities all matching, and one flagged for review because a line was ordered at 40 and received at 38.",
+  ghostTitle: "Agent re...",
+  /**
+   * Pressing the variance row accepts it: the row takes `accepted.tag`, and
+   * the flagged card takes `accepted.status`. Pressing it again takes that back.
+   */
+  accepted: { tag: "ACCEPTED", status: "Cleared by controller" },
+  cards: [
+    {
+      tone: "cleared",
+      status: "Agent approved",
+      supplier: "Bramwell Foodstuff",
+      rows: [
+        { label: "LPO-8834 · 14 lines", tag: "MATCH", variance: false },
+        { label: "Goods receipt · 15 Nov", tag: "MATCH", variance: false },
+        { label: "Line quantities", tag: "MATCH", variance: false },
+      ],
+    },
+    {
+      tone: "flagged",
+      status: "Flagged for review",
+      supplier: "Northgate Linen Services",
+      rows: [
+        { label: "LPO-8821 · 14 lines", tag: "MATCH", variance: false },
+        { label: "Goods receipt · 15 Nov", tag: "MATCH", variance: false },
+        { label: "Line 04 · ordered 40, received 38", tag: "VARIANCE", variance: true },
+      ],
+    },
+  ],
+} as const;
+
+export const exceptionsPanel = {
+  alt: "Try it: an exceptions list. Press a line to release it to the payment run and the held total updates. a duplicate invoice, a rate breach and an unagreed surcharge, totalling AED 13,370 held back from this payment run.",
+  rows: [
+    {
+      kind: "DUPLICATE",
+      title: "Submitted 04 Nov and 11 Nov",
+      source: "INV-88214 · Maple Trading",
+      amount: "AED 12,850",
+      value: 12850,
+      highlighted: true,
+    },
+    {
+      kind: "RATE BREACH",
+      title: "3,900 billed · 3,600 contracted",
+      source: "Fernhill Facilities Mgmt",
+      amount: "AED 300",
+      value: 300,
+      highlighted: false,
+    },
+    {
+      kind: "SURCHARGE",
+      title: "Fuel levy · not in supplier agreement",
+      source: "Castell F&B Trading",
+      amount: "AED 220",
+      value: 220,
+      highlighted: false,
+    },
+  ],
+  totalLabel: "HELD BACK FROM THIS PAYMENT RUN",
+  total: "AED 13,370",
+  /** Shown in place of a row's kind once a visitor releases it to the run. */
+  releasedLabel: "RELEASED TO RUN",
+  /**
+   * The second state. `submit` sends the run as it stands; the panel then
+   * says what happened (`{held}` and `{paid}` are filled in) and offers `edit`
+   * to go back.
+   */
+  submit: "Submit payment run",
+  edit: "Edit run",
+  submittedLabel: "RUN SUBMITTED · HELD BACK",
+  submittedNote: "{paid} released for payment. {held} held and logged for review.",
+  noneHeld: "Nothing held.",
+  currency: "AED",
+} as const;

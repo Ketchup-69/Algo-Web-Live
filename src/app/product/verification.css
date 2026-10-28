@@ -1,0 +1,55 @@
+/* Product-UI tokens for the verification visual. Imported by globals.css. */
+:root,
+[data-theme="light"] {
+  /* Verification cards (brand file node 1:17712). */
+  --algo-ui-title: #0e0c0a;
+  --algo-ui-row-text: #111214;
+  --algo-ui-hairline: #f0f0f2;
+  --algo-ui-approved: #00a44b;
+  --algo-ui-approved-quiet: #a5d6a7;
+  --algo-ui-flag-quiet: #ffccbc;
+  --algo-ui-match: #2e7d32;
+  --algo-ui-match-soft: #e8f5e9;
+  --algo-ui-variance: #e65100;
+  --algo-ui-variance-soft: #fff3e0;
+
+  /* The ghost cards either side, drawn for a dark ground. */
+  --algo-ui-ghost-pill: #2e2e2e;
+  --algo-ui-ghost-body: #252525;
+  --algo-ui-ghost-mark: #3a3a3a;
+  --algo-ui-ghost-dot: #353535;
+  --algo-ui-ghost-sub: #333333;
+  --algo-ui-ghost-bar: #303030;
+  --algo-ui-ghost-text: #555555;
+
+  /* Exceptions panel (brand file node 1:17818). */
+  --algo-ui-warn-badge: #d97706;
+  --algo-ui-meta: #6b7280;
+  --ui-row-tint: color-mix(in srgb, var(--algo-ui-warn-badge) 10%, transparent);
+  --ui-total-tint: color-mix(in srgb, var(--algo-night) 3%, transparent);
+}
+
+@theme inline {
+  --color-ui-sheet: var(--algo-white);
+  --color-ui-title: var(--algo-ui-title);
+  --color-ui-row-text: var(--algo-ui-row-text);
+  --color-ui-hairline: var(--algo-ui-hairline);
+  --color-ui-approved: var(--algo-ui-approved);
+  --color-ui-approved-quiet: var(--algo-ui-approved-quiet);
+  --color-ui-flag-quiet: var(--algo-ui-flag-quiet);
+  --color-ui-match: var(--algo-ui-match);
+  --color-ui-match-soft: var(--algo-ui-match-soft);
+  --color-ui-variance: var(--algo-ui-variance);
+  --color-ui-variance-soft: var(--algo-ui-variance-soft);
+  --color-ui-ghost-pill: var(--algo-ui-ghost-pill);
+  --color-ui-ghost-body: var(--algo-ui-ghost-body);
+  --color-ui-ghost-mark: var(--algo-ui-ghost-mark);
+  --color-ui-ghost-dot: var(--algo-ui-ghost-dot);
+  --color-ui-ghost-sub: var(--algo-ui-ghost-sub);
+  --color-ui-ghost-bar: var(--algo-ui-ghost-bar);
+  --color-ui-ghost-text: var(--algo-ui-ghost-text);
+  --color-ui-warn-badge: var(--algo-ui-warn-badge);
+  --color-ui-meta: var(--algo-ui-meta);
+  --color-ui-row-tint: var(--ui-row-tint);
+  --color-ui-total-tint: var(--ui-total-tint);
+}

@@ -1,0 +1,43 @@
+/* Product-UI tokens for the scatter visual. Imported by globals.css. */
+:root,
+[data-theme="light"] {
+  --algo-ui-scan: #78dffb; /* the cyan reading band and its glow */
+  --algo-ui-doc-ink: #0a0a0a; /* names and line items printed on the front invoice */
+  --algo-ui-faint: #9ca3af; /* the invoice's date and field labels */
+  --algo-ui-halftone: #deecff; /* the dots of the ground */
+}
+@theme inline {
+  --color-ui-scan: var(--algo-ui-scan);
+  --color-ui-doc-ink: var(--algo-ui-doc-ink);
+  --color-ui-faint: var(--algo-ui-faint);
+  --color-ui-select: var(--algo-blue);
+}
+
+/* The dotted ground. In the brand file it is a halftone shader over a
+   vertical gradient: an 18px square screen turned 30 degrees, dots of 5.35px
+   radius with a 0.9px soft edge, which shrink to nothing toward the top and
+   bottom and are washed out to paper toward the left and right.
+   ponytail: the dots here are one size and the vertical falloff is opacity
+   (matched to the shader's measured ink coverage), not shrinking dots; the
+   shader's grain is left out. Swap in a canvas if the difference ever shows. */
+.scatter-ground {
+  position: absolute;
+  overflow: hidden;
+  pointer-events: none;
+  mask-image:
+    linear-gradient(to right, transparent, black 50%, transparent),
+    linear-gradient(to bottom, transparent 4%, black 40%, black 65%, transparent 98.5%);
+  mask-composite: intersect;
+}
+.scatter-ground::before {
+  content: "";
+  position: absolute;
+  inset: -25%;
+  rotate: 30deg;
+  background-image: radial-gradient(
+    circle,
+    var(--algo-ui-halftone) calc(var(--u) * 4.45),
+    transparent calc(var(--u) * 6.25)
+  );
+  background-size: calc(var(--u) * 18) calc(var(--u) * 18);
+}

@@ -1,0 +1,278 @@
+/* Interaction inside the product visuals. Imported last by globals.css.
+
+   Every rule here was passed through the same gate: this is a marketing page
+   seen rarely, so explanatory motion is allowed — but each control still
+   behaves like product UI, because that is what it is showing. So: feedback
+   in 140–200ms on `--ease-out`, things that move across the visual on
+   `--ease-in-out`, transform and opacity only, transitions rather than
+   keyframes for anything a visitor can trigger twice in a second (they
+   retarget instead of restarting), hover behind a fine-pointer query, and
+   under reduced motion the state changes stay but the movement goes. */
+
+/* Press: the interface heard you. */
+.ui-press {
+  transition: transform 140ms var(--ease-out);
+}
+.ui-press:active {
+  transform: scale(0.97);
+}
+
+/* A row or item that can be acted on. Colour only, so `ease`. */
+.ui-hit {
+  transition:
+    background-color 160ms ease,
+    opacity 200ms var(--ease-out),
+    transform 140ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .ui-hit:hover {
+    background-color: color-mix(in srgb, var(--ui-value) 4%, transparent);
+  }
+}
+
+/* A value that has just changed: the new text eases up into place. A keyed
+   remount plus @starting-style, so it is a transition (interruptible), not a
+   keyframe. Where @starting-style is unsupported the text simply changes. */
+.ui-swap {
+  display: inline-block;
+  transition:
+    opacity 180ms var(--ease-out),
+    transform 180ms var(--ease-out);
+  @starting-style {
+    opacity: 0;
+    transform: translateY(35%);
+  }
+}
+
+/* The action menu: leaves and returns from where it hangs. Never scale(0). */
+.ui-menu {
+  /* `--at` is where it hangs (set by the component). Opening and closing
+     scale from the edge nearest its row: the top when it hangs below, the
+     bottom when it stands on the row. Never from scale(0). */
+  transform: var(--at) scale(1);
+  transform-origin: top center;
+  transition:
+    opacity 170ms var(--ease-out),
+    transform 260ms var(--ease-in-out),
+    visibility 0s linear 0s;
+}
+.ui-menu[data-up="true"] {
+  transform-origin: bottom center;
+}
+.ui-menu[data-open="false"] {
+  opacity: 0;
+  transform: var(--at) scale(0.96);
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 140ms var(--ease-out),
+    transform 140ms var(--ease-out),
+    visibility 0s linear 140ms;
+}
+
+/* The format list's selection: one bar that travels to the chosen row. It is
+   already on screen and moving, hence ease-in-out. */
+.ui-selection {
+  transition: transform 220ms var(--ease-in-out);
+}
+
+/* The hero scatter. The ghosts lean a few pixels with the cursor, nearest
+   most: the tracker writes --px/--py on each ghost itself, so nothing is
+   restyled through a parent. `translate` is its own property, so it composes
+   with the drawn rotation and with the entrance tween on `transform`. */
+@media (hover: hover) and (pointer: fine) {
+  .stage [data-ghost] {
+    translate:
+      calc(clamp(-1, var(--px, 0.5) - 0.5, 1) * var(--u) * var(--lean, 10))
+      calc(clamp(-1, var(--py, 0.5) - 0.5, 1) * var(--u) * var(--lean, 10));
+    transition:
+      translate 900ms var(--ease-out),
+      filter 1200ms var(--ease-in-out);
+  }
+  .stage [data-ghost][data-depth="1"] { --lean: 26; }
+  .stage [data-ghost][data-depth="2"] { --lean: 16; }
+  .stage [data-ghost][data-depth="3"] { --lean: 8; }
+}
+
+/* THE HERO INVOICE — read, resolve, leave; then the next comes forward.
+
+   InvoiceScatter.tsx is a small state machine that only sets `data-phase` on
+   `.hero-cycle`. Everything seen is here, and everything is transform,
+   opacity or clip-path. Transitions, not keyframes, for the state changes, so
+   a phase arriving early retargets instead of jumping; the band's sweep is
+   the one keyframe, because it is a fixed gesture that runs once per read.
+
+   The morph from read to resolved works because the card, the supplier, the
+   numbers and the amounts never move: only what the agent ADDED fades in, and
+   the labels step aside for the ticks. */
+.hero-a,
+.hero-b,
+.hero-shift {
+  transition:
+    opacity 420ms var(--ease-out),
+    transform 520ms var(--ease-in-out);
+}
+.hero-b {
+  opacity: 0;
+  transform: translateY(calc(var(--u) * 6));
+}
+.hero-cycle:is([data-phase="resolve"], [data-phase="exit"]) .hero-a { opacity: 0; }
+.hero-cycle:is([data-phase="resolve"], [data-phase="exit"]) .hero-b { opacity: 1; transform: none; }
+.hero-cycle:is([data-phase="resolve"], [data-phase="exit"]) .hero-shift { transform: translateX(calc(var(--u) * 40)); }
+/* The second line follows the first by a beat. */
+.hero-cycle .hero-late,
+.hero-cycle .hero-late .hero-b,
+.hero-cycle .hero-late .hero-shift {
+  transition-delay: 90ms;
+}
+/* A new invoice is set up unseen: nothing eases while it is. */
+.hero-cycle:is([data-phase="pre"], [data-phase="enter"]) :is(.hero-a, .hero-b, .hero-shift) {
+  transition: none;
+}
+
+/* The pile. A card's place is one transform (`--place`, set by the
+   component), so moving up the queue is a transform transition: it was on
+   screen and it is moving, hence ease-in-out, and a touch slower than the
+   front card so the eye follows the invoice, not the shuffle. A card that has
+   just joined starts beyond the frame, down and to the right of its place. A
+   pulled card only fades; its invoice is already on its way forward. */
+.ghost-slot {
+  transform: var(--place);
+  /* `--wait` staggers the queue (set per place by the component): the pulled
+     card goes first, then each card behind it follows a beat later, so the
+     pile reads as one ripple rather than four things moving at once. */
+  transition:
+    transform 1200ms var(--ease-in-out) var(--wait, 0ms),
+    opacity 700ms var(--ease-out) var(--wait, 0ms);
+}
+/* A card's blur belongs to its place, so it eases as the card changes place
+   instead of snapping. */
+.ghost-slot > [data-ghost] {
+  transition: filter 1200ms var(--ease-in-out);
+}
+/* Only a card that joins later. The four drawn cards are simply there. */
+.ghost-joined {
+  @starting-style {
+    opacity: 0;
+    transform: translate(calc(var(--u) * 180), calc(var(--u) * 140)) var(--place);
+  }
+}
+
+/* The card. Leaves upward and fading, quickly; arrives out of its background
+   card — placed over it (`--from`) at the pile's own 70%, then travelling to
+   the front. It was on screen as that card, so the travel is ease-in-out. */
+/* The swap from a skeleton card to a printed invoice can never line up line
+   for line, so it is masked: the invoice arrives soft and sharpens as it
+   travels, and the skeleton under it is gone before the type is legible. The
+   same softness covers it as it leaves. Blur is animated on this one element
+   only, for under a second. */
+.hero-card {
+  transition:
+    transform 1100ms var(--ease-in-out),
+    opacity 650ms var(--ease-out),
+    filter 900ms var(--ease-out);
+}
+.hero-cycle[data-phase="exit"] .hero-card {
+  opacity: 0;
+  filter: blur(calc(var(--u) * 8));
+  transform: translateY(calc(var(--u) * -26)) scale(0.975);
+  transition:
+    transform 560ms var(--ease-out),
+    opacity 460ms var(--ease-out),
+    filter 560ms var(--ease-out);
+}
+.hero-cycle[data-phase="pre"] .hero-card {
+  opacity: 0;
+  filter: blur(calc(var(--u) * 14));
+  transform: var(--from);
+  transition: none;
+}
+
+/* The band. At rest it sits where the drawing has it; during a read it
+   sweeps from the top of the card to the total; otherwise it is away. */
+@keyframes ui-scan {
+  0% { transform: translateY(calc(var(--u) * -262)); opacity: 0; }
+  12% { opacity: 1; }
+  82% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(0); opacity: 0; }
+}
+.hero-cycle:not([data-phase="rest"]) [data-scan] {
+  opacity: 0;
+}
+.hero-cycle[data-phase="read"] [data-scan] {
+  animation: ui-scan 2.7s var(--ease-in-out) forwards;
+}
+
+/* The pill. Its box is always as wide as its longer line; the clip closes it
+   to the line that is showing, so it changes size without any layout. */
+.hero-pill {
+  filter: drop-shadow(0 calc(var(--u) * 14) calc(var(--u) * 18) rgb(0 0 0 / 0.42));
+  transition:
+    opacity 300ms var(--ease-out),
+    transform 300ms var(--ease-out);
+}
+.hero-cycle:is([data-phase="exit"], [data-phase="pre"], [data-phase="enter"]) .hero-pill {
+  opacity: 0;
+  transform: translateY(calc(var(--u) * 5)) scale(0.97);
+}
+.hero-pill-body {
+  clip-path: inset(0 var(--cut, 0%) round calc(var(--u) * 7));
+  transition: clip-path 520ms var(--ease-in-out);
+}
+.hero-line {
+  transition: opacity 260ms var(--ease-out);
+}
+.hero-line[data-on="false"] {
+  opacity: 0;
+}
+.hero-line[data-on="true"] {
+  transition-delay: 160ms;
+}
+
+/* The agent mark while it is working: the five squares take turns. */
+@keyframes ui-think {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ui-thinking > span {
+    animation: ui-think 1.5s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 140ms);
+  }
+}
+
+/* Reduced motion: keep every state change and its fade, drop the travel. */
+@media (prefers-reduced-motion: reduce) {
+  .ui-press:active {
+    transform: none;
+  }
+  .ui-menu,
+  .ui-menu[data-open="false"] {
+    transform: var(--at);
+    transition: opacity 140ms var(--ease-out), visibility 0s linear 140ms;
+  }
+  .ui-swap {
+    @starting-style {
+      transform: none;
+    }
+  }
+  .ui-selection {
+    transition: none;
+  }
+  .stage [data-ghost] {
+    translate: none;
+  }
+  .ghost-slot {
+    transition: none;
+  }
+}
+
+/* A decision control on the approval card. The two not chosen step back. */
+.ui-decision {
+  transition:
+    transform 140ms var(--ease-out),
+    opacity 200ms var(--ease-out);
+}
+.ui-decision[data-dimmed] {
+  opacity: 0.4;
+}
