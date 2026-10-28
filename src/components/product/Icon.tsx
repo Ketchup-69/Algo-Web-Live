@@ -1,11 +1,11 @@
 import { cn } from "@/lib/cn";
 
 /**
- * Material Symbols, Sharp style (Google, Apache 2.0): the site's one icon set.
+ * Material Symbols, Sharp style (Apache 2.0): the site's one icon set.
  *
  * Inlined as paths rather than loaded as the icon font — the font is several
  * megabytes for the dozen glyphs used here. To add one, take its 24px SVG
- * from fonts.google.com/icons (style: Sharp; `fill1` for a solid glyph) and
+ * from the Material Symbols catalogue (style: Sharp; `fill1` for a solid glyph) and
  * paste the path below under the symbol's own name.
  *
  * The glyph takes `currentColor`, so colour it with a text token, and size it

@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     description: site.description,
   },
   // DEMO BUILD (28 Oct 2026): the GitHub Pages demo must never be indexed, or
-  // Google may list a copy of the company site under a personal account.
+  // A search engine may list a copy of the company site under a personal account.
   // Flip to { index: true, follow: true } only when the site moves to the real domain.
   robots: { index: false, follow: false },
 };

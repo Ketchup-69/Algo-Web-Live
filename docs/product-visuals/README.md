@@ -1,13 +1,12 @@
 # Product visuals — how they work and how to make another
 
 Every illustration on this site is a coded replica of a drawing in the brand
-file (Figma, file key `NlTtopvxXt8ipV3UnGDpC6`). None is an image, none is
+file (kept by the company's designer; ask the owner for access). None is an image, none is
 invented. This document is the spec for adding one: read it before touching
 `src/components/product/`. An agent definition that follows it lives at
 `.claude/agents/product-visual.md`.
 
-Internal document. It names the design tool and third-party systems because
-the work cannot be described without them; nothing here ships to the site.
+Internal document; nothing here ships to the site.
 
 ## 1. Why the drawings work
 
@@ -82,7 +81,7 @@ src/app/product/<name>.css            only if the drawing needs a colour no toke
 ```
 
 **The Stage.** `<Stage width={W} maxScale={M} label={alt}>` where `W` is the
-width of the Figma frame. Inside it, Tailwind's spacing unit is one Figma
+width of the brand-file frame. Inside it, Tailwind's spacing unit is one brand-file
 pixel, so the component is written in the drawing's own numbers and scales as
 one piece:
 
@@ -138,8 +137,8 @@ the format list's selection travels. Rules, all in `src/app/product/motion.css`:
 1. **Find the frame.** Prefer a standalone web-scale frame over the same thing
    on a brochure page. Ignore frames named `Image (…)` or `Container (…)`:
    they are reference scrapes of other sites, not brand assets.
-2. **Pull exact values** with `get_design_context` on the frame, then on its
-   children if the response is sparse. Use `get_metadata` for positions.
+2. **Pull exact values** from the design tool's inspect panel (or its design-context export) on the
+   frame, then on its children. Read positions from the layer list.
    Effects (blur, some shadows) are missing from design context; read them
    from the node. Never measure from a screenshot.
 3. **Write the content file first.** Replace every supplier name with a
@@ -167,9 +166,9 @@ the format list's selection travels. Rules, all in `src/app/product/motion.css`:
   a colour and drops it when a real text colour follows. It is `fs-u-10`.
 - `fs-u-*` and `rounded-u-*` only exist in steps of 0.25. For 23.333 write
   `text-[length:calc(var(--u)*23.333)]`.
-- Figma measures padding from the frame edge and strokes take no space. With a
+- The design tool measures padding from the frame edge and strokes take no space. With a
   1px border, padding is `calc(var(--u)*22 - 1px)`, or use an inside outline.
-- A Figma layer blur of radius R is CSS `blur(R/2)`.
+- A design-tool layer blur of radius R is CSS `blur(R/2)`.
 - A fixed-height frame may clip its own content (the approval card clips a
   12px spacer). Match the frame, not the sum of its children.
 - An em-based tracking value inherits as a computed length. Restate tracking
@@ -202,7 +201,7 @@ the format list's selection travels. Rules, all in `src/app/product/motion.css`:
 ## 6. Done means
 
 - [ ] Rendered at the Stage's design width, every block is within 2px of its
-      Figma position and size, measured in the browser and converted back to
+      brand-file position and size, measured in the browser and converted back to
       design px.
 - [ ] Type sizes, weights and tracking match; no hex or rgb brand colour in
       the component; no string in the component.

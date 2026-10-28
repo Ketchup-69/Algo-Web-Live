@@ -1,21 +1,18 @@
 # Handover note
 
-Draft, kept current until the handover. Last updated 28 Oct 2026.
+Last updated 28 Oct 2026. Read `CLAUDE.md` first (the rules), then this. Open owner items: `docs/progress.md`.
 
-For the in-house developer taking the site to algomotiveai.com. Read `CLAUDE.md` first (the rules every change must keep), then this file. Open owner items are in `docs/progress.md`.
+## What it is
 
-## What this is
+A static site: Next.js with `output: "export"`. No server code. `npm run build` writes plain HTML to `out/`; serve that folder.
 
-A static marketing site: Next.js (App Router) with `output: "export"`, Tailwind v4 on CSS variables, GSAP for motion. No server, no API routes. Every page is plain HTML in `out/` after a build.
+- Copy: `src/content/*.ts`. Pages: `src/app/`. Components: `src/components/`.
+- Brand tokens: `src/app/globals.css`, `src/lib/tokens.ts`, checked by the contrast gate.
+- Illustrations: `src/components/product/`, rules in `docs/product-visuals/README.md`.
 
-- Copy: `src/content/*.ts`. Components hold no strings.
-- Pages: `src/app/`. Building blocks: `src/components/`.
-- Brand tokens: `src/app/globals.css` and `src/lib/tokens.ts`, checked by `scripts/check-contrast.mts`.
-- Product illustrations: `src/components/product/`, rules in `docs/product-visuals/README.md`.
+## Build
 
-## Build and deploy
-
-Node 22 and npm.
+Node 22 LTS and npm. The build needs internet once (it downloads the font, then serves it from the site).
 
 ```bash
 npm ci
@@ -25,93 +22,96 @@ npm ci
 npm run build
 ```
 
-`npm run build` runs the contrast gate first, then the export into `out/`. Never bypass the gate. `npm run lint` and `npm run dev` work as usual.
+The build runs the contrast gate first. Never bypass it. `.github/workflows/ci.yml` has the checks worth keeping.
 
-- The build downloads the site's font (Plus Jakarta Sans) once and then serves it from the site itself, so the build machine needs internet access.
-- Upload `out/` to any static host. Addresses end in a slash (`/about/`), so the host must serve `index.html` for a folder.
-- The demo deploys from `main` through `.github/workflows/deploy.yml`. `.github/workflows/ci.yml` holds the checks worth keeping on any new pipeline: lint, contrast gate, build, every page present, the drafts still marked, and the base path applied once.
+## Going live on a server (Ubuntu)
 
-## Moving to the real domain, in order
+Ubuntu 20.04 is out of standard security support (since 2025). Use **24.04 LTS** if the VM allows it; if not, attach Ubuntu Pro for security updates. The steps are the same.
 
-1. **Base path.** Leave `NEXT_PUBLIC_BASE_PATH` unset for a site at the domain root. The demo sets it to `/Algo-Web-Live`.
-2. **Site address.** In `src/content/site.ts`, set `site.url` to `https://www.algomotiveai.com`. It feeds the canonical address, the sitemap and the social cards.
-3. **Let search engines in.** Remove `robots: { index: false, follow: false }` in `src/app/layout.tsx`, and change `disallow: "/"` to `allow: "/"` in `src/app/robots.ts`. Not before launch day.
-4. **Redirects.** Four live-site addresses were folded into other pages. The export forwards them with a small page; on the real host, make them permanent (301) redirects:
+Install:
 
-   | Old address | New address |
-   | --- | --- |
-   | `/ai-agents` | `/platform/#agents` |
-   | `/products` | `/#products` |
-   | `/solutions` | `/#industries` |
-   | `/resources` | `/blog/` |
+```bash
+sudo apt update && sudo apt install -y nginx certbot python3-certbot-nginx ufw fail2ban unattended-upgrades git
+```
 
-5. **HTTPS** on, with the bare domain redirecting to `www`.
-6. **Search Console.** Verify the domain, then submit `https://www.algomotiveai.com/sitemap.xml`. Only after step 3.
-7. **Google Business Profile.** Company address and hours, owned by the company account.
+Node 22 is only needed if the site is built on the server (it can also be built elsewhere and `out/` copied up):
 
-## Contact form
+```bash
+curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash && . ~/.nvm/nvm.sh && nvm install 22
+```
 
-The form on `/contact` is a HubSpot embed. Its portal ID, form ID and region are in `src/content/contact.ts` (public by design). The script loads on that page only. If the form cannot load or never draws, the sales and helpdesk addresses take its place.
+Then:
 
-- **Ownership.** The HubSpot account and its admin login belong to the company, not to one person.
-- **Settings in HubSpot:** add the real domain as a site domain in the tracking-code settings (otherwise submissions are filed as spam), and keep reCAPTCHA on, the thank-you message and the notification emails.
-- **Paid plan:** the submit button can then be set to the brand cyan `#38BDF8` with navy `#031522` text, and the free-plan badge removed. Neither can be changed from the site.
+1. **Code changes first** (one commit): leave `NEXT_PUBLIC_BASE_PATH` unset; set `site.url` to `https://www.algomotiveai.com` in `src/content/site.ts`; on launch day remove `robots: { index: false, follow: false }` in `src/app/layout.tsx` and change `disallow: "/"` to `allow: "/"` in `src/app/robots.ts`.
+2. **Build** and copy `out/` to `/var/www/algomotive`.
+3. **Firewall:** `sudo ufw allow OpenSSH && sudo ufw allow 'Nginx Full' && sudo ufw enable`.
+4. **DNS:** A records for `algomotiveai.com` and `www` to the VM's IP.
+5. **nginx:** the server block below, then `sudo nginx -t && sudo systemctl reload nginx`.
+6. **HTTPS:** `sudo certbot --nginx -d algomotiveai.com -d www.algomotiveai.com` (renews by itself).
+7. **Check:** every page loads, the four old addresses redirect, the form on `/contact` draws.
 
-## Analytics and cookies
+```nginx
+server {
+    server_name www.algomotiveai.com;
+    root /var/www/algomotive;
+    index index.html;
 
-The demo has no analytics. The slot is the comment in `src/app/layout.tsx` (search for "Analytics slot").
+    location / { try_files $uri $uri/ $uri.html =404; }
+    error_page 404 /404.html;
 
-- Add one tool, HubSpot tracking or GA4, never both, and a cookie banner before it.
-- Update the cookie table in `src/content/privacy.ts` at the same time.
-- The site itself stores two items in the browser: `algo-theme` (local storage, only after a theme switch) and `algo-contact-form-reloaded` (session storage, only if the form had to reload).
+    # Old live-site addresses (permanent).
+    location = /ai-agents { return 301 /platform/#agents; }
+    location = /products  { return 301 /#products; }
+    location = /solutions { return 301 /#industries; }
+    location = /resources { return 301 /blog/; }
 
-## Blog
+    location /_next/static/ { add_header Cache-Control "public, max-age=31536000, immutable"; }
 
-`/blog` reads posts from HubSpot's blog at build time (`src/lib/posts.ts`).
+    gzip on;
+    gzip_types text/css application/javascript application/json image/svg+xml text/plain;
 
-- Build environment: `BLOG_API_TOKEN` (a private-app token with read access to blog content; a secret, never in the code) and, with more than one blog, `BLOG_ID`.
-- Without the token, the blog shows the live site's "published only after review and approval" line.
-- A new post appears on the next build, so rebuild after publishing.
-- A bad token fails the build instead of publishing an empty blog.
+    add_header X-Content-Type-Options nosniff always;
+    add_header Referrer-Policy strict-origin-when-cross-origin always;
+}
 
-## Legal pages
+server {
+    server_name algomotiveai.com;
+    return 301 https://www.algomotiveai.com$request_uri;
+}
+```
 
-`/privacy` and `/terms` are drafts, marked "Draft, not yet approved" and kept out of search. The CEO approves them. On approval: delete the `draft` block and set `updated` in `src/content/privacy.ts` and `src/content/terms.ts`, and remove the draft check in `.github/workflows/ci.yml`. The pages then become indexable and join the sitemap on their own.
+Certbot adds the port 443 and HTTP-to-HTTPS lines to both blocks. Don't add a Content-Security-Policy without allowing the form provider and its spam check, or the contact form stops drawing.
 
-## Licences
+## After launch
 
-| Asset | Where | Licence |
-| --- | --- | --- |
-| Plus Jakarta Sans | `src/lib/fonts.ts`, served from the site | SIL Open Font License 1.1 |
-| Icons | inlined in `src/components/product/Icon.tsx`, source noted there | Apache 2.0 |
-| Logo and mark | `docs/brand/logo-pack/`, `src/components/layout/Logo.tsx`, `src/app/icon.svg` | Algomotive's own |
-| Social card | `src/app/opengraph-image.png` | Algomotive's own, made for this site |
-
-No stock photography, AI-generated images or photos of people anywhere in the repo.
+- **Form:** in the CRM, add the real domain as a site domain (otherwise enquiries go to spam). The CRM account belongs to the company. On the paid plan, set the button to cyan `#38BDF8` with navy `#031522` text.
+- **Search Console:** verify the domain and submit `/sitemap.xml`. Then set up the Google Business Profile.
+- **Analytics:** none in the demo. Add one tool (the CRM's tracking or GA4, not both) behind a cookie banner, at the slot in `src/app/layout.tsx`, and update the cookie table in `src/content/privacy.ts`.
+- **Blog:** set `BLOG_API_TOKEN` (and `BLOG_ID` if more than one blog) in the build environment. Posts appear on the next build.
+- **Legal:** `/privacy` and `/terms` are drafts until the CEO approves. Then delete the `draft` block and set `updated` in both content files, and remove the draft check in `ci.yml`.
 
 ## Open placeholders
 
-From `grep -rn "PLACEHOLDER" src content`, 28 Oct 2026:
+`grep -rn "PLACEHOLDER" src`, 28 Oct 2026:
 
 | Where | What replaces it |
 | --- | --- |
-| `src/content/site.ts:90` | `site.url`: the real domain |
-| `src/content/site.ts:147` and `src/components/layout/Footer.tsx:67` | LinkedIn and other public profiles, once confirmed |
-| `src/content/site.ts:151` | Footer legal line: brand or registered name (owner decision) |
+| `src/content/site.ts:90` | The real domain |
+| `src/content/site.ts:147`, `src/components/layout/Footer.tsx:67` | Public profiles (LinkedIn first) |
+| `src/content/site.ts:151` | Footer legal name |
 | `src/content/privacy.ts:26`, `src/content/terms.ts:16` | Remove the draft notice on approval |
-| `src/content/privacy.ts:40`, `src/content/terms.ts:30` | Registered address, as on the trade licence |
-| `src/content/terms.ts:103` | Governing law and courts (the emirate that issued the licence) |
+| `src/content/privacy.ts:40`, `src/content/terms.ts:30` | Registered address |
+| `src/content/terms.ts:103` | Governing law and courts |
 | `src/content/privacy.ts:57` | The form's exact fields |
-| `src/content/privacy.ts:112` | Legal basis for transfers outside the UAE |
-| `src/content/privacy.ts:134` | Form cookies, confirmed on the live site |
-| `src/content/privacy.ts:178` | Privacy contact address and response time |
+| `src/content/privacy.ts:112` | Legal basis for transfers |
+| `src/content/privacy.ts:134` | Form cookies, checked on the live site |
+| `src/content/privacy.ts:178` | Privacy contact and response time |
 
-## Known gaps
+## Quality, 28 Oct 2026
 
-Sweep of 28 Oct 2026 (checklist A28, A30):
+- Lighthouse on the export: desktop performance 100, mobile 91 to 97. Accessibility 100, except 96 on home and AlgoPO, where faint sample text sits inside the illustrations (owner kept it; WCAG exempts it). SEO 63 only because the demo is noindex. Contact best practices 77, from the form provider's cookies.
+- Clean at 360 / 768 / 1280 / 1920 in both themes. Clickable illustrations are static below 640px.
 
-- Layout is clean at 360, 768, 1280 and 1920 in both themes.
-- Performance: desktop 96 to 98, mobile 93 to 98 on every page measured.
-- Clickable illustrations become static pictures below 640px wide (`src/components/product/InteractiveFrame.tsx`), because their controls would be under the 24px tap-target minimum there.
-- Accessibility is 100 except home and AlgoPO at 96: faint sample text inside the illustrations. WCAG exempts text that is part of a picture, and the owner chose to keep it.
-- The contact page's layout-shift score depends on the real form, which the build sandbox cannot load. Check it on the live site with PageSpeed Insights.
+## Licences
+
+Plus Jakarta Sans: SIL Open Font License 1.1. Icons (`Icon.tsx`): Apache 2.0. Logo, mark and social card: Algomotive's own. No stock, AI-generated or people photos.

@@ -1,10 +1,10 @@
 ---
 name: product-visual
-description: Builds one product visual for the Algomotive site as a near one-for-one coded replica of a frame in the brand file (Figma). Use when asked to add, port or rebuild an illustration, product UI mock, card, panel or "visual" from the brochure or the Figma file. Give it the Figma node id(s), the component name, and where the visual will sit.
+description: Builds one product visual for the Algomotive site as a near one-for-one coded replica of a frame in the brand file. Use when asked to add, port or rebuild an illustration, product UI mock, card, panel or "visual" from the brochure or the brand file. Give it the brand file's frame id(s), the component name, and where the visual will sit.
 ---
 
 You build ONE product visual as a static, server-rendered React component that
-replicates a Figma frame measurement for measurement.
+replicates a brand-file frame measurement for measurement.
 
 Before anything else, read `docs/product-visuals/README.md` in full, then
 `src/components/product/Stage.tsx`, `src/components/product/ApprovalCard.tsx`,
@@ -15,23 +15,20 @@ the images in `docs/product-visuals/examples/` to see the standard you are
 matching.
 
 ## Inputs you need
-- Figma file key (`NlTtopvxXt8ipV3UnGDpC6` unless told otherwise) and node id(s).
+- The brand file's key (ask the owner; it is not kept in the repo) and frame id(s).
 - Component name (PascalCase) and content file name (kebab-case).
 - Any supplier-name substitutions already decided.
-If a node id is missing, find the frame with `get_metadata` on page `0:1` and
-confirm the choice in your report. Do not guess silently.
+If a frame id is missing, find the frame in the file's layer list and confirm
+the choice in your report. Do not guess silently.
 
 ## Tools
-Load the Figma tools with ToolSearch (`get_design_context`, `get_metadata`,
-`get_screenshot`, `get_figma_skill`). Read
-`skill://figma/figma-design-to-code/SKILL.md` with `get_figma_skill` before the
-first `get_design_context` call, and pass
-`skillNames: "resource:figma-design-to-code"`,
-`clientFrameworks: "react,next.js"`, `clientLanguages: "typescript,css"`.
+Use the design tool's MCP server if one is connected (load its tools with
+ToolSearch and read its design-to-code guidance first), with
+`react,next.js` and `typescript,css` as the target stack.
 
 ## Rules
 - Follow sections 3–5 of the README exactly. They encode mistakes already made.
-- Exact values come from `get_design_context` / `get_metadata` / node effects,
+- Exact values come from the design tool's exported values and layer effects,
   never from a screenshot.
 - Create or edit only: `src/components/product/<Name>.tsx`,
   `src/content/product/<name>.ts`, `src/app/product/<name>.css` (only if a new

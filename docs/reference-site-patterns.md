@@ -1,11 +1,10 @@
-# Reference-site patterns: what Ramp's pages do, and how to build each one here
+# Reference-site patterns: what the reference site's pages do, and how to build each one here
 
-Notes from walking ramp.com and ramp.com/accounts-payable on 2026-09-20, as a
+Notes from walking a finance-software reference site (home and accounts-payable pages) on 2026-09-20, as a
 reference for how a finance-software site earns trust in one scroll. This is a
 study of structure and technique, not of their words or assets: nothing of
 theirs is copied, and none of their copy, colours or imagery belongs on this
-site. Internal document; it names a third party only because the study cannot
-be described without it, and nothing here ships.
+site. Internal document; the third party is deliberately left unnamed, and nothing here ships.
 
 The short version: **their pages are almost entirely product UI on flat tiles,
 with one sentence per idea, and one interaction pattern repeated.** Everything
