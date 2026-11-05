@@ -17,7 +17,7 @@ Last updated 5 Nov 2026. Read this after `CLAUDE.md` when picking the work up in
 - New home section "AI agentic stack": the six layers, revealed in sequence (`src/components/blocks/LayerStack.tsx`), on a navy ground.
 - Visual lift on every page: an icon on every ItemGrid, TermList, Steps and Trace item (picked from the item's words in `src/lib/icon-for.ts`, overridable with `icon` in content), three card treatments (rule, cards, panel; chips and checks for term lists) varied by section, staggered card entrances, hover lift, gradient rails drawn in and numbers counting in on real sequences (`src/components/motion/Reveal.tsx`, `src/app/site/lift.css`). The marketing icon paths sit in `src/components/ui/site-icon-paths.ts` and never ship in client JS.
 - Team section on /about (`team` in `src/content/about.ts`, `src/components/sections/TeamGrid.tsx`), photos resized to 640px WebP with metadata stripped (`public/team/`).
-- "Book a demo" in the header, every hero, every closing band, the mobile menu and /contact (`src/components/sections/BookDemo.tsx`). Opens a dialog with the CRM's meetings scheduler; its script loads only the first time the dialog opens. Address from `NEXT_PUBLIC_MEETINGS_URL` (deploy workflow reads the repository variable `MEETINGS_URL`); without it, the dialog shows the sales address. Recorded on /privacy as a draft row to confirm.
+- "Book a demo" in the header, every hero, every closing band, the mobile menu and /contact (`src/components/sections/BookDemo.tsx`). Opens a dialog with the CRM's meetings scheduler; its script loads only the first time the dialog opens. Address in `src/content/site.ts`, overridable with `NEXT_PUBLIC_MEETINGS_URL` (the deploy workflow reads the repository variable `MEETINGS_URL`); if the calendar cannot load, the dialog shows the sales address. Recorded on /privacy as a draft row to confirm.
 - Checked: build and contrast gate (86/86), lint, no console errors, no sideways scroll at 360 / 768 / 1280 / 1920 on home, AlgoPay and about. Lighthouse mobile on the compressed export: home 93 to 97, AlgoPay 93 to 96; accessibility 100 on home, 96 on AlgoPay (the faint ghost-card text in the scatter, the same owner-accepted exception that used to sit on home).
 
 ## Owner decisions to keep
@@ -41,8 +41,7 @@ Owner, in the CRM:
 - The "Create your own free forms" badge is the free plan's; it goes once the paid plan includes branding removal. It cannot be hidden from the site's side.
 
 Owner, Book a demo:
-- In the CRM: create the meetings link (Sales, Meetings), set availability, duration and the confirmation email; copy the link.
-- In GitHub: Settings, Secrets and variables, Actions, Variables. Add `MEETINGS_URL` with that link. Run the deploy workflow.
+- Done 5 Nov 2026: the scheduling page exists in the CRM and its address is set in `src/content/site.ts` (`bookDemo.url`). To change it later, edit that line, or set the repository variable `MEETINGS_URL`, which overrides it at build time.
 - On the live demo, open "Book a demo" in a fresh Chrome profile and check which cookies the scheduler sets (same method as the form, below). Update the scheduler row on /privacy. If any is not strictly necessary, set `askFirst: true` in `src/content/site.ts`: the dialog then asks before loading it.
 
 Owner, legal pages:

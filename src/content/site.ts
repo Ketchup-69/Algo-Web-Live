@@ -139,8 +139,10 @@ export const site: SiteConfig = {
       accept: "Show the calendar",
       privacyLabel: "Privacy notice",
     },
-    // PLACEHOLDER: set the repository variable MEETINGS_URL to the scheduler's address (see docs/progress.md).
-    url: /^https:\/\//.test(process.env.NEXT_PUBLIC_MEETINGS_URL ?? "") ? (process.env.NEXT_PUBLIC_MEETINGS_URL as string) : "",
+    // The sales scheduling page (owner, 5 Nov 2026). NEXT_PUBLIC_MEETINGS_URL, if set at build time, overrides it.
+    url: /^https:\/\//.test(process.env.NEXT_PUBLIC_MEETINGS_URL ?? "")
+      ? (process.env.NEXT_PUBLIC_MEETINGS_URL as string)
+      : "https://meetings-eu1.hubspot.com/om-kashyap",
     scriptSrc: "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js",
     askFirst: false,
   },
