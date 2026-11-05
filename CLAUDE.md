@@ -21,6 +21,12 @@ Inbound. Findable in search and in AI-assistant answers, and interesting enough 
 Audience: CFOs, financial controllers, finance managers and IT directors at multi-entity operations in the UAE and GCC: hotel groups, restaurant chains, food distribution, retail, and any company running several entities on one finance team.
 Tone: precise, calm, technically literate, zero hype. They are impressed by "read-only, human sign-off, full audit trail", never by "revolutionary".
 Owner decision, 28 Oct 2026: on approvals and system access, follow the live site exactly. People review exceptions and sensitive or high-impact decisions (human authority when required); clean items can go straight through. Never claim read-only access. Where the two sentences above say otherwise, this line wins.
+Owner decisions, 5 Nov 2026 (revamp):
+- The AlgoPay technical brochure (`docs/reference/brochures/AlgoPay-Brochure.pdf`) is the master source for AlgoPay content. Where it and the live site differ on AlgoPay, the brochure wins. Keep British spelling. Do not use its phone number or its closing tagline.
+- More visual richness and motion are wanted than §4 and §5 allowed: icons, cards and card entrances, hover states and animated connector lines are approved. Still transform and opacity only, reduced motion respected, and pages stay fast.
+- The look of every new visual comes from the product dashboard (`docs/reference/dashboard/`).
+- The home page may say "AI agentic stack".
+
 Owner decisions, 28 Oct 2026, on products and sample data:
 - Product definitions (the product dashboard's): AlgoPay = accounts payable (supplier invoices and statements). AlgoPO = purchase orders (purchase requests to approved POs). AlgoCash = receivables. AlgoCapital AI = DSO. The website copy keeps the live site's definitions (owner decision: keep the live copy); every product visual is chosen to read true under both. Never rewrite product copy to match these definitions without the owner.
 - Sample data in illustrations: invent every supplier, customer and person name and check none is a real UAE or GCC business; no Arabic lines. Amounts are uneven, with fils, and every total, difference and count adds up. Dates sit in the current period (October to November 2026). No number that reads as a performance claim: no automation rates, no change vs last month, no headline volumes; counts and amounts on individual documents and accounts are fine. No product chrome (sidebar, "Demo only", "View as", language switch).
@@ -33,7 +39,7 @@ No pricing. No numbers, tiers or "starting from". The next step is always a conv
 No testimonials, case studies or performance metrics presented as real. Sample amounts inside product illustrations are fine only if the illustration is clearly a sample.
 Never mention RPA, and never compare AI with RPA. The site reads as AI automation.
 Never write that Algomotive is certified or compliant with any standard (ISO, SOC 2, GDPR, PDPL...). Name frameworks only with the live site's disclaimer, word for word (see the end of /security in `docs/live-site-content.md`).
-No stock photography, no AI-generated imagery, no people photos.
+No stock photography, no AI-generated imagery, no people photos. Exception (owner decision, 5 Nov 2026): the Teams section on /about shows the team's own photos, from `docs/reference/team/`.
 No secrets in the repo: no API keys, tokens, passwords or .env files. HubSpot portal and form IDs are public by design and are fine.
 Anything you are unsure is publishable becomes a placeholder and is flagged in your summary. Never invent a fact about the company.
 If a request conflicts with this section, stop and say so instead of complying.

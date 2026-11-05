@@ -1,0 +1,67 @@
+/*
+  Algomotive portal design tokens, v0.1 (27 Oct 2026)
+
+  Brand colours only. Every text colour below passes WCAG 2.2 AA (4.5:1)
+  on white and on the page background. Greys are navy mixed with white,
+  so even the neutrals belong to the brand.
+
+  Use the semantic names (ink, line, action...) in components, never raw hex.
+  Dark mode later = redefine these variables under [data-theme="dark"].
+*/
+:root {
+  /* Brand palette (from the Algomotive logo pack) */
+  --brand-navy: #031522;
+  --brand-green: #22B573;
+  --brand-cyan: #38BDF8;
+  --brand-violet: #8B7CFF;
+  --brand-mint: #7DE3C3;
+
+  /* Text */
+  --ink: #031522;            /* main text and numbers, 18.5:1 on white */
+  --ink-2: #425059;          /* supporting text, navy at 75%, 8.3:1 */
+  --ink-3: #636E76;          /* labels, timestamps, navy at 62%, 5.2:1 */
+  --ink-on-dark: #FFFFFF;
+  --ink-on-dark-2: #A7ADB2;  /* sidebar labels, 8:1 on navy */
+
+  /* Surfaces */
+  --surface: #FFFFFF;        /* cards, tables, panels */
+  --page: #F5F6F6;           /* app background, navy at 4% */
+  --sidebar: #031522;
+  --sidebar-hover: #0C1E2B;
+  --sidebar-active: #172834;
+
+  /* Lines */
+  --line: #E1E3E4;           /* card borders, dividers, navy at 12% (decorative) */
+  --line-strong: #818A90;    /* input borders, navy at 50%, 3.5:1 */
+  --bar-muted: #C8CCCE;      /* past bars in charts, navy at 22% */
+
+  /* Meaning. Fills use the brand colour, text on them is always navy */
+  --action: #38BDF8;         /* buttons, links, focus. Navy text on it: 8.6:1 */
+  --action-tint: #E1F5FE;    /* waiting for approval */
+  --success: #22B573;        /* approved, matched, posted */
+  --success-tint: #DEF4EA;
+  --ai: #8B7CFF;             /* anything the AI did */
+  --ai-tint: #EEEBFF;
+  --attention: #031522;      /* needs attention: solid navy badge, mint icon */
+  --attention-icon: #7DE3C3;
+
+  /* Shape */
+  --radius-card: 14px;
+  --radius-control: 10px;
+  --radius-badge: 6px;
+
+  /* Size */
+  --sidebar-width: 248px;
+  --sidebar-width-collapsed: 72px;
+  --control-height: 44px;    /* minimum click size */
+
+  /* Type */
+  --font-sans: "Plus Jakarta Sans", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --font-arabic: "IBM Plex Sans Arabic", "Plus Jakarta Sans", system-ui, sans-serif;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 150ms;
+  --duration-base: 220ms;
+  --duration-slow: 320ms;
+}
