@@ -136,8 +136,10 @@ export const privacyNotice: LegalDoc = {
               ["__cf_bm", "HubSpot, for the form", "Tells people from bots, to protect the form", "30 minutes"],
               ["_cfuvid", "HubSpot, for the form", "Limits repeated requests, to protect the form", "Until you close the browser"],
               ["_GRECAPTCHA", "Google reCAPTCHA", "Tells people from bots, to protect the form", "6 months"],
-              // PLACEHOLDER: the scheduler's cookies, once checked on the live demo with the scheduler address set
-              ["[to be confirmed]", "HubSpot, for the meeting scheduler", "Runs the booking calendar and protects it from abuse", "[to be confirmed]"],
+              // Seen 5 Nov 2026 in the scheduler's own response headers.
+              ["__cf_bm", "HubSpot, for the meeting scheduler", "Tells people from bots, to protect the booking calendar", "30 minutes"],
+              // PLACEHOLDER: any cookie the calendar sets from its own scripts, once checked in a browser on the live demo
+              ["[to be confirmed]", "HubSpot, for the meeting scheduler", "[to be confirmed]", "[to be confirmed]"],
             ],
           },
         },
@@ -145,7 +147,7 @@ export const privacyNotice: LegalDoc = {
         `You can block or delete cookies in your browser's settings. If you do, the form may not load; you can still email ${mail(site.email.sales)}.`,
       ],
       toConfirm:
-        "To be confirmed on the live demo: the form's three cookies in the table below are expected, not yet checked, and the meeting scheduler's are not yet known. If the check finds any cookie that is not strictly necessary, the form or the scheduler waits for consent (for the scheduler, switch on `askFirst` in src/content/site.ts) and this wording changes.",
+        "To be confirmed on the live demo: the form's three cookies in the table below are expected, not yet checked; the meeting scheduler's server sets `__cf_bm` (checked), and any cookies its calendar scripts set in the browser are not yet known. If the check finds any cookie that is not strictly necessary, the form or the scheduler waits for consent (for the scheduler, switch on `askFirst` in src/content/site.ts) and this wording changes.",
     },
     {
       id: "retention",
