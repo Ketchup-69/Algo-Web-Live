@@ -1,4 +1,7 @@
-import { Block, CtaBand, ItemGrid, Note, PageHero, Steps, TermList, Trace } from "@/components/blocks";
+import { Block, CtaBand, Figure, ItemGrid, Note, PageHero, Pipeline, TermList, Trace } from "@/components/blocks";
+import { OrbitHub } from "@/components/product/OrbitHub";
+import { AuditTrailCard } from "@/components/product/AuditTrailCard";
+import { securityHub } from "@/content/product/hubs";
 import { PointerTracker } from "@/components/motion";
 import { ControlsShown } from "@/components/sections/ControlsShown";
 import {
@@ -9,6 +12,7 @@ import {
   securityHero,
   securityLifecycle,
   securityMeta,
+  securityFigures,
 } from "@/content/security";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -24,16 +28,23 @@ export default function SecurityPage() {
   return (
     <main id="main" className="flex-1">
       <PointerTracker />
-      <PageHero copy={securityHero} />
+      <PageHero copy={securityHero} visual={<OrbitHub hub={securityHub} />} />
 
       <ControlsShown />
 
       <Block copy={pipeline} tone="subtle">
-        <Steps items={pipeline.steps} columns={4} />
+        <Pipeline items={pipeline.steps} label={pipeline.heading} />
       </Block>
 
       <Block copy={observability}>
-        <Trace label={observability.traceLabel} items={observability.trace} />
+        <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,6fr)_minmax(0,6fr)]">
+          <Trace label={observability.traceLabel} items={observability.trace} className="[&_ol]:lg:grid-cols-1 [&_ol]:sm:grid-cols-1" />
+          <Figure title={securityFigures.audit.title} body={securityFigures.audit.body}>
+            <div className="bg-well overflow-hidden rounded-card px-2 py-8 sm:px-6">
+              <AuditTrailCard maxScale={1.1} className="mx-auto" />
+            </div>
+          </Figure>
+        </div>
         <TermList label={observability.signalsLabel} items={observability.signals} variant="chips" className="mt-14" />
       </Block>
 

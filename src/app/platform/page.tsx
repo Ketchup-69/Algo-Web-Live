@@ -3,15 +3,21 @@ import {
   BlockHead,
   CompareTable,
   CtaBand,
+  Figure,
   ItemGrid,
   Note,
   PageHero,
+  Pipeline,
   RelatedLinks,
   Steps,
   TermList,
   Trace,
 } from "@/components/blocks";
 import { PointerTracker } from "@/components/motion";
+import { OrbitHub } from "@/components/product/OrbitHub";
+import { RetrievalCard } from "@/components/product/RetrievalCard";
+import { ApprovalCard } from "@/components/product/ApprovalCard";
+import { platformHub } from "@/content/product/hubs";
 import { SystemTiles } from "@/components/sections/SystemTiles";
 import {
   agents,
@@ -23,6 +29,7 @@ import {
   platformMeta,
   platformRelated,
   runtime,
+  platformFigures,
 } from "@/content/platform";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -37,7 +44,7 @@ export default function PlatformPage() {
   return (
     <main id="main" className="flex-1">
       <PointerTracker />
-      <PageHero copy={platformHero} />
+      <PageHero copy={platformHero} visual={<OrbitHub hub={platformHub} />} />
 
       <Block copy={capabilities}>
         <ItemGrid items={capabilities.items} variant="cards" />
@@ -66,16 +73,30 @@ export default function PlatformPage() {
         </div>
 
         <BlockHead copy={agents.lifecycle} level={3} className="mt-24" />
-        <Steps items={agents.lifecycle.steps} className="mt-10 lg:grid-cols-5" />
+        <Pipeline items={agents.lifecycle.steps} label={agents.lifecycle.heading} className="mt-10" />
 
         <BlockHead copy={agents.anatomy} level={3} className="mt-24" />
-        <ItemGrid items={agents.anatomy.items} columns={4} className="mt-10" />
+        <div className="mt-10 grid items-start gap-10 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
+          <ItemGrid items={agents.anatomy.items} columns={2} variant="cards" />
+          <Figure title={platformFigures.retrieval.title} body={platformFigures.retrieval.body}>
+            <div className="bg-well overflow-hidden rounded-card px-2 py-8 sm:px-6">
+              <RetrievalCard maxScale={1.1} className="mx-auto" />
+            </div>
+          </Figure>
+        </div>
 
         <BlockHead copy={agents.coordination} level={3} className="mt-24" />
-        <TermList items={agents.coordination.items} variant="checks" tone="violet" className="mt-10" />
+        <div className="mt-10 grid items-start gap-10 lg:grid-cols-[minmax(0,6fr)_minmax(0,6fr)]">
+          <TermList items={agents.coordination.items} variant="checks" tone="violet" className="[&_ul]:lg:grid-cols-1 [&_ul]:sm:grid-cols-1" />
+          <Figure title={platformFigures.approval.title} body={platformFigures.approval.body}>
+            <div className="bg-well overflow-hidden rounded-card px-2 py-8 sm:px-6">
+              <ApprovalCard maxScale={1.1} className="mx-auto" />
+            </div>
+          </Figure>
+        </div>
 
         <BlockHead copy={agents.adoption} level={3} className="mt-24" />
-        <Steps items={agents.adoption.steps} className="mt-10" />
+        <Pipeline items={agents.adoption.steps} label={agents.adoption.heading} className="mt-10" />
 
         <Note className="mt-16">{agents.disclaimer}</Note>
       </Block>

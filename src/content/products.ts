@@ -59,6 +59,157 @@ const related: Related[] = [
 
 export const productList: Product[] = [
   {
+    slug: "algopay",
+    name: "AlgoPay",
+    meta: {
+      title: "AlgoPay | Enterprise Payment Intelligence",
+      description:
+        "Explore AlgoPay for payment validation, authorisation, controlled execution, reconciliation, exception handling, financial control and transaction visibility.",
+    },
+    hero: {
+      heading: "Payments, Engineered to Think.",
+      lede: "Orchestrate payment validation, approvals, execution, reconciliation, controls and real-time financial visibility.",
+      primary: { label: "Discuss AlgoPay", href: routes.contact },
+      secondary: { label: "Explore the Workflow", href: "#workflow" },
+      // The technical brochure, page 1 (owner decision, 5 Nov 2026: the brochure is the master for AlgoPay).
+      highlights: [
+        "Purpose-built enterprise payment intelligence",
+        "Payment validation with approved financial controls",
+        "Human authorisation before controlled execution",
+        "Transaction-status visibility and reconciliation",
+        "Works above and across the existing ERP without replacing it",
+      ],
+    },
+    workflow: {
+      id: "workflow",
+      heading: "Coordinate every payment decision with control.",
+      intro:
+        "Connect payment requests, supporting evidence, validation, financial controls, authorisation, controlled execution, reconciliation, exception handling and transaction visibility through one governed workflow.",
+      steps: [
+        {
+          title: "Receive the payment request",
+          body: "Bring approved payment requests and supporting information into a controlled workflow with clear ownership and status.",
+        },
+        {
+          title: "Validate the context",
+          body: "Check approved beneficiary, amount, currency, due date, source documents, references, account information and required supporting evidence.",
+        },
+        {
+          title: "Apply financial controls",
+          body: "Apply approved policies, duplicate checks, payment rules, authority limits, segregation requirements and workflow conditions.",
+        },
+        {
+          title: "Prepare authorisation",
+          body: "Assemble the payment summary, supporting evidence, validation results, exceptions, required approvals and proposed next action.",
+        },
+        {
+          title: "Preserve human authority",
+          body: "Present the complete payment case to authorised people for approval, rejection, correction, escalation or further investigation.",
+        },
+        {
+          title: "Coordinate controlled execution",
+          body: "Send approved instructions through the connected and authorised payment process while preserving execution boundaries and status.",
+        },
+        {
+          title: "Reconcile the result",
+          body: "Compare approved payment instructions with transaction status, settlement information, accounting records and relevant exceptions.",
+        },
+        {
+          title: "Monitor and improve",
+          body: "Track agreed payment measures, exception patterns, authorisation performance, reconciliation status and control coverage.",
+        },
+      ],
+    },
+    // The technical brochure, page 5.
+    architecture: {
+      id: "architecture",
+      heading:
+        "A modular operating foundation for payments, agents, controls, human authorisation, ERP connectivity and reconciliation.",
+      layers: stackLayers.map(({ title, body, icon }) => ({ title, body, icon })),
+      scope: {
+        label: "Evidence and scope",
+        body: "AlgoPay extends the existing ERP and payment environment. The existing ERP and connected financial applications remain the systems of record. AlgoPay does not replace the ERP.",
+      },
+    },
+    pathway: {
+      id: "implementation",
+      heading: "Implementation pathway",
+      steps: [
+        { title: "Qualify the payment workflow and define the business outcome", icon: "target" },
+        { title: "Map requests, evidence, controls, authority, systems and ownership", icon: "schema" },
+        { title: "Configure validation, agent roles, approvals and exception handling", icon: "tune" },
+        { title: "Connect approved ERP, finance, payment, banking and data interfaces", icon: "lan" },
+        { title: "Validate scenarios, controls, execution boundaries and reconciliation", icon: "task_alt" },
+        { title: "Enable finance users and complete controlled production readiness", icon: "how_to_reg" },
+        { title: "Activate, monitor, measure and continuously improve", icon: "monitoring" },
+      ],
+    },
+    capabilities: {
+      heading: capabilitiesHeading,
+      items: [
+        {
+          title: "Payment validation",
+          body: "Check approved payment requests, beneficiary information, amounts, currencies, references, source documents and supporting evidence.",
+        },
+        {
+          title: "Authorisation control",
+          body: "Apply approved roles, authority levels, segregation requirements, policies, workflow conditions and human approval points.",
+        },
+        {
+          title: "Exception intelligence",
+          body: "Surface duplicate requests, missing evidence, beneficiary differences, amount differences, policy exceptions and unresolved status.",
+        },
+        {
+          title: "Controlled execution",
+          body: "Coordinate approved payment instructions through connected and authorised processes without creating uncontrolled autonomy.",
+        },
+        {
+          title: "Reconciliation",
+          body: "Compare approved instructions with transaction status, settlement information, accounting records and operational evidence.",
+        },
+        {
+          title: "Observable operations",
+          body: "Preserve request status, validation results, approvals, exceptions, execution events, reconciliation outcomes and audit history.",
+        },
+      ],
+    },
+    exceptions: {
+      heading: exceptionsHeading,
+      items: [
+        "Duplicate payment request",
+        "Missing supporting evidence",
+        "Beneficiary information difference",
+        "Amount or currency difference",
+        "Authority-limit exception",
+        "Unapproved payment instruction",
+        "Transaction-status mismatch",
+        "Reconciliation difference",
+        "Execution requiring escalation",
+      ],
+    },
+    measures: {
+      heading: measuresHeading,
+      items: [
+        "Payment-processing cycle time",
+        "Authorisation turnaround time",
+        "Payment accuracy",
+        "Exception volume",
+        "Reconciliation completion",
+        "Duplicate detection",
+        "Control coverage",
+        "Transaction visibility",
+      ],
+    },
+    disclaimer:
+      "Workflow behaviour, integration scope, payment channels, authorisation rules, execution boundaries, reconciliation requirements, processing capacity and outcome targets are validated for each implementation. Published customer results will use approved and verifiable evidence.",
+    related,
+    closing: {
+      heading: closingHeading,
+      primary: { label: "Discuss AlgoPay", href: routes.contact },
+      secondary: allProducts,
+    },
+  },
+  {
     slug: "algopo",
     name: "AlgoPO",
     meta: {
@@ -295,157 +446,6 @@ export const productList: Product[] = [
     closing: {
       heading: closingHeading,
       primary: { label: "Discuss AlgoCash", href: routes.contact },
-      secondary: allProducts,
-    },
-  },
-  {
-    slug: "algopay",
-    name: "AlgoPay",
-    meta: {
-      title: "AlgoPay | Enterprise Payment Intelligence",
-      description:
-        "Explore AlgoPay for payment validation, authorisation, controlled execution, reconciliation, exception handling, financial control and transaction visibility.",
-    },
-    hero: {
-      heading: "Payments, Engineered to Think.",
-      lede: "Orchestrate payment validation, approvals, execution, reconciliation, controls and real-time financial visibility.",
-      primary: { label: "Discuss AlgoPay", href: routes.contact },
-      secondary: { label: "Explore the Workflow", href: "#workflow" },
-      // The technical brochure, page 1 (owner decision, 5 Nov 2026: the brochure is the master for AlgoPay).
-      highlights: [
-        "Purpose-built enterprise payment intelligence",
-        "Payment validation with approved financial controls",
-        "Human authorisation before controlled execution",
-        "Transaction-status visibility and reconciliation",
-        "Works above and across the existing ERP without replacing it",
-      ],
-    },
-    workflow: {
-      id: "workflow",
-      heading: "Coordinate every payment decision with control.",
-      intro:
-        "Connect payment requests, supporting evidence, validation, financial controls, authorisation, controlled execution, reconciliation, exception handling and transaction visibility through one governed workflow.",
-      steps: [
-        {
-          title: "Receive the payment request",
-          body: "Bring approved payment requests and supporting information into a controlled workflow with clear ownership and status.",
-        },
-        {
-          title: "Validate the context",
-          body: "Check approved beneficiary, amount, currency, due date, source documents, references, account information and required supporting evidence.",
-        },
-        {
-          title: "Apply financial controls",
-          body: "Apply approved policies, duplicate checks, payment rules, authority limits, segregation requirements and workflow conditions.",
-        },
-        {
-          title: "Prepare authorisation",
-          body: "Assemble the payment summary, supporting evidence, validation results, exceptions, required approvals and proposed next action.",
-        },
-        {
-          title: "Preserve human authority",
-          body: "Present the complete payment case to authorised people for approval, rejection, correction, escalation or further investigation.",
-        },
-        {
-          title: "Coordinate controlled execution",
-          body: "Send approved instructions through the connected and authorised payment process while preserving execution boundaries and status.",
-        },
-        {
-          title: "Reconcile the result",
-          body: "Compare approved payment instructions with transaction status, settlement information, accounting records and relevant exceptions.",
-        },
-        {
-          title: "Monitor and improve",
-          body: "Track agreed payment measures, exception patterns, authorisation performance, reconciliation status and control coverage.",
-        },
-      ],
-    },
-    // The technical brochure, page 5.
-    architecture: {
-      id: "architecture",
-      heading:
-        "A modular operating foundation for payments, agents, controls, human authorisation, ERP connectivity and reconciliation.",
-      layers: stackLayers.map(({ title, body, icon }) => ({ title, body, icon })),
-      scope: {
-        label: "Evidence and scope",
-        body: "AlgoPay extends the existing ERP and payment environment. The existing ERP and connected financial applications remain the systems of record. AlgoPay does not replace the ERP.",
-      },
-    },
-    pathway: {
-      id: "implementation",
-      heading: "Implementation pathway",
-      steps: [
-        { title: "Qualify the payment workflow and define the business outcome", icon: "target" },
-        { title: "Map requests, evidence, controls, authority, systems and ownership", icon: "schema" },
-        { title: "Configure validation, agent roles, approvals and exception handling", icon: "tune" },
-        { title: "Connect approved ERP, finance, payment, banking and data interfaces", icon: "lan" },
-        { title: "Validate scenarios, controls, execution boundaries and reconciliation", icon: "task_alt" },
-        { title: "Enable finance users and complete controlled production readiness", icon: "how_to_reg" },
-        { title: "Activate, monitor, measure and continuously improve", icon: "monitoring" },
-      ],
-    },
-    capabilities: {
-      heading: capabilitiesHeading,
-      items: [
-        {
-          title: "Payment validation",
-          body: "Check approved payment requests, beneficiary information, amounts, currencies, references, source documents and supporting evidence.",
-        },
-        {
-          title: "Authorisation control",
-          body: "Apply approved roles, authority levels, segregation requirements, policies, workflow conditions and human approval points.",
-        },
-        {
-          title: "Exception intelligence",
-          body: "Surface duplicate requests, missing evidence, beneficiary differences, amount differences, policy exceptions and unresolved status.",
-        },
-        {
-          title: "Controlled execution",
-          body: "Coordinate approved payment instructions through connected and authorised processes without creating uncontrolled autonomy.",
-        },
-        {
-          title: "Reconciliation",
-          body: "Compare approved instructions with transaction status, settlement information, accounting records and operational evidence.",
-        },
-        {
-          title: "Observable operations",
-          body: "Preserve request status, validation results, approvals, exceptions, execution events, reconciliation outcomes and audit history.",
-        },
-      ],
-    },
-    exceptions: {
-      heading: exceptionsHeading,
-      items: [
-        "Duplicate payment request",
-        "Missing supporting evidence",
-        "Beneficiary information difference",
-        "Amount or currency difference",
-        "Authority-limit exception",
-        "Unapproved payment instruction",
-        "Transaction-status mismatch",
-        "Reconciliation difference",
-        "Execution requiring escalation",
-      ],
-    },
-    measures: {
-      heading: measuresHeading,
-      items: [
-        "Payment-processing cycle time",
-        "Authorisation turnaround time",
-        "Payment accuracy",
-        "Exception volume",
-        "Reconciliation completion",
-        "Duplicate detection",
-        "Control coverage",
-        "Transaction visibility",
-      ],
-    },
-    disclaimer:
-      "Workflow behaviour, integration scope, payment channels, authorisation rules, execution boundaries, reconciliation requirements, processing capacity and outcome targets are validated for each implementation. Published customer results will use approved and verifiable evidence.",
-    related,
-    closing: {
-      heading: closingHeading,
-      primary: { label: "Discuss AlgoPay", href: routes.contact },
       secondary: allProducts,
     },
   },

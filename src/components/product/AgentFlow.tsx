@@ -6,7 +6,7 @@ import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { cn } from "@/lib/cn";
 import { agentFlow as data, type FlowKind, type FlowNodeId } from "@/content/product/flow";
 import { useGsapContext } from "@/components/motion/useGsapContext";
-import { AgentMark } from "./AgentPill";
+import { AgentOrb } from "./AgentPill";
 import { CheckMark } from "./Dash";
 import { Icon, type IconName } from "./Icon";
 import { Stage } from "./Stage";
@@ -279,8 +279,8 @@ function FlowCanvas({ layout, className }: { layout: Layout; className?: string 
               <span className={cn("relative flex size-36 shrink-0 items-center justify-center rounded-u-9", TILE[item.kind])}>
                 <Icon name={ICON[item.id]} className="size-19" />
                 {item.kind === "ai" ? (
-                  <span className="absolute -right-4 -bottom-4 flex size-16 items-center justify-center rounded-full bg-bg shadow-[0_0_0_var(--u)_var(--ui-rule)]">
-                    <AgentMark />
+                  <span className="absolute -right-6 -bottom-6 flex rounded-full bg-bg">
+                    <AgentOrb live size={18} />
                   </span>
                 ) : null}
               </span>
@@ -315,6 +315,11 @@ function FlowCanvas({ layout, className }: { layout: Layout; className?: string 
  * every node ticked, no pulse. The timeline pauses whenever the drawing is
  * off screen or the tab is hidden, and is killed on unmount.
  */
+/** The one-column flow on its own: the home hero on phones, where the console is too dense. */
+export function AgentFlowStacked({ className }: { className?: string }) {
+  return <FlowCanvas layout={STACKED} className={cn("max-w-[24rem]", className)} />;
+}
+
 export function AgentFlow({ className }: { className?: string }) {
   return (
     <>

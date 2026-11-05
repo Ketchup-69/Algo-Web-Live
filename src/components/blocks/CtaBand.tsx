@@ -12,7 +12,7 @@ import type { ClosingCopy } from "@/content/types";
 export function CtaBand({ copy }: { copy: ClosingCopy }) {
   return (
     <section
-      className="bg-band relative pt-[calc(var(--band-rise)+2rem)] pb-(--space-section-md) text-fg"
+      className="bg-band relative overflow-hidden py-(--space-section-md) text-fg"
     >
       <GradientField variant="band" />
       <Container width="wide" className="relative">

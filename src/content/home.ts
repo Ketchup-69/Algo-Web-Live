@@ -155,10 +155,17 @@ export type ProductSummary = {
 
 export const products: SectionCopy & { items: ProductSummary[] } = {
   id: "products",
-  heading: "One AI platform. A growing universe of solutions.",
+  heading: "AI Agents",
   intro:
-    "Apply specialised agents, governed workflows, enterprise knowledge, connected systems, human authority and measurable operations to the financial and operational processes that matter most.",
+    "One AI platform. A growing universe of solutions. Apply specialised agents, governed workflows, enterprise knowledge, connected systems, human authority and measurable operations to the financial and operational processes that matter most.",
   items: [
+    {
+      name: "AlgoPay",
+      category: "Payment intelligence",
+      tagline: "Payments, Engineered to Think.",
+      body: "Orchestrate payment validation, approvals, execution, reconciliation, controls and real-time financial visibility.",
+      link: { label: "Explore AlgoPay", href: routes.algopay },
+    },
     {
       name: "AlgoPO",
       category: "AI procurement",
@@ -172,13 +179,6 @@ export const products: SectionCopy & { items: ProductSummary[] } = {
       tagline: "Cash Flow, Engineered to Think.",
       body: "Apply intelligent agents to receivables, collections, customer prioritisation, cash visibility and DSO optimisation.",
       link: { label: "Explore AlgoCash", href: routes.algocash },
-    },
-    {
-      name: "AlgoPay",
-      category: "Payment intelligence",
-      tagline: "Payments, Engineered to Think.",
-      body: "Orchestrate payment validation, approvals, execution, reconciliation, controls and real-time financial visibility.",
-      link: { label: "Explore AlgoPay", href: routes.algopay },
     },
     {
       name: "AlgoCapital AI",

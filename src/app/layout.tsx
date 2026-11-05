@@ -81,13 +81,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body className="flex min-h-full flex-col bg-bg font-body text-fg">
-        {/* The page ground: three large lights, always slowly on the move
-            behind everything. Decorative; still under reduced motion. */}
-        <div aria-hidden="true" className="page-wash">
-          <i />
-          <i />
-          <i />
-        </div>
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-surface focus:px-4 focus:py-2 focus:text-fg focus:outline-2 focus:outline-offset-2 focus:outline-ring"

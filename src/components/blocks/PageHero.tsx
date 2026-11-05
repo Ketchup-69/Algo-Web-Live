@@ -19,10 +19,13 @@ export function PageHero({
   copy,
   size = "3xl",
   visual,
+  wideVisual = false,
 }: {
   copy: HeroCopy;
   size?: "3xl" | "4xl";
   visual?: ReactNode;
+  /** Give the visual the larger share of the row (the home console). */
+  wideVisual?: boolean;
 }) {
   return (
     <Section spacing="none" className="relative overflow-hidden pt-14 pb-(--space-section-md) sm:pt-20 lg:pt-24">
@@ -31,7 +34,12 @@ export function PageHero({
 
       <Container width="wide" className="relative">
         <HeroSequence>
-          <div className={cn("grid items-center gap-14", visual && "lg:grid-cols-2 lg:gap-10")}>
+          <div
+            className={cn(
+              "grid items-center gap-14",
+              visual && (wideVisual ? "lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-12" : "lg:grid-cols-2 lg:gap-10"),
+            )}
+          >
             <div>
               <Heading
                 level={1}

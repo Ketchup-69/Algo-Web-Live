@@ -1,9 +1,11 @@
 import { Block, CompareTable, CtaBand, ItemGrid, LayerStack, Note, PageHero, Steps, TermList, Trace } from "@/components/blocks";
-import { Button, Container, Heading, Section, Text } from "@/components/ui";
+import { Button, Container, GradientField, Heading, Section, Text } from "@/components/ui";
 import { Reveal } from "@/components/motion";
 import { agenticStack, stackLayers } from "@/content/stack";
 import { PointerTracker } from "@/components/motion";
-import { AgentFlow } from "@/components/product/AgentFlow";
+import { AgentFlowStacked } from "@/components/product/AgentFlow";
+import { AgentConsole } from "@/components/product/AgentConsole";
+import { site } from "@/content/site";
 import { ProductRows } from "@/components/sections/ProductRows";
 import {
   agentLaunch,
@@ -34,9 +36,14 @@ export default function Home() {
       <PointerTracker />
       <PageHero
         copy={homeHero}
-        size="4xl"
+        size="3xl"
+        wideVisual
         visual={
-          <AgentFlow className="mx-auto lg:mr-0" />
+          <figure>
+            <AgentConsole className="mx-auto hidden sm:block lg:mr-0" />
+            <AgentFlowStacked className="mx-auto sm:hidden" />
+            <figcaption className="mt-4 text-center text-sm text-fg-muted lg:text-right">{site.ui.sampleNote}</figcaption>
+          </figure>
         }
       />
 
@@ -67,9 +74,10 @@ export default function Home() {
         </div>
       </Block>
 
-      {/* AI agentic stack: the one navy section on the page. */}
-      <Section id={agenticStack.id} data-theme="band" className="scroll-mt-20 bg-bg text-fg">
-        <Container width="wide">
+      {/* AI agentic stack: follows the page theme like every other section. */}
+      <Section id={agenticStack.id} tone="subtle" className="relative scroll-mt-20 overflow-hidden">
+        <GradientField variant="panel" />
+        <Container width="wide" className="relative">
           <Reveal>
             <div className="grid gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
               <div className="lg:sticky lg:top-28 lg:self-start">

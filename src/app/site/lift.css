@@ -12,7 +12,9 @@
   --tile-navy: var(--algo-navy);
   --tile-on-navy: var(--algo-white);
   --lift-shadow: 0 18px 40px -16px rgb(3 21 34 / 0.22), 0 2px 6px -2px rgb(3 21 34 / 0.08);
-  --card-flat-shadow: 0 1px 2px rgb(3 21 34 / 0.04);
+  /* A card on white has to read as a card: a firmer hairline and a soft drop. */
+  --card-line: color-mix(in srgb, var(--algo-navy) 15%, transparent);
+  --card-flat-shadow: 0 1px 2px rgb(3 21 34 / 0.06), 0 10px 24px -14px rgb(3 21 34 / 0.18);
 }
 [data-theme="dark"],
 [data-theme="band"] {
@@ -22,6 +24,7 @@
   --tile-navy: var(--algo-mint);
   --tile-on-navy: var(--algo-navy);
   --lift-shadow: 0 18px 40px -16px rgb(0 0 0 / 0.6);
+  --card-line: color-mix(in srgb, var(--algo-white) 12%, transparent);
   --card-flat-shadow: none;
 }
 @theme inline {
@@ -38,7 +41,7 @@
   position: relative;
   border-radius: var(--radius-card);
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 1px solid var(--card-line);
   box-shadow: var(--card-flat-shadow);
   isolation: isolate;
 }
@@ -161,4 +164,276 @@
   height: 100% !important;
   min-height: 40rem;
   border: 0;
+}
+
+/* ------------------------------------------------------------ grid ground --
+   Replaces the colour blobs everywhere (GradientField.tsx). A 56px line grid
+   in the text colour at a whisper, faded out by a mask from the corner the
+   light used to come from, and a 1px brand hairline. Nothing moves. */
+.gridfield {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.gridfield-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--fg) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--fg) 6%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+  background-position: -1px -1px;
+  mask-image: radial-gradient(80% 70% at 85% 0%, black 0%, transparent 75%);
+}
+.gfield-band .gridfield-lines {
+  mask-image: radial-gradient(70% 90% at 50% 100%, black 0%, transparent 80%);
+}
+.gfield-panel .gridfield-lines {
+  mask-image: radial-gradient(70% 80% at 50% 100%, black 0%, transparent 80%);
+}
+.gridfield-rule {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  background: var(--grad-hairline);
+  opacity: 0.8;
+}
+.gfield-glow .gridfield-rule {
+  display: none;
+}
+
+/* ------------------------------------------------------------ the console --
+   The home hero (AgentConsole.tsx). The component only sets data-phase,
+   data-read, data-checked and data-posted; everything seen is here. Each
+   reveal waits `--i` beats, so fields, checks and log lines arrive in turn.
+   Transform and opacity only. Under reduced motion nothing moves and the
+   first invoice shows finished (the component never leaves that state). */
+.console .cs-trail { opacity: 0; transition: opacity 500ms var(--ease-out); }
+.console .cs-trail[data-on="true"] { opacity: 1; }
+
+.console .cs-row::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--algo-cyan) 9%, transparent);
+  box-shadow: inset calc(var(--u) * 3) 0 0 var(--algo-cyan);
+  opacity: 0;
+  transition: opacity 300ms var(--ease-out);
+}
+.console .cs-row[data-active="true"]::before { opacity: 1; }
+
+/* Reading: fields come out one by one, each value sliding in from its left
+   edge, its confidence bar filling, the step bar above ticking along. */
+.console .cs-field { opacity: 0.25; transition: opacity 260ms var(--ease-out); }
+.console .cs-value { transform: translateX(-104%); transition: transform 380ms var(--ease-out); }
+.console .cs-confidence { transform: scaleX(0); transform-origin: left; transition: transform 520ms var(--ease-out); }
+.console .cs-step i { opacity: 0; transition: opacity 200ms var(--ease-out); }
+.console[data-read="true"] .cs-field { opacity: 1; }
+.console[data-read="true"] .cs-value { transform: none; }
+.console[data-read="true"] .cs-confidence { transform: scaleX(var(--c, 0.9)); }
+.console[data-read="true"] .cs-step i { opacity: 1; }
+.console[data-phase="read"] :is(.cs-field, .cs-value, .cs-confidence, .cs-step i) {
+  transition-delay: calc(250ms + var(--i, 0) * 340ms);
+}
+
+/* The band sweeping the page while it is read. */
+.console .cs-scan {
+  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--algo-violet) 30%, transparent) 70%, var(--algo-violet) 96%, transparent);
+  opacity: 0;
+}
+@keyframes cs-scan {
+  0% { transform: translateY(-100%); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(calc(var(--u) * 160)); opacity: 0; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .console[data-phase="read"] .cs-scan { animation: cs-scan 1.4s var(--ease-in-out) 2; }
+}
+
+/* Checks: each row arrives, spins while it is being worked out, then ticks. */
+.console .cs-check { opacity: 0.35; transform: translateY(calc(var(--u) * 6)); transition: opacity 260ms var(--ease-out), transform 360ms var(--ease-out); }
+.console .cs-spin { opacity: 1; transition: opacity 200ms var(--ease-out); }
+.console .cs-tick { opacity: 0; transform: scale(0.6); transition: opacity 220ms var(--ease-out), transform 300ms var(--ease-out); }
+.console .cs-label { opacity: 0.55; transition: opacity 220ms var(--ease-out); }
+.console .cs-flagbg { opacity: 0; transition: opacity 300ms var(--ease-out); }
+.console[data-checked="true"] .cs-check { opacity: 1; transform: none; }
+.console[data-checked="true"] .cs-spin { opacity: 0; }
+.console[data-checked="true"] .cs-tick { opacity: 1; transform: none; }
+.console[data-checked="true"] :is(.cs-label, .cs-flagbg) { opacity: 1; }
+.console[data-phase="check"] .cs-check { transition-delay: calc(var(--i) * 480ms); }
+.console[data-phase="check"] :is(.cs-spin, .cs-tick, .cs-label, .cs-flagbg) { transition-delay: calc(var(--i) * 480ms + 380ms); }
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes cs-turn { to { rotate: 360deg; } }
+  .console .cs-spin { animation: cs-turn 0.8s linear infinite; }
+}
+
+/* Outcome: three layers cross-fade; the approve button is pressed; the log
+   fills in line by line. */
+.console .cs-layer { opacity: 0; transform: translateY(calc(var(--u) * 8)); transition: opacity 320ms var(--ease-out), transform 420ms var(--ease-out); pointer-events: none; }
+.console .cs-layer[data-on="true"] { opacity: 1; transform: none; }
+.console .cs-approve { transition: transform 160ms var(--ease-out), opacity 160ms var(--ease-out); }
+.console .cs-approve[data-pressed="true"] { transform: scale(0.94); opacity: 0.85; }
+.console .cs-log { opacity: 0; transform: translateX(calc(var(--u) * -8)); transition: opacity 260ms var(--ease-out), transform 360ms var(--ease-out); }
+.console[data-posted="true"] .cs-log { opacity: 1; transform: none; }
+.console[data-phase="post"] .cs-log { transition-delay: calc(200ms + var(--i) * 300ms); }
+
+/* -------------------------------------------------------------- the hubs --
+   OrbitHub.tsx: rings turn, pulses run along the spokes (in and out by
+   turns), and the six cards light one after another on a 9s cycle. */
+.hub .hub-spoke {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--algo-cyan) 60%, transparent), color-mix(in srgb, var(--algo-violet) 45%, transparent));
+}
+.hub .hub-dot {
+  background: var(--algo-cyan);
+  box-shadow: 0 0 0 calc(var(--u) * 3) color-mix(in srgb, var(--algo-cyan) 25%, transparent), 0 0 calc(var(--u) * 12) calc(var(--u) * 2) color-mix(in srgb, var(--algo-cyan) 60%, transparent);
+  opacity: 0;
+}
+.hub .hub-halo {
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--algo-cyan) 22%, transparent), transparent);
+  opacity: 0.7;
+}
+.hub .hub-card {
+  transition: transform 400ms var(--ease-out);
+}
+.hub .hub-card::before {
+  content: "";
+  position: absolute;
+  inset: calc(var(--u) * -3);
+  border-radius: calc(var(--u) * 17);
+  box-shadow: 0 0 0 calc(var(--u) * 2) var(--algo-cyan), 0 calc(var(--u) * 12) calc(var(--u) * 28) calc(var(--u) * -10) color-mix(in srgb, var(--algo-cyan) 70%, transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+@keyframes hub-turn { to { transform: rotate(360deg); } }
+/* One pulse at a time: each spoke's runs in its own sixth of the cycle,
+   just before its card lights. */
+@keyframes hub-travel {
+  0% { transform: translate(0, -50%); opacity: 0; }
+  2% { opacity: 1; }
+  12% { opacity: 1; }
+  14% { transform: translate(calc(var(--u) * var(--len)), -50%); opacity: 0; }
+  100% { transform: translate(calc(var(--u) * var(--len)), -50%); opacity: 0; }
+}
+@keyframes hub-lit {
+  0%, 15% { opacity: 1; }
+  22%, 100% { opacity: 0; }
+}
+@keyframes hub-breathe {
+  0%, 100% { transform: scale(0.92); opacity: 0.55; }
+  50% { transform: scale(1.08); opacity: 0.9; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hub .hub-ring { animation: hub-turn 60s linear infinite; }
+  .hub .hub-ring-reverse { animation-direction: reverse; animation-duration: 90s; }
+  .hub .hub-dot { animation: hub-travel 9s var(--ease-in-out) infinite; animation-delay: calc(var(--i) * 1.5s); }
+  .hub .hub-card::before { animation: hub-lit 9s linear infinite; animation-delay: calc(var(--i) * 1.5s + 1.2s); }
+  .hub .hub-halo { animation: hub-breathe 4s ease-in-out infinite; }
+  [data-awake="false"] .hub :is(.hub-ring, .hub-dot, .hub-halo),
+  [data-awake="false"] .hub .hub-card::before {
+    animation-play-state: paused;
+  }
+}
+
+/* ----------------------------------------------------------- the pipeline --
+   Pipeline.tsx: nodes on a track that fills as the pulse travels. Below
+   1024px the track runs down the left; from 1024px it runs across. The
+   component sets --p (0 to 1) and each node's data-state. */
+.pipeline .pl-nodes { display: grid; gap: 0.75rem; }
+.pipeline .pl-track,
+.pipeline .pl-fill,
+.pipeline .pl-pulse-rail {
+  position: absolute;
+  left: 1.5rem;
+  top: 1.5rem;
+  bottom: 1.5rem;
+  width: 2px;
+  margin-left: -1px;
+}
+.pipeline .pl-track { background: var(--border); }
+.pipeline .pl-fill {
+  background: linear-gradient(180deg, var(--algo-green), var(--algo-cyan), var(--algo-violet));
+  transform-origin: top;
+  transform: scaleY(var(--p));
+  transition: transform 700ms var(--ease-in-out);
+}
+.pipeline .pl-pulse-rail { background: none; }
+.pipeline .pl-pulse {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin: -0.375rem 0 0 -0.375rem;
+  border-radius: 9999px;
+  background: var(--algo-cyan);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--algo-cyan) 25%, transparent), 0 0 18px 4px color-mix(in srgb, var(--algo-cyan) 55%, transparent);
+}
+.pipeline .pl-pulse-rail { transform: translateY(calc(var(--p) * 100%)); transition: transform 700ms var(--ease-in-out); }
+.pipeline .pl-pulse-rail { height: auto; }
+
+.pipeline .pl-dot {
+  border-color: var(--card-line);
+  transition: transform 300ms var(--ease-out);
+}
+.pipeline .pl-dot::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 9999px;
+  box-shadow: 0 0 0 2px var(--algo-cyan), 0 8px 22px -6px color-mix(in srgb, var(--algo-cyan) 80%, transparent);
+  opacity: 0;
+  transition: opacity 300ms var(--ease-out);
+}
+.pipeline .pl-dot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: var(--tile-green);
+  opacity: 0;
+  transition: opacity 300ms var(--ease-out);
+}
+.pipeline .pl-dot > * { position: relative; }
+.pipeline [data-state="done"] .pl-dot::before { opacity: 1; }
+.pipeline [data-state="active"] .pl-dot { transform: scale(1.12); }
+.pipeline [data-state="active"] .pl-dot::after { opacity: 1; }
+.pipeline [data-state="todo"] .pl-title { color: var(--fg-muted); }
+@media (hover: hover) and (pointer: fine) {
+  .pipeline button:hover .pl-dot { transform: scale(1.08); }
+}
+
+@media (min-width: 1024px) {
+  .pipeline .pl-nodes { grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 1rem; }
+  .pipeline .pl-track,
+  .pipeline .pl-fill,
+  .pipeline .pl-pulse-rail {
+    top: 1.5rem;
+    bottom: auto;
+    left: calc(100% / var(--n) / 2);
+    right: calc(100% / var(--n) / 2);
+    width: auto;
+    height: 2px;
+    margin: -1px 0 0;
+  }
+  .pipeline .pl-fill {
+    background: linear-gradient(90deg, var(--algo-green), var(--algo-cyan), var(--algo-violet));
+    transform-origin: left;
+    transform: scaleX(var(--p));
+  }
+  .pipeline .pl-pulse-rail { transform: translateX(calc(var(--p) * 100%)); }
+  .pipeline .pl-pulse { left: 0; top: 50%; }
+}
+
+.pipeline .pl-panel {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 300ms var(--ease-out), transform 400ms var(--ease-out);
+  pointer-events: none;
+}
+.pipeline .pl-panel[data-on="true"] { opacity: 1; transform: none; pointer-events: auto; }
+@media (prefers-reduced-motion: reduce) {
+  .pipeline :is(.pl-fill, .pl-pulse-rail, .pl-dot, .pl-panel) { transition: none; }
 }

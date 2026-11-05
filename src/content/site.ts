@@ -25,7 +25,8 @@ export const routes = {
   algopay: "/products/algopay/",
   algocapital: "/products/algocapital-ai/",
   products: "/#products",
-  custom: "/#custom",
+  /** Custom AI Solutions has no page of its own: the conversation starts on /contact. */
+  custom: "/contact/",
   agentLaunch: "/#agent-launch",
   industries: "/#industries",
 } as const;
@@ -41,6 +42,8 @@ export type SiteConfig = {
   name: string;
   /** The second line of the logo lockup, from the logo pack. */
   logoSubline: string;
+  /** The name in the header lockup (owner decision, 5 Nov 2026). */
+  logoName: string;
   /** The default meta description, and the footer's line under the logo. */
   description: string;
   /** Canonical origin. Used for metadata once the domain is decided. */
@@ -109,6 +112,7 @@ export type SiteConfig = {
 export const site: SiteConfig = {
   name: "Algomotive",
   logoSubline: "AI Platform",
+  logoName: "Algomotive AI",
   description:
     "Build intelligent agents, orchestrate complex workflows, and connect data, people and enterprise systems on one secure AI platform.",
 
@@ -150,11 +154,11 @@ export const site: SiteConfig = {
   nav: [
     { label: "Platform", href: routes.platform },
     {
-      label: "Products",
+      label: "AI Agents",
       items: [
+        { label: "AlgoPay", href: routes.algopay },
         { label: "AlgoPO", href: routes.algopo },
         { label: "AlgoCash", href: routes.algocash },
-        { label: "AlgoPay", href: routes.algopay },
         { label: "AlgoCapital AI", href: routes.algocapital },
         { label: "Custom AI Solutions", href: routes.custom },
       ],
@@ -168,7 +172,7 @@ export const site: SiteConfig = {
       heading: "Company",
       links: [
         { label: "Platform", href: routes.platform },
-        { label: "AI agents", href: routes.agents },
+        { label: "How agents work", href: routes.agents },
         { label: "Security and trust", href: routes.security },
         { label: "About", href: routes.about },
         { label: "Blog", href: routes.blog },
@@ -176,11 +180,11 @@ export const site: SiteConfig = {
       ],
     },
     {
-      heading: "Products",
+      heading: "AI Agents",
       links: [
+        { label: "AlgoPay", href: routes.algopay },
         { label: "AlgoPO", href: routes.algopo },
         { label: "AlgoCash", href: routes.algocash },
-        { label: "AlgoPay", href: routes.algopay },
         { label: "AlgoCapital AI", href: routes.algocapital },
         { label: "Custom AI Solutions", href: routes.custom },
       ],

@@ -30,8 +30,8 @@ export function Logo({
   gradientId?: string;
 }) {
   return (
-    <span className={cn("inline-flex items-center gap-2.5", className)}>
-      <svg aria-hidden="true" viewBox="4 4 124 124" className={cn("shrink-0", withSubline ? "size-11" : "size-8")}>
+    <span className={cn("inline-flex items-center gap-3", className)}>
+      <svg aria-hidden="true" viewBox="4 4 124 124" className={cn("shrink-0", withSubline ? "size-11" : "size-10")}>
         <defs>
           <linearGradient id={gradientId} x1="8" y1="116" x2="118" y2="8" gradientUnits="userSpaceOnUse">
             <stop offset="0" style={{ stopColor: "var(--algo-green)" }} />
@@ -48,8 +48,9 @@ export function Logo({
         </g>
       </svg>
       <span className="flex flex-col">
-        <span className="font-display text-[1.3125rem] leading-none font-extrabold tracking-[-0.02em] text-(--logo-name)">
-          {site.name}
+        <span className="font-display text-[1.375rem] leading-none font-extrabold tracking-[-0.02em] whitespace-nowrap text-(--logo-name)">
+          {/* The footer lockup carries "AI Platform" under the name, so it keeps the plain name. */}
+          {withSubline ? site.name : site.logoName}
         </span>
         {withSubline ? (
           <span className="mt-1.5 font-display text-[0.6875rem] leading-none font-extrabold tracking-[0.28em] text-(--logo-sub) uppercase">

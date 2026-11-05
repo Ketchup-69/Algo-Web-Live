@@ -22,3 +22,47 @@ export const agentFlow = {
   /** The two ways out of the duplicate check. */
   branches: { clean: "Clean items", exceptions: "Exceptions" },
 } as const;
+
+/**
+ * The home hero's agent console: the words around the sample invoices. The
+ * invoices themselves (suppliers, numbers, lines, VAT, checks) are the
+ * AlgoPay scatter's, so the story is the same on both pages.
+ */
+export const agentConsole = {
+  alt: "Illustration of the agent at work: invoices wait in an inbox; one at a time the agent reads each one, pulling out the supplier, TRN, lines, VAT and total; checks it against the purchase order, the goods receipt and earlier uploads; posts the clean ones to your ERP and sends the one with a difference to a person, who approves it before it is posted.",
+  inbox: "Inbox",
+  reading: "Reading",
+  readerIdle: "Waiting for the next invoice",
+  checksTitle: "What the AI checked",
+  outcome: { posted: "Posted to your ERP", decision: "Needs your decision" },
+  status: {
+    queued: "Queued",
+    reading: "Reading",
+    checking: "Checking",
+    held: "Needs you",
+    posted: "Posted",
+  },
+  fields: {
+    supplier: "Supplier",
+    trn: "TRN",
+    number: "Invoice no.",
+    date: "Invoice date",
+    lines: "Lines",
+    vat: "VAT 5%",
+    total: "Total",
+  },
+  /** What the agent says while it reads, in turn. */
+  thoughts: ["Finding the supplier and the TRN", "Reading the line items", "Working out the VAT", "Matching to the purchase order"],
+  person: { initials: "FM", role: "Finance Manager" },
+  actions: { back: "Send back", approve: "Approve" },
+  log: {
+    read: "Read by AI",
+    matched: "Matched to the LPO and GRN",
+    passed: "All checks passed",
+    held: "Held for a person",
+    approved: "Approved by the Finance Manager",
+    posted: "Posted to your ERP",
+  },
+  linesWord: "lines",
+  sampleNote: "Illustration with sample data.",
+} as const;

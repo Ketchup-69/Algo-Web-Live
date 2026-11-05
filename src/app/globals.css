@@ -86,7 +86,7 @@
      Decorative only. Anything that is a real UI boundary (inputs, button
      outlines) uses `--border-strong` to clear the 3:1 non-text floor in
      WCAG 1.4.11. */
-  --border: color-mix(in srgb, var(--algo-navy) 11%, transparent);
+  --border: color-mix(in srgb, var(--algo-navy) 15%, transparent);
   --border-strong: var(--algo-n-strong); /* min 3.3 */
 
   /* Accent. Cyan is the action colour, but as text on white it is 2.14, so
@@ -609,63 +609,6 @@
 }
 
 /* --------------------------------------------------------------------------
-   GRADIENT FIELDS
-
-   Three soft lights on a section's ground. Each light is an element that only
-   ever changes `transform`: the outer box eases toward the pointer (a long
-   transition that the tracker keeps retargeting, which is what gives the
-   lag), and its ::before drifts slowly on a keyframe so the field is alive on
-   touch too. The falloff is in the gradient itself, so there is no `filter:
-   blur` to re-rasterise. `--reach` is how far a light travels across the
-   section's width; a negative reach moves against the cursor, which is what
-   makes the three read as depth rather than one sheet sliding.
-   -------------------------------------------------------------------------- */
-.gfield {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  contain: layout paint;
-}
-.gblob {
-  position: absolute;
-  left: var(--x);
-  top: var(--y);
-  width: var(--s);
-  aspect-ratio: 1;
-  margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
-  transform: translate3d(
-    calc((var(--px, 0.5) - 0.5) * var(--reach, 120px)),
-    calc((var(--py, 0.5) - 0.5) * var(--reach, 120px)),
-    0
-  );
-  transition: transform var(--lag, 1.6s) var(--ease-out);
-  will-change: transform;
-}
-.gblob::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: radial-gradient(
-    closest-side,
-    var(--c) 0%,
-    color-mix(in srgb, var(--c) 50%, transparent) 42%,
-    transparent 100%
-  );
-}
-@keyframes gblob-drift {
-  0% { transform: translate3d(-4%, -3%, 0) scale(1); }
-  50% { transform: translate3d(5%, 4%, 0) scale(1.1); }
-  100% { transform: translate3d(-4%, -3%, 0) scale(1); }
-}
-@media (prefers-reduced-motion: no-preference) {
-  .gblob::before {
-    animation: gblob-drift var(--drift, 22s) ease-in-out infinite;
-  }
-}
-
-/* --------------------------------------------------------------------------
    PINNED STEPS — one pair at a time (see PinnedSteps.tsx)
 
    Default: four pairs in a column, text then visual. That is what a phone, a
@@ -820,133 +763,13 @@
   }
 }
 
-/* --------------------------------------------------------------------------
-   THE PAGE GROUND — always slowly moving
-
-   A fixed layer behind the whole page: three very large lights, each on its
-   own long loop (48s, 62s, 75s — no common period, so the arrangement never
-   visibly repeats). Fixed and transform-only, so it is composited once and
-   costs nothing as the page scrolls over it. Sections with their own ground
-   (the tinted band, the dark panel, the closing band) simply cover it.
-   -------------------------------------------------------------------------- */
-.page-wash {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  pointer-events: none;
-  contain: strict;
-}
-.page-wash i {
-  position: absolute;
-  left: var(--x);
-  top: var(--y);
-  width: var(--s);
-  aspect-ratio: 1;
-  margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
-  border-radius: 50%;
-  background: radial-gradient(
-    closest-side,
-    var(--c) 0%,
-    color-mix(in srgb, var(--c) 50%, transparent) 42%,
-    transparent 100%
-  );
-  will-change: transform;
-}
-.page-wash i:nth-child(1) { --c: var(--pw-a); --x: 78%; --y: 12%; --s: max(80vw, 60rem); }
-.page-wash i:nth-child(2) { --c: var(--pw-b); --x: 12%; --y: 58%; --s: max(70vw, 52rem); }
-.page-wash i:nth-child(3) { --c: var(--pw-c); --x: 60%; --y: 96%; --s: max(64vw, 48rem); }
-@keyframes wash-1 {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  33% { transform: translate3d(-22vw, 14vh, 0) scale(1.15); }
-  66% { transform: translate3d(-6vw, 34vh, 0) scale(0.92); }
-}
-@keyframes wash-2 {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  40% { transform: translate3d(26vw, -18vh, 0) scale(1.12); }
-  75% { transform: translate3d(12vw, 16vh, 0) scale(0.94); }
-}
-@keyframes wash-3 {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  30% { transform: translate3d(-24vw, -22vh, 0) scale(1.1); }
-  70% { transform: translate3d(14vw, -36vh, 0) scale(1.18); }
-}
-@media (prefers-reduced-motion: no-preference) {
-  .page-wash i:nth-child(1) { animation: wash-1 48s ease-in-out infinite; }
-  .page-wash i:nth-child(2) { animation: wash-2 62s ease-in-out infinite; }
-  .page-wash i:nth-child(3) { animation: wash-3 75s ease-in-out infinite; }
-}
-
-/* A field stops where its section stops, and a light cut off in a straight
-   line is a seam. The hero's fades out at the bottom; `gfield-soft` fades at
-   both ends, for a section with others above and below it. */
-.gfield-glow {
-  mask-image: linear-gradient(180deg, black 0, black 62%, transparent 100%);
-}
-.gfield-glow.gfield-soft {
-  mask-image: linear-gradient(180deg, transparent 0, black 22%, black 78%, transparent 100%);
-}
-
-.gfield-glow .gblob:nth-child(1) { --c: var(--gf-a); --x: 82%; --y: 0%; --s: min(92vw, 70rem); --reach: 150px; --lag: 1.8s; }
-.gfield-glow .gblob:nth-child(2) { --c: var(--gf-b); --x: 52%; --y: -6%; --s: min(72vw, 52rem); --reach: -110px; --lag: 2.6s; --drift: 28s; }
-.gfield-glow .gblob:nth-child(3) { --c: var(--gf-c); --x: 100%; --y: 46%; --s: min(64vw, 46rem); --reach: 240px; --lag: 1.2s; --drift: 17s; }
-
-.gfield-panel {
-  overflow: visible;
-  contain: none;
-}
-.gfield-panel .gblob:nth-child(1) { --c: var(--gf-a); --x: 50%; --y: 92%; --s: min(120vw, 84rem); --reach: 160px; --lag: 1.9s; }
-.gfield-panel .gblob:nth-child(2) { --c: var(--gf-b); --x: 18%; --y: 70%; --s: min(80vw, 54rem); --reach: -120px; --lag: 2.6s; --drift: 27s; }
-.gfield-panel .gblob:nth-child(3) { --c: var(--gf-c); --x: 86%; --y: 64%; --s: min(80vw, 54rem); --reach: 220px; --lag: 1.3s; --drift: 18s; }
-
-/* The closing band rises out of the page ground into navy, and the
-   lights are the bright cloud in that rise. Everything that carries text sits
-   below `--band-rise`, on the navy. */
+/* The closing band: a flat ground (pale sky in light, navy in dark) with a
+   brand hairline along its top edge. No rise, no wash (owner decision,
+   5 Nov 2026). */
 @utility bg-band {
-  --band-rise: clamp(16rem, 40vw, 30rem);
-  /* One continuous ramp out of nothing into the navy. It starts from
-     transparent, not from the page colour, because the section above shows
-     the moving page wash through it and a solid first stop met that in a hard
-     line. And it is EASED, not linear: a linear ramp has a corner where it
-     starts and another where it stops, and the eye reads each corner as a
-     line across the page (a Mach band). The stops below trace a smooth
-     S-curve — barely anything for the first fifth, the change in the middle,
-     a long settle into the navy — mixed in oklab so the run through the
-     pale stop has no grey in it. No background-color: the last stop carries
-     on to the bottom. */
-  background-image: linear-gradient(
-    in oklab 180deg,
-    transparent 0,
-    color-mix(in oklab, var(--band-rise-1) 4%, transparent) calc(var(--band-rise) * 0.1),
-    color-mix(in oklab, var(--band-rise-1) 14%, transparent) calc(var(--band-rise) * 0.2),
-    color-mix(in oklab, var(--band-rise-1) 34%, transparent) calc(var(--band-rise) * 0.3),
-    color-mix(in oklab, var(--band-rise-1) 62%, transparent) calc(var(--band-rise) * 0.4),
-    color-mix(in oklab, var(--band-rise-1) 88%, transparent) calc(var(--band-rise) * 0.5),
-    color-mix(in oklab, var(--band-rise-2) 55%, var(--band-rise-1)) calc(var(--band-rise) * 0.62),
-    var(--band-rise-2) calc(var(--band-rise) * 0.74),
-    color-mix(in oklab, var(--band-ground) 55%, var(--band-rise-2)) calc(var(--band-rise) * 0.86),
-    color-mix(in oklab, var(--band-ground) 88%, var(--band-rise-2)) calc(var(--band-rise) * 0.98),
-    var(--band-ground) calc(var(--band-rise) * 1.12)
-  );
+  --band-rise: 0px;
+  background-color: var(--band-ground);
 }
-/* The cloud is wider than the rise is tall, so without this its top would be
-   cut in a straight line where the section starts. */
-.gfield-band {
-  /* …and its lower light would meet the footer in a line, so it lets go before
-     the band ends: the last stretch is the flat navy the footer picks up. */
-  mask-image: linear-gradient(
-    180deg,
-    transparent 0,
-    rgb(0 0 0 / 0.08) calc(var(--band-rise) * 0.2),
-    rgb(0 0 0 / 0.45) calc(var(--band-rise) * 0.45),
-    black calc(var(--band-rise) * 0.75),
-    black calc(100% - 16rem),
-    transparent calc(100% - 2rem)
-  );
-}
-.gfield-band .gblob:nth-child(1) { --c: var(--gf-a); --x: 30%; --y: calc(var(--band-rise) * 0.55); --s: min(80vw, 56rem); --reach: 180px; --lag: 1.9s; }
-.gfield-band .gblob:nth-child(2) { --c: var(--gf-b); --x: 74%; --y: calc(var(--band-rise) * 0.68); --s: min(70vw, 48rem); --reach: -130px; --lag: 2.6s; --drift: 27s; }
-.gfield-band .gblob:nth-child(3) { --c: var(--gf-c); --x: 96%; --y: 78%; --s: min(70vw, 50rem); --reach: 260px; --lag: 1.3s; --drift: 18s; }
 
 /* A 1px accent rule. Decorative by definition — it is never load-bearing for
    meaning, and never doubles as a focus indicator. */

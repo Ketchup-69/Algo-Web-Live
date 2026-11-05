@@ -306,3 +306,22 @@
 .ui-decision[data-dimmed] {
   opacity: 0.4;
 }
+
+/* The agent orb (AgentPill.tsx): a ring in the logo's gradient. While the
+   agent is working the ring turns and the five dots around it take turns
+   (`ui-thinking` above). Transform and opacity only. */
+.agent-orb-ring {
+  background: conic-gradient(from 0deg, var(--algo-green), var(--algo-cyan), var(--algo-violet), var(--algo-green));
+}
+@media (prefers-reduced-motion: no-preference) {
+  .agent-orb-live .agent-orb-ring {
+    animation: agent-orb-turn 2.4s linear infinite;
+  }
+  .agent-orb-live .agent-orb-dot {
+    animation: ui-think 1.5s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 140ms);
+  }
+}
+@keyframes agent-orb-turn {
+  to { transform: rotate(360deg); }
+}

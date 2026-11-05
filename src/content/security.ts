@@ -184,3 +184,11 @@ export const securityClosing: ClosingCopy = {
   primary: { label: "Start Your Agent Launch", href: routes.contact },
   secondary: { label: "Explore the AI Platform", href: routes.platform },
 };
+
+/** Caption for the interactive audit trail in the observability section. */
+export const securityFigures = {
+  audit: {
+    title: "One record per decision",
+    body: "Each entry keeps the input, the decision, the approval and the output, with its time. Filter it by kind.",
+  },
+} as const;

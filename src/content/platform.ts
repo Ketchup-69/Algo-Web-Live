@@ -414,3 +414,15 @@ export const platformClosing: ClosingCopy = {
   heading: "Choose one workflow. Build the intelligence around it.",
   primary: { label: "Start Your Agent Launch", href: routes.contact },
 };
+
+/** Captions for the interactive drawings in the agents section. */
+export const platformFigures = {
+  retrieval: {
+    title: "Approved knowledge, cited",
+    body: "An agent's answer points at the records it came from, and shows only what the asker's role may see.",
+  },
+  approval: {
+    title: "Human authority",
+    body: "The agent prepares the case with its evidence; a person approves, rejects or queries the supplier.",
+  },
+} as const;

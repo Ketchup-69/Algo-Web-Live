@@ -64,3 +64,49 @@ export function AgentPill({
     </div>
   );
 }
+
+/** The five dots of the mark, set around the orb at these angles (degrees from the top). */
+const HALO = [
+  [0, "bg-dot-1", 0],
+  [72, "bg-dot-2", 1],
+  [144, "bg-dot-3", 2],
+  [216, "bg-dot-4", 3],
+  [288, "bg-dot-5", 4],
+] as const;
+
+/**
+ * The agent, larger: a circle with "AI" in it, ringed in the logo's gradient,
+ * and the mark's five dots set around the ring. While `live`, the dots take
+ * turns lighting up and the ring turns slowly, so the agent reads as
+ * thinking. Sized in the surrounding unit (`size` design px across).
+ */
+export function AgentOrb({ live = false, label = "AI", size = 30 }: { live?: boolean; label?: string; size?: number }) {
+  return (
+    <span
+      className={cn("agent-orb relative inline-flex shrink-0 items-center justify-center rounded-full", live && "agent-orb-live")}
+      style={{ width: `calc(var(--u) * ${size})`, height: `calc(var(--u) * ${size})` } as CSSProperties}
+    >
+      <span aria-hidden="true" className="agent-orb-ring absolute inset-0 rounded-full" />
+      <span className="absolute inset-[calc(var(--u)*2.2)] rounded-full bg-bg" />
+      <span
+        className="relative font-extrabold tracking-[-0.04em] text-ui-value"
+        style={{ fontSize: `calc(var(--u) * ${size * 0.36})`, lineHeight: 1 }}
+      >
+        {label}
+      </span>
+      {HALO.map(([angle, colour, index]) => (
+        <span
+          key={angle}
+          aria-hidden="true"
+          className="absolute top-1/2 left-1/2"
+          style={{ transform: `rotate(${angle}deg) translateY(calc(var(--u) * ${-size / 2}))` } as CSSProperties}
+        >
+          <span
+            className={cn("agent-orb-dot block -translate-x-1/2 -translate-y-1/2 rounded-full", colour)}
+            style={{ width: `calc(var(--u) * ${size * 0.17})`, height: `calc(var(--u) * ${size * 0.17})`, "--i": index } as CSSProperties}
+          />
+        </span>
+      ))}
+    </span>
+  );
+}

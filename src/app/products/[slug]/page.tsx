@@ -1,14 +1,14 @@
 import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
-import { Block, CtaBand, ItemGrid, LayerStack, Note, PageHero, RelatedLinks, Steps, TermList } from "@/components/blocks";
+import { Block, CtaBand, ItemGrid, LayerStack, Note, PageHero, Pipeline, RelatedLinks, TermList } from "@/components/blocks";
 import { InvoiceScatter } from "@/components/product/InvoiceScatter";
 import { site } from "@/content/site";
 import { Container, Heading, Section } from "@/components/ui";
 import { PointerTracker } from "@/components/motion";
 import { AlgoPOChecks, AlgoPOWells } from "@/components/sections/AlgoPOVisuals";
 import {
-  AlgoCapitalWorkflowVisual,
-  AlgoCashWorkflowVisual,
+  AlgoCapitalHeroVisual,
+  AlgoCashHeroVisual,
   AlgoPayWorkflowVisual,
   AlgoPOHeroVisual,
 } from "@/components/sections/DashboardVisuals";
@@ -51,8 +51,8 @@ const VISUALS: Record<ProductSlug, { hero?: ReactNode; workflow?: ReactNode; che
     ),
     workflow: <AlgoPayWorkflowVisual />,
   },
-  algocash: { workflow: <AlgoCashWorkflowVisual /> },
-  "algocapital-ai": { workflow: <AlgoCapitalWorkflowVisual /> },
+  algocash: { hero: <AlgoCashHeroVisual /> },
+  "algocapital-ai": { hero: <AlgoCapitalHeroVisual /> },
 };
 
 /**
@@ -73,7 +73,7 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
 
       <Block copy={product.workflow}>
         {visuals.workflow ? <div className="mb-20">{visuals.workflow}</div> : null}
-        <Steps items={product.workflow.steps} columns={4} />
+        <Pipeline items={product.workflow.steps} label={product.workflow.heading} />
       </Block>
 
       {visuals.checks}
@@ -99,7 +99,7 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
 
       {product.pathway ? (
         <Block copy={product.pathway} tone="subtle">
-          <Steps items={product.pathway.steps} columns={4} />
+          <Pipeline items={product.pathway.steps} label={product.pathway.heading} />
         </Block>
       ) : null}
 

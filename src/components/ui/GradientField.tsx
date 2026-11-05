@@ -10,12 +10,10 @@ const variants = {
 } as const;
 
 /**
- * The brand wash: three soft lights on the section's ground.
- *
- * Decorative, so it is hidden from the accessibility tree and takes no
- * pointer events. Colours, positions and how far each light follows the
- * cursor are all in globals.css. The page's `<PointerTracker />` makes it
- * follow; without one it drifts on its own.
+ * The section ground (owner decision, 5 Nov 2026: the soft colour blobs are
+ * gone). A fine line grid that fades out from where the light would have
+ * been, and one crisp brand-gradient hairline. Static, decorative, hidden
+ * from assistive tech. The old variant names are kept so callers need no edit.
  */
 export function GradientField({
   variant = "glow",
@@ -25,10 +23,9 @@ export function GradientField({
   className?: string;
 }) {
   return (
-    <div aria-hidden="true" data-ptr="" className={cn("gfield", variants[variant], className)}>
-      <i className="gblob" />
-      <i className="gblob" />
-      <i className="gblob" />
+    <div aria-hidden="true" className={cn("gridfield", variants[variant], className)}>
+      <i className="gridfield-lines" />
+      <i className="gridfield-rule" />
     </div>
   );
 }

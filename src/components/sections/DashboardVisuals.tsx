@@ -43,3 +43,25 @@ export const AlgoCapitalWorkflowVisual = () => (
     <CashTiming className="mx-auto" />
   </WellFigure>
 );
+
+/** A dashboard drawing in a product hero, with the sample note under it. */
+function HeroFigure({ children }: { children: ReactNode }) {
+  return (
+    <figure>
+      {children}
+      <figcaption className="mt-4 text-center text-sm text-fg-muted lg:text-right">{site.ui.sampleNote}</figcaption>
+    </figure>
+  );
+}
+
+export const AlgoCashHeroVisual = () => (
+  <HeroFigure>
+    <CollectionsList className="mx-auto lg:mr-0" />
+  </HeroFigure>
+);
+
+export const AlgoCapitalHeroVisual = () => (
+  <HeroFigure>
+    <CashTiming className="mx-auto lg:mr-0" />
+  </HeroFigure>
+);

@@ -3,7 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { cn } from "@/lib/cn";
 import { invoiceScatter as data } from "@/content/product/scatter";
-import { AgentMark } from "./AgentPill";
+import { AgentOrb } from "./AgentPill";
 import { CheckMark, Chip, dash } from "./Dash";
 import { Stage } from "./Stage";
 
@@ -584,9 +584,9 @@ export function InvoiceScatter({ maxScale = 0.62, className }: { maxScale?: numb
                 key={lineIndex}
                 data-line=""
                 data-on={(lineIndex === 1) === resolved}
-                className="hero-line col-start-1 row-start-1 flex items-center gap-7 justify-self-center"
+                className="hero-line col-start-1 row-start-1 flex items-center gap-10 justify-self-center"
               >
-                <AgentMark live={lineIndex === 0} />
+                <AgentOrb live={lineIndex === 0} size={22} />
                 <span className="text-ui-pill fs-u-13.25 font-semibold tracking-[-0.03em]">{line}</span>
               </span>
             ))}

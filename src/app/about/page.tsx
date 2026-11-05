@@ -1,5 +1,7 @@
 import { Block, CtaBand, ItemGrid, PageHero, Steps, TermList } from "@/components/blocks";
 import { PointerTracker } from "@/components/motion";
+import { OrbitHub } from "@/components/product/OrbitHub";
+import { aboutHub } from "@/content/product/hubs";
 import { aboutClosing, aboutHero, aboutMeta, accountability, principles, story, team, vision } from "@/content/about";
 import { TeamGrid } from "@/components/sections/TeamGrid";
 import { pageMetadata } from "@/lib/metadata";
@@ -11,7 +13,7 @@ export default function AboutPage() {
   return (
     <main id="main" className="flex-1">
       <PointerTracker />
-      <PageHero copy={aboutHero} />
+      <PageHero copy={aboutHero} visual={<OrbitHub hub={aboutHub} />} />
 
       <Block copy={story}>
         <Steps items={story.steps} layout="rows" />

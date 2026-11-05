@@ -20,6 +20,15 @@ Last updated 5 Nov 2026. Read this after `CLAUDE.md` when picking the work up in
 - "Book a demo" in the header, every hero, every closing band, the mobile menu and /contact (`src/components/sections/BookDemo.tsx`). Opens a dialog with the CRM's meetings scheduler; its script loads only the first time the dialog opens. Address in `src/content/site.ts`, overridable with `NEXT_PUBLIC_MEETINGS_URL` (the deploy workflow reads the repository variable `MEETINGS_URL`); if the calendar cannot load, the dialog shows the sales address. Recorded on /privacy as a draft row to confirm.
 - Checked: build and contrast gate (86/86), lint, no console errors, no sideways scroll at 360 / 768 / 1280 / 1920 on home, AlgoPay and about. Lighthouse mobile on the compressed export: home 93 to 97, AlgoPay 93 to 96; accessibility 100 on home, 96 on AlgoPay (the faint ghost-card text in the scatter, the same owner-accepted exception that used to sit on home).
 
+## 5 Nov 2026, second round (owner feedback)
+
+- Colour blobs removed everywhere (hero, closing band, page wash). Grounds are flat with a fine fading line grid and one brand hairline (`GradientField.tsx`, `src/app/site/lift.css`). The closing band is flat, so its empty rise is gone.
+- Header logo reads "Algomotive AI" with a larger mark. "Products" is now "AI Agents" in the nav, footer and home section; AlgoPay is listed first everywhere. Custom AI Solutions links straight to /contact.
+- Home hero: `AgentConsole.tsx`, a live agent console (inbox, AI reader with the "AI" orb, field extraction with confidence bars, checks, outcome with approval and audit log), four sample invoices in turn. Phones get the vertical flow.
+- AlgoPay invoice pill: the agent mark is now a larger "AI" orb with the five dots pulsing around a turning gradient ring (`AgentOrb` in `AgentPill.tsx`).
+- Every page has drawn, animated components: hubs on Platform, Security and About heroes (`OrbitHub.tsx`, words in `src/content/product/hubs.ts`); dashboard heroes on AlgoCash and AlgoCapital AI; an interactive workflow track on every product page, the security pipeline and the platform agent lifecycle and adoption (`Pipeline.tsx`); the citation, approval and audit-trail cards on Platform and Security; the AI Agents list as cards.
+- AI agentic stack follows the page theme; light-mode hairlines and card borders are firmer.
+
 ## Owner decisions to keep
 
 - Products and sample data (28 Oct 2026, recorded in `CLAUDE.md` §1): AlgoPay = accounts payable, AlgoPO = purchase requests to POs, AlgoCash = receivables, AlgoCapital AI = DSO, but the copy keeps the live site's definitions. Sample names invented and checked, amounts with fils that add up, Oct to Nov 2026 dates, no performance-claim numbers, no product chrome.
