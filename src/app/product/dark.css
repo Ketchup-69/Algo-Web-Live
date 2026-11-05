@@ -127,3 +127,17 @@ html[data-theme="dark"] .bg-well {
 html[data-theme="dark"] .stage .ui-quiet-control {
   background-color: var(--bg);
 }
+
+/* Icon tiles inside a drawing (hubs, flow cards) in the dark page theme: the
+   same dark tints as the page's own tiles, with a white glyph, so they keep
+   their contrast on the navy cards. */
+html[data-theme="dark"] .stage {
+  --tile-cyan: color-mix(in oklab, var(--algo-cyan) 24%, var(--algo-navy));
+  --tile-violet: color-mix(in oklab, var(--algo-violet) 26%, var(--algo-navy));
+  --tile-green: color-mix(in oklab, var(--algo-green) 24%, var(--algo-navy));
+  --tile-navy: var(--algo-mint);
+  --tile-on-navy: var(--algo-navy);
+}
+html[data-theme="dark"] .stage .feature-icon:not(.bg-tile-navy) {
+  color: var(--algo-white);
+}

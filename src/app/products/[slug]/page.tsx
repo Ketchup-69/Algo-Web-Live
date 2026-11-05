@@ -44,7 +44,7 @@ const VISUALS: Record<ProductSlug, { hero?: ReactNode; workflow?: ReactNode; che
     hero: (
       // The pile bleeds past the column on wide screens, so the invoice in
       // front is read at a useful size; the hero clips it at the edge.
-      <figure className="-mx-[22%] w-[144%] lg:mx-0 lg:w-[128%]">
+      <figure className="-mx-[22%] w-[144%] lg:mx-0 lg:w-[116%]">
         <InvoiceScatter maxScale={0.8} className="mx-auto lg:mr-0" />
         <figcaption className="mt-4 text-center text-sm text-fg-muted lg:text-right">{site.ui.sampleNote}</figcaption>
       </figure>

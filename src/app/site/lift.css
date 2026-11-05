@@ -177,6 +177,7 @@
   overflow: hidden;
 }
 .gridfield-lines {
+  display: none;
   position: absolute;
   inset: 0;
   background-image:
@@ -458,4 +459,50 @@
   }
   .compare thead .compare-hl { box-shadow: inset 1px 0 0 var(--card-line), inset -1px 0 0 var(--card-line), inset 0 1px 0 var(--card-line); }
   .compare tbody tr:last-child .compare-hl { box-shadow: inset 1px 0 0 var(--card-line), inset -1px 0 0 var(--card-line), inset 0 -1px 0 var(--card-line); }
+}
+
+/* ------------------------------------------------------------- blueprint --
+   One ground for the whole site (owner request, 5 Nov 2026): fine dots on a
+   16px pitch and hairlines on a 64px grid, like drafting paper. Faint
+   everywhere (`.blueprint`, fixed behind the page), and stronger behind every
+   drawing (`.bp-zone`), fading out from it over a long, soft radius so text
+   nearby sits on near-plain ground. Static: nothing moves. */
+:root,
+[data-theme="light"] {
+  --bp-dot: color-mix(in srgb, var(--algo-navy) 20%, transparent);
+  --bp-line: color-mix(in srgb, var(--algo-cyan) 16%, transparent);
+}
+[data-theme="dark"] {
+  --bp-dot: color-mix(in srgb, var(--algo-white) 16%, transparent);
+  --bp-line: color-mix(in srgb, var(--algo-cyan) 13%, transparent);
+}
+.blueprint,
+.bp-zone::before {
+  background-image:
+    radial-gradient(circle, var(--bp-dot) 1px, transparent 1.2px),
+    linear-gradient(to right, var(--bp-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--bp-line) 1px, transparent 1px);
+  background-size: 16px 16px, 64px 64px, 64px 64px;
+  background-position: 8px 8px, 0 0, 0 0;
+  background-attachment: fixed;
+}
+.blueprint {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.35;
+  pointer-events: none;
+}
+.bp-zone {
+  position: relative;
+  isolation: isolate;
+}
+.bp-zone::before {
+  content: "";
+  position: absolute;
+  inset: -22% -16%;
+  z-index: -1;
+  pointer-events: none;
+  /* A wide, slow falloff: full strength only near the drawing's middle. */
+  mask-image: radial-gradient(closest-side, black 0%, rgb(0 0 0 / 0.75) 35%, rgb(0 0 0 / 0.3) 65%, transparent 100%);
 }

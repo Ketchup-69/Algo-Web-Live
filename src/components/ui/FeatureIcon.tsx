@@ -45,7 +45,7 @@ export function FeatureIcon({
     <span
       aria-hidden="true"
       className={cn(
-        "inline-flex shrink-0 items-center justify-center rounded-[0.625rem] text-fg",
+        "feature-icon inline-flex shrink-0 items-center justify-center rounded-[0.625rem] text-fg",
         size === "sm" ? "size-8" : size === "lg" ? "size-12 rounded-xl" : "size-10",
         TONES[tone],
         className,

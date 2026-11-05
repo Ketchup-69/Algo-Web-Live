@@ -41,7 +41,7 @@ export function Stage({
   const style = { "--stage-width": width, "--u": "calc(100cqw / var(--stage-width))" } as CSSProperties;
   return (
     <div
-      className={cn("w-full [container-type:inline-size]", className)}
+      className={cn("bp-zone w-full [container-type:inline-size]", className)}
       style={{ maxWidth: `${(width * maxScale) / 16}rem` }}
     >
       {interactive ? (

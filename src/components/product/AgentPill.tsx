@@ -5,15 +5,14 @@ import { cn } from "@/lib/cn";
  * The agent mark (owner design, 5 Nov 2026): the same small pixel squares as
  * before, now filling a disc instead of a plus, coloured along the logo's
  * gradient (green at the lower left, cyan through the middle, violet at the
- * upper right), with "AI" on a navy pill on top. The pixels ripple in a
- * wave and the "AI" shifts between cyan and white. Drawn on a 7 × 7 grid of
- * 10-unit cells; the cells under the pill are left out.
+ * upper right), with a bold navy "AI" on top, outlined and shadowed so it
+ * stands out. The pixels ripple in a wave and the outline shifts between
+ * white and cyan. Drawn on a 7 × 7 grid of 10-unit cells.
  */
 const CELLS: { x: number; y: number; tone: 1 | 2 | 3 | 4 | 5 }[] = [];
 for (let y = 0; y < 7; y++) {
   for (let x = 0; x < 7; x++) {
     if ((x - 3) ** 2 + (y - 3) ** 2 > 3.4 ** 2) continue;
-    if (x >= 1 && x <= 5 && y >= 2 && y <= 4) continue;
     const t = (x + (6 - y)) / 12;
     CELLS.push({ x, y, tone: (Math.round(t * 4) + 1) as 1 | 2 | 3 | 4 | 5 });
   }
@@ -50,11 +49,15 @@ export function AiMark({ size = 16, className }: { size?: number; live?: boolean
           style={{ "--d": `${(x + y) * 90}ms` } as CSSProperties}
         />
       ))}
-      <rect x="10" y="22" width="50" height="26" rx="13" className="ai-pill" />
-      <text x="35" y="40.5" textAnchor="middle" className="ai-txt ai-txt-a">
+      {/* "AI" on top: navy, outlined in white (the outline shifts to cyan and
+          back) with a soft shadow, so it stands off the pixels. */}
+      <text x="35" y="46" textAnchor="middle" className="ai-txt ai-txt-shadow">
         AI
       </text>
-      <text x="35" y="40.5" textAnchor="middle" className="ai-txt ai-txt-b">
+      <text x="35" y="46" textAnchor="middle" className="ai-txt ai-txt-a">
+        AI
+      </text>
+      <text x="35" y="46" textAnchor="middle" className="ai-txt ai-txt-b">
         AI
       </text>
     </svg>

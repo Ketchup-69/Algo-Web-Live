@@ -57,7 +57,7 @@ export function PipelineClient({ steps, label }: { steps: PipelineStep[]; label?
   const progress = n > 1 ? active / (n - 1) : 0;
 
   return (
-    <div ref={root} className="pipeline" style={{ "--p": progress, "--n": n } as CSSProperties}>
+    <div ref={root} className="pipeline bp-zone" style={{ "--p": progress, "--n": n } as CSSProperties}>
       {/* The track: a row from 1024px, a column below. */}
       <div className="relative">
         <span aria-hidden="true" className="pl-track" />

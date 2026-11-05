@@ -568,7 +568,7 @@ export function InvoiceScatter({ maxScale = 0.62, className }: { maxScale?: numb
               // Placed in the stage's own unit; the pill's type and padding
               // run on its larger unit, set beside it.
               top: "calc(100cqw / var(--stage-width) * 776)",
-              left: "calc(100cqw / var(--stage-width) * 700)",
+              left: "calc(100cqw / var(--stage-width) * 600)",
               "--u": "calc(100cqw / var(--stage-width) * 2.2642)",
               "--spacing": "var(--u)",
             } as CSSProperties

@@ -310,19 +310,23 @@
 /* The agent mark (AiMark in AgentPill.tsx): a disc of pixels that ripple
    in a wave, and "AI" on a navy pill that shifts between cyan and white.
    Opacity only; still under reduced motion. */
-.ai-mark .ai-pill {
-  fill: var(--algo-navy);
-  stroke: var(--algo-white);
-  stroke-width: 2.5;
-}
 .ai-mark .ai-txt {
   font-family: var(--font-display);
-  font-size: 19px;
+  font-size: 30px;
   font-weight: 800;
-  letter-spacing: -0.5px;
+  letter-spacing: -1px;
+  paint-order: stroke fill;
+  stroke-linejoin: round;
 }
-.ai-mark .ai-txt-a { fill: var(--algo-white); }
-.ai-mark .ai-txt-b { fill: var(--algo-cyan); opacity: 0; }
+.ai-mark .ai-txt-shadow {
+  fill: rgb(3 21 34 / 0.35);
+  stroke: rgb(3 21 34 / 0.35);
+  stroke-width: 9px;
+  transform: translate(0, 2.5px);
+  filter: blur(1.5px);
+}
+.ai-mark .ai-txt-a { fill: var(--algo-navy); stroke: var(--algo-white); stroke-width: 6px; }
+.ai-mark .ai-txt-b { fill: var(--algo-navy); stroke: var(--algo-cyan); stroke-width: 6px; opacity: 0; }
 @keyframes ai-wave {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.35; }

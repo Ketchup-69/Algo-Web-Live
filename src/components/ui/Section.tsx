@@ -28,7 +28,8 @@ const tones = {
   /** Inherits whatever ground it sits on. */
   none: "",
   bg: "bg-bg text-fg",
-  subtle: "bg-bg-subtle text-fg",
+  /* Translucent, so the blueprint ground shows through. */
+  subtle: "bg-[color-mix(in_srgb,var(--bg-subtle)_72%,transparent)] text-fg",
   surface: "bg-surface text-fg",
   /** The tinted panel from the gradient tier. */
   accent: "bg-grad-accent-soft text-fg",
