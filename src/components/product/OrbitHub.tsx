@@ -92,8 +92,8 @@ function Canvas({ hub, layout, className }: { hub: Hub; layout: Layout; classNam
           className="absolute flex flex-col items-center"
           style={{ left: u(centre.x), top: u(centre.y), transform: "translate(-50%, -50%)" }}
         >
-          <span className="hub-halo absolute rounded-full" style={{ width: u(layout.orb * 1.6), height: u(layout.orb * 1.6) }} />
-          <span className="relative rounded-full bg-bg shadow-[0_calc(var(--u)*18)_calc(var(--u)*40)_calc(var(--u)*-12)_rgb(3_21_34/0.35)]">
+          <span className="hub-halo absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ width: u(layout.orb * 1.6), height: u(layout.orb * 1.6) }} />
+          <span className="relative flex rounded-full bg-bg p-[calc(var(--u)*6)] shadow-[0_calc(var(--u)*18)_calc(var(--u)*40)_calc(var(--u)*-12)_rgb(3_21_34/0.35)]">
             <AgentOrb live size={layout.orb} />
           </span>
           <span className="absolute top-full mt-10 rounded-u-6 bg-bg px-8 py-3 fs-u-12 font-semibold whitespace-nowrap text-ui-value shadow-[0_0_0_var(--u)_var(--ui-rule)]">

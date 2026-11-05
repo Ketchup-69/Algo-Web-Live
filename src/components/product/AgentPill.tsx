@@ -1,28 +1,69 @@
 import type { CSSProperties } from "react";
 import { cn } from "@/lib/cn";
 
-/** The five squares of the agent mark, as [left, top, colour] in design px. */
-const DOTS = [
-  [3.54, 7.29, "bg-dot-2"],
-  [3.54, 4.2, "bg-dot-3"],
-  [3.54, 1.1, "bg-dot-4"],
-  [0.45, 4.2, "bg-dot-1"],
-  [6.63, 4.2, "bg-dot-5"],
-] as const;
+/**
+ * The agent mark (owner design, 5 Nov 2026): the same small pixel squares as
+ * before, now filling a disc instead of a plus, coloured along the logo's
+ * gradient (green at the lower left, cyan through the middle, violet at the
+ * upper right), with "AI" on a navy pill on top. The pixels ripple in a
+ * wave and the "AI" shifts between cyan and white. Drawn on a 7 × 7 grid of
+ * 10-unit cells; the cells under the pill are left out.
+ */
+const CELLS: { x: number; y: number; tone: 1 | 2 | 3 | 4 | 5 }[] = [];
+for (let y = 0; y < 7; y++) {
+  for (let x = 0; x < 7; x++) {
+    if ((x - 3) ** 2 + (y - 3) ** 2 > 3.4 ** 2) continue;
+    if (x >= 1 && x <= 5 && y >= 2 && y <= 4) continue;
+    const t = (x + (6 - y)) / 12;
+    CELLS.push({ x, y, tone: (Math.round(t * 4) + 1) as 1 | 2 | 3 | 4 | 5 });
+  }
+}
+const FILL = {
+  1: "fill-dot-1",
+  2: "fill-dot-2",
+  3: "fill-dot-3",
+  4: "fill-dot-4",
+  5: "fill-dot-5",
+} as const;
 
-/** The five-square mark. Sized in the surrounding unit, so it scales with whatever pill holds it. */
-export function AgentMark({ live = false }: { live?: boolean }) {
+/**
+ * The mark at `size` design pixels across, in the surrounding unit. `live`
+ * is kept for callers: the mark is always alive unless motion is reduced.
+ */
+export function AiMark({ size = 16, className }: { size?: number; live?: boolean; className?: string }) {
   return (
-    <span className={cn("relative size-[calc(var(--u)*9.7)] shrink-0", live && "ui-thinking")}>
-        {DOTS.map(([left, top, colour]) => (
-          <span
-            key={`${left}-${top}`}
-            className={cn("absolute size-[calc(var(--u)*2.2)]", colour)}
-            style={{ left: `calc(var(--u) * ${left})`, top: `calc(var(--u) * ${top})`, "--i": DOTS.findIndex((d) => d[0] === left && d[1] === top) } as CSSProperties}
-          />
-        ))}
-    </span>
+    <svg
+      viewBox="0 0 70 70"
+      aria-hidden="true"
+      className={cn("ai-mark shrink-0 overflow-visible", className)}
+      style={{ width: `calc(var(--u, 1px) * ${size})`, height: `calc(var(--u, 1px) * ${size})` } as CSSProperties}
+    >
+      {CELLS.map(({ x, y, tone }) => (
+        <rect
+          key={`${x}-${y}`}
+          x={x * 10 + 1}
+          y={y * 10 + 1}
+          width="8"
+          height="8"
+          rx="1"
+          className={cn("ai-px", FILL[tone])}
+          style={{ "--d": `${(x + y) * 90}ms` } as CSSProperties}
+        />
+      ))}
+      <rect x="10" y="22" width="50" height="26" rx="13" className="ai-pill" />
+      <text x="35" y="40.5" textAnchor="middle" className="ai-txt ai-txt-a">
+        AI
+      </text>
+      <text x="35" y="40.5" textAnchor="middle" className="ai-txt ai-txt-b">
+        AI
+      </text>
+    </svg>
   );
+}
+
+/** The mark at its small size: in chips, notes and pills. */
+export function AgentMark({ live = false, size = 20 }: { live?: boolean; size?: number }) {
+  return <AiMark live={live} size={size} />;
 }
 
 /**
@@ -65,48 +106,7 @@ export function AgentPill({
   );
 }
 
-/** The five dots of the mark, set around the orb at these angles (degrees from the top). */
-const HALO = [
-  [0, "bg-dot-1", 0],
-  [72, "bg-dot-2", 1],
-  [144, "bg-dot-3", 2],
-  [216, "bg-dot-4", 3],
-  [288, "bg-dot-5", 4],
-] as const;
-
-/**
- * The agent, larger: a circle with "AI" in it, ringed in the logo's gradient,
- * and the mark's five dots set around the ring. While `live`, the dots take
- * turns lighting up and the ring turns slowly, so the agent reads as
- * thinking. Sized in the surrounding unit (`size` design px across).
- */
-export function AgentOrb({ live = false, label = "AI", size = 30 }: { live?: boolean; label?: string; size?: number }) {
-  return (
-    <span
-      className={cn("agent-orb relative inline-flex shrink-0 items-center justify-center rounded-full", live && "agent-orb-live")}
-      style={{ width: `calc(var(--u) * ${size})`, height: `calc(var(--u) * ${size})` } as CSSProperties}
-    >
-      <span aria-hidden="true" className="agent-orb-ring absolute inset-0 rounded-full" />
-      <span className="absolute inset-[calc(var(--u)*2.2)] rounded-full bg-bg" />
-      <span
-        className="relative font-extrabold tracking-[-0.04em] text-ui-value"
-        style={{ fontSize: `calc(var(--u) * ${size * 0.36})`, lineHeight: 1 }}
-      >
-        {label}
-      </span>
-      {HALO.map(([angle, colour, index]) => (
-        <span
-          key={angle}
-          aria-hidden="true"
-          className="absolute top-1/2 left-1/2"
-          style={{ transform: `rotate(${angle}deg) translateY(calc(var(--u) * ${-size / 2}))` } as CSSProperties}
-        >
-          <span
-            className={cn("agent-orb-dot block -translate-x-1/2 -translate-y-1/2 rounded-full", colour)}
-            style={{ width: `calc(var(--u) * ${size * 0.17})`, height: `calc(var(--u) * ${size * 0.17})`, "--i": index } as CSSProperties}
-          />
-        </span>
-      ))}
-    </span>
-  );
+/** The mark at a larger size: the console, the hubs, the flow and the AlgoPay pill. */
+export function AgentOrb({ live = false, size = 30 }: { live?: boolean; label?: string; size?: number }) {
+  return <AiMark live={live} size={size} />;
 }

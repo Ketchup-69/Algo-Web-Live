@@ -65,9 +65,9 @@ export default function Home() {
 
       <Block copy={platformTeaser}>
         <TermList items={platformTeaser.terms} variant="chips" />
-        <div className="mt-10 flex flex-wrap gap-3">
+        <div className="mt-14 flex flex-wrap gap-3 border-t border-border pt-10">
           {platformTeaser.links.map((link, index) => (
-            <Button key={link.href} href={link.href} variant={index === 0 ? "secondary" : "ghost"}>
+            <Button key={link.href} href={link.href} size="lg" variant={index === 0 ? "primary" : "secondary"}>
               {link.label}
             </Button>
           ))}

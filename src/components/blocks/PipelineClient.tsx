@@ -5,9 +5,9 @@ import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 
 export type PipelineStep = { title: string; body?: string; icon: ReactNode; marker: string };
 
 /** How long each step is shown before the next, while nobody is choosing. */
-const DWELL = 2800;
-/** After a visitor picks a step, the tour waits this long before carrying on. */
-const HOLD = 12000;
+const DWELL = 1300;
+/** After a visitor picks a step, it stays there this long, then the tour carries on. */
+const HOLD = 15000;
 
 /**
  * A real sequence as an animated track: each step a node on a line that
@@ -21,7 +21,9 @@ const HOLD = 12000;
  */
 export function PipelineClient({ steps, label }: { steps: PipelineStep[]; label?: string }) {
   const [active, setActive] = useState(0);
+  // Bumped on every pick, so a second pick restarts the hold.
   const [held, setHeld] = useState(0);
+  const [holding, setHolding] = useState(false);
   const [awake, setAwake] = useState(false);
   const root = useRef<HTMLDivElement>(null);
   const n = steps.length;
@@ -45,9 +47,12 @@ export function PipelineClient({ steps, label }: { steps: PipelineStep[]; label?
 
   useEffect(() => {
     if (!awake) return;
-    const timer = window.setTimeout(() => setActive((i) => (i + 1) % n), held ? HOLD : DWELL);
+    const timer = window.setTimeout(() => {
+      setHolding(false);
+      setActive((i) => (i + 1) % n);
+    }, holding ? HOLD : DWELL);
     return () => window.clearTimeout(timer);
-  }, [awake, active, held, n]);
+  }, [awake, active, held, holding, n]);
 
   const progress = n > 1 ? active / (n - 1) : 0;
 
@@ -68,6 +73,7 @@ export function PipelineClient({ steps, label }: { steps: PipelineStep[]; label?
                 aria-pressed={index === active}
                 onClick={() => {
                   setActive(index);
+                  setHolding(true);
                   setHeld((h) => h + 1);
                 }}
                 className="group flex w-full items-center gap-3 rounded-control text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring lg:flex-col lg:items-center lg:gap-3 lg:text-center"

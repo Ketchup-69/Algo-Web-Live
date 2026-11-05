@@ -101,13 +101,23 @@ export function ItemGrid({
   );
 }
 
-/** The short supporting phrases under an item: quiet, one per line. */
+/**
+ * The short supporting phrases under an item, one per line, each led by a
+ * small tick in a soft brand tint (owner decision, 5 Nov 2026: no dashes).
+ */
 export function Points({ points, className }: { points: string[]; className?: string }) {
   return (
-    <ul className={cn("mt-4 flex flex-col gap-1.5 text-sm text-fg-muted", className)}>
+    <ul className={cn("mt-4 flex flex-col gap-2 text-sm text-fg-muted", className)}>
       {points.map((point) => (
-        <li key={point} className="flex gap-2.5">
-          <span aria-hidden="true" className="mt-[0.6em] h-px w-3 shrink-0 bg-border-strong" />
+        <li key={point} className="flex items-start gap-2.5">
+          <span
+            aria-hidden="true"
+            className="mt-[0.15em] flex size-[1.125rem] shrink-0 items-center justify-center rounded-full bg-tile-cyan text-fg"
+          >
+            <svg viewBox="0 -960 960 960" fill="currentColor" className="size-3">
+              <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" />
+            </svg>
+          </span>
           {point}
         </li>
       ))}

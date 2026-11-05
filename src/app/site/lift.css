@@ -322,8 +322,8 @@
   22%, 100% { opacity: 0; }
 }
 @keyframes hub-breathe {
-  0%, 100% { transform: scale(0.92); opacity: 0.55; }
-  50% { transform: scale(1.08); opacity: 0.9; }
+  0%, 100% { scale: 0.92; opacity: 0.55; }
+  50% { scale: 1.08; opacity: 0.9; }
 }
 @media (prefers-reduced-motion: no-preference) {
   .hub .hub-ring { animation: hub-turn 60s linear infinite; }
@@ -357,7 +357,7 @@
   background: linear-gradient(180deg, var(--algo-green), var(--algo-cyan), var(--algo-violet));
   transform-origin: top;
   transform: scaleY(var(--p));
-  transition: transform 700ms var(--ease-in-out);
+  transition: transform 520ms var(--ease-in-out);
 }
 .pipeline .pl-pulse-rail { background: none; }
 .pipeline .pl-pulse {
@@ -371,7 +371,7 @@
   background: var(--algo-cyan);
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--algo-cyan) 25%, transparent), 0 0 18px 4px color-mix(in srgb, var(--algo-cyan) 55%, transparent);
 }
-.pipeline .pl-pulse-rail { transform: translateY(calc(var(--p) * 100%)); transition: transform 700ms var(--ease-in-out); }
+.pipeline .pl-pulse-rail { transform: translateY(calc(var(--p) * 100%)); transition: transform 520ms var(--ease-in-out); }
 .pipeline .pl-pulse-rail { height: auto; }
 
 .pipeline .pl-dot {
@@ -436,4 +436,26 @@
 .pipeline .pl-panel[data-on="true"] { opacity: 1; transform: none; pointer-events: auto; }
 @media (prefers-reduced-motion: reduce) {
   .pipeline :is(.pl-fill, .pl-pulse-rail, .pl-dot, .pl-panel) { transition: none; }
+}
+
+/* The "connected" light on each system tile (SystemTiles.tsx): a soft pulse,
+   taking turns across the grid. Opacity and scale only. */
+.sys-live { box-shadow: 0 0 0 3px color-mix(in srgb, var(--algo-green) 22%, transparent); }
+@keyframes sys-live {
+  0%, 100% { opacity: 1; scale: 1; }
+  50% { opacity: 0.35; scale: 0.7; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sys-live { animation: sys-live 3.5s ease-in-out infinite; }
+}
+
+/* The highlighted column of a comparison (CompareTable.tsx): one continuous
+   soft cyan column from 768px, framed left and right in the card line. */
+@media (min-width: 768px) {
+  .compare .compare-hl {
+    background: color-mix(in oklab, var(--algo-cyan) 7%, var(--surface));
+    box-shadow: inset 1px 0 0 var(--card-line), inset -1px 0 0 var(--card-line);
+  }
+  .compare thead .compare-hl { box-shadow: inset 1px 0 0 var(--card-line), inset -1px 0 0 var(--card-line), inset 0 1px 0 var(--card-line); }
+  .compare tbody tr:last-child .compare-hl { box-shadow: inset 1px 0 0 var(--card-line), inset -1px 0 0 var(--card-line), inset 0 -1px 0 var(--card-line); }
 }

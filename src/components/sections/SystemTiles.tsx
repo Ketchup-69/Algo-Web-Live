@@ -1,16 +1,37 @@
+import { cn } from "@/lib/cn";
+import { FeatureIcon, toneAt, type FeatureIconName } from "@/components/ui/FeatureIcon";
 import type { SystemCategory } from "@/content/platform";
 
+const ICONS: Record<string, FeatureIconName> = {
+  ERP: "account_tree",
+  Finance: "account_balance",
+  Procurement: "inventory_2",
+  CRM: "groups",
+  Payments: "payments",
+  Documents: "description",
+  Data: "database",
+  Communication: "mail",
+  Cloud: "cloud_sync",
+  "Custom APIs": "api",
+};
+
 /**
- * The system categories as a ruled grid of plain type: generic names, never a
- * vendor's name or mark (§2). The gap is the rule: the list's ground is the
- * hairline colour and each tile paints over it.
+ * The system categories as tiles: generic names only, never a vendor's name
+ * or mark (§2). Each has its icon and a quiet "connected" light that pulses
+ * in turn, so the grid reads as live connections, not a table.
  */
 export function SystemTiles({ items }: { items: SystemCategory[] }) {
   return (
-    <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-card border border-border bg-border sm:grid-cols-5">
-      {items.map((item) => (
-        <li key={item.short} className="flex h-20 items-center justify-center bg-bg px-4 text-center sm:h-24">
-          <span className="font-display text-base font-semibold text-fg">{item.short}</span>
+    <ul data-reveal="cards" className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5">
+      {items.map((item, index) => (
+        <li key={item.short} className="site-card lift flex items-center gap-3 p-4 pr-6 sm:p-5 sm:pr-7">
+          <FeatureIcon name={ICONS[item.short] ?? "hub"} tone={toneAt(index)} />
+          <span className="min-w-0 flex-1 font-display text-[0.9375rem] font-semibold break-words text-fg">{item.short}</span>
+          <span
+            aria-hidden="true"
+            className={cn("sys-live absolute top-3 right-3 size-2 rounded-full bg-[var(--algo-green)]")}
+            style={{ animationDelay: `${index * 0.35}s` }}
+          />
         </li>
       ))}
     </ul>
