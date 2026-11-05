@@ -119,7 +119,9 @@ export const privacyNotice: LegalDoc = {
       id: "cookies",
       heading: "Cookies and browser storage",
       blocks: [
-        "The table lists what this website stores in your browser. The form's cookies are set only on the contact page, when the form loads. The scheduler's cookies are set only when you open “Book a demo”.",
+        "Our website does not set cookies itself. It remembers your light or dark theme, if you choose one, in your browser's own storage.",
+        "Two parts of the site are provided by other companies, and each sets technical cookies that protect it from bots. The contact form, from HubSpot with Google reCAPTCHA, sets them when the contact page loads. The booking calendar, from HubSpot, sets one when you click “Book a demo”, and not before.",
+        "None of these cookies are used for advertising or analytics. The table lists everything stored in your browser.",
         {
           table: {
             caption: "Cookies and browser storage (form cookies to be confirmed on the live demo)",
@@ -136,18 +138,16 @@ export const privacyNotice: LegalDoc = {
               ["__cf_bm", "HubSpot, for the form", "Tells people from bots, to protect the form", "30 minutes"],
               ["_cfuvid", "HubSpot, for the form", "Limits repeated requests, to protect the form", "Until you close the browser"],
               ["_GRECAPTCHA", "Google reCAPTCHA", "Tells people from bots, to protect the form", "6 months"],
-              // Seen 5 Nov 2026 in the scheduler's own response headers.
-              ["__cf_bm", "HubSpot, for the meeting scheduler", "Tells people from bots, to protect the booking calendar", "30 minutes"],
-              // PLACEHOLDER: any cookie the calendar sets from its own scripts, once checked in a browser on the live demo
-              ["[to be confirmed]", "HubSpot, for the meeting scheduler", "[to be confirmed]", "[to be confirmed]"],
+              // Checked 5 Nov 2026 with the "Book a demo" dialog open: the only cookie the calendar sets.
+              ["__cf_bm", "HubSpot, for the booking calendar", "Tells people from bots, to protect the booking calendar", "Not stated"],
             ],
           },
         },
-        "These items are needed for the website and the form to work and to protect them from abuse, so they are set without asking first. If you are signed in to a Google account, reCAPTCHA may also read cookies Google has already set in your browser.",
+        "These items are needed for the website, the form and the calendar to work and to protect them from abuse, so they are set without asking first. If you are signed in to a Google account, reCAPTCHA may also read cookies Google has already set in your browser.",
         `You can block or delete cookies in your browser's settings. If you do, the form may not load; you can still email ${mail(site.email.sales)}.`,
       ],
       toConfirm:
-        "To be confirmed on the live demo: the form's three cookies in the table below are expected, not yet checked; the meeting scheduler's server sets `__cf_bm` (checked), and any cookies its calendar scripts set in the browser are not yet known. If the check finds any cookie that is not strictly necessary, the form or the scheduler waits for consent (for the scheduler, switch on `askFirst` in src/content/site.ts) and this wording changes.",
+        "To be confirmed on the live demo: the form's three cookies in the table below are expected, not yet checked; the booking calendar's one cookie, `__cf_bm`, was checked on 5 Nov 2026 in a private window, which blocks some third-party cookies, so re-check it once in a normal browser profile. If the check finds any cookie that is not strictly necessary, the form or the scheduler waits for consent (for the scheduler, switch on `askFirst` in src/content/site.ts) and this wording changes.",
     },
     {
       id: "retention",
