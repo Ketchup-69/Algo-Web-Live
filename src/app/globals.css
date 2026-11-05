@@ -768,7 +768,7 @@
    5 Nov 2026). */
 @utility bg-band {
   --band-rise: 0px;
-  background-color: color-mix(in srgb, var(--band-ground) 82%, transparent);
+  background-color: var(--band-ground);
 }
 
 /* A 1px accent rule. Decorative by definition — it is never load-bearing for
