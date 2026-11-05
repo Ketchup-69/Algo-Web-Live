@@ -132,6 +132,73 @@ export function Reveal({
             });
           }
 
+          // Cards: each rises a little and fades in, one after another. Used on
+          // card grids only (owner decision, 5 Nov 2026), not on prose.
+          for (const group of q("[data-reveal='cards']")) {
+            const marked = Array.from(group.querySelectorAll<HTMLElement>("[data-reveal-item]"));
+            const items = pending(marked.length ? marked : (Array.from(group.children) as HTMLElement[]));
+            if (!items.length) continue;
+            gsap.from(items, {
+              opacity: 0,
+              y: travel.lg,
+              duration: 0.7,
+              ease: ease.out,
+              delay: 0.15,
+              stagger: items.length > 6 ? 0.06 : 0.09,
+              clearProps: "transform,opacity",
+              scrollTrigger: { trigger: group, start, once: true },
+            });
+          }
+
+          // A real sequence: the steps arrive in their order, and each
+          // numbered marker counts up to its own number as it does. The
+          // number is in the static HTML; it is only re-counted on screen.
+          for (const group of q("[data-reveal='sequence']")) {
+            const items = pending(Array.from(group.querySelectorAll<HTMLElement>("[data-reveal-item]")));
+            if (!items.length) continue;
+            const tl = gsap.timeline({ scrollTrigger: { trigger: group, start, once: true }, delay: 0.15 });
+            items.forEach((item, index) => {
+              const at = index * (items.length > 6 ? 0.1 : 0.14);
+              tl.from(item, { opacity: 0, y: travel.base, duration: 0.6, ease: ease.out, clearProps: "transform,opacity" }, at);
+              const rail = item.querySelector<HTMLElement>("[data-rail]");
+              if (rail) tl.from(rail, { scaleX: 0, transformOrigin: "left center", duration: 0.8, ease: ease.inOut }, at);
+              const counter = item.querySelector<HTMLElement>("[data-count]");
+              const target = counter ? Number(counter.dataset.count) : NaN;
+              if (counter && Number.isFinite(target)) {
+                const width = counter.textContent?.length ?? 2;
+                const state = { n: 0 };
+                tl.to(
+                  state,
+                  {
+                    n: target,
+                    duration: 0.5,
+                    ease: "power1.out",
+                    onUpdate: () => {
+                      counter.textContent = String(Math.round(state.n)).padStart(width, "0");
+                    },
+                  },
+                  at,
+                );
+              }
+            });
+          }
+
+          // Layers of a stack land one after another from the side.
+          for (const group of q("[data-reveal='layers']")) {
+            const items = pending(Array.from(group.querySelectorAll<HTMLElement>("[data-layer]")));
+            if (!items.length) continue;
+            gsap.from(items, {
+              opacity: 0,
+              x: -travel.lg,
+              duration: 0.7,
+              ease: ease.out,
+              delay: 0.15,
+              stagger: 0.12,
+              clearProps: "transform,opacity",
+              scrollTrigger: { trigger: group, start: "top 80%", once: true },
+            });
+          }
+
           for (const group of q("[data-reveal='group']")) {
             const marked = Array.from(
               group.querySelectorAll<HTMLElement>("[data-reveal-item]"),

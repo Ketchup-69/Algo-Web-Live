@@ -34,7 +34,7 @@ export default function SecurityPage() {
 
       <Block copy={observability}>
         <Trace label={observability.traceLabel} items={observability.trace} />
-        <TermList label={observability.signalsLabel} items={observability.signals} className="mt-14" />
+        <TermList label={observability.signalsLabel} items={observability.signals} variant="chips" className="mt-14" />
       </Block>
 
       <Block copy={securityLifecycle} tone="subtle" spacing="sm">
@@ -42,7 +42,7 @@ export default function SecurityPage() {
       </Block>
 
       <Block copy={frameworks}>
-        <ItemGrid items={frameworks.items} />
+        <ItemGrid items={frameworks.items} variant="panel" />
         <Note className="mt-12 border-l-2 border-fg pl-5 text-base text-fg">{frameworks.disclaimer}</Note>
       </Block>
 

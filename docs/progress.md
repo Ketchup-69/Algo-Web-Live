@@ -1,6 +1,6 @@
 # Progress and open items
 
-Last updated 28 Oct 2026. Read this after `CLAUDE.md` when picking the work up in a new session.
+Last updated 5 Nov 2026. Read this after `CLAUDE.md` when picking the work up in a new session.
 
 ## Where it stands
 
@@ -8,6 +8,17 @@ Last updated 28 Oct 2026. Read this after `CLAUDE.md` when picking the work up i
 - Phase 1 (audit), Phase 2 (brand layer) and Phase 3 (live-site copy, nine pages) are done. See `docs/phase-1-audit.md` and `WEBSITE-CHECKLIST.md`.
 - Phase 4, first part, done: draft privacy notice and terms of use (`src/content/privacy.ts`, `src/content/terms.ts`), and the blog back at `/blog` (`src/lib/posts.ts`). The live /resources address now forwards to the blog, which carries that page's copy.
 - `/contact` embeds the CRM form (`src/components/sections/HubSpotContactForm.tsx`, settings in `src/content/contact.ts`). A first test submission arrived; it was filed as spam (see below).
+
+## 5 Nov 2026 revamp (done)
+
+- AlgoPay brought in line with the technical brochure (`src/content/products.ts`): the five hero highlights, the six-layer technical architecture with the "Evidence and scope" note (AlgoPay extends the ERP, does not replace it), and the seven-step implementation pathway. The six layers live in `src/content/stack.ts` and are reused on home.
+- The invoice scatter moved from the home hero to the AlgoPay hero, and the front invoice is now a UAE tax invoice (title, supplier TRN, bill to, invoice and due dates, LPO and GRN references, line table, subtotal, VAT 5%, total in AED). Every cycle invoice is re-invented and adds up (`src/content/product/scatter.ts`). Once read, a "What the AI checked" card shows the dashboard's four checks. Invented customer: Saltreed Hotels LLC (searched: no such business found).
+- New home hero: `src/components/product/AgentFlow.tsx`, dashboard node cards on curved connectors, a pulse lights one node at a time; a clean run and an exception run alternate. Vertical below 640px; paused off screen; finished state under reduced motion and in the static HTML.
+- New home section "AI agentic stack": the six layers, revealed in sequence (`src/components/blocks/LayerStack.tsx`), on a navy ground.
+- Visual lift on every page: an icon on every ItemGrid, TermList, Steps and Trace item (picked from the item's words in `src/lib/icon-for.ts`, overridable with `icon` in content), three card treatments (rule, cards, panel; chips and checks for term lists) varied by section, staggered card entrances, hover lift, gradient rails drawn in and numbers counting in on real sequences (`src/components/motion/Reveal.tsx`, `src/app/site/lift.css`). The marketing icon paths sit in `src/components/ui/site-icon-paths.ts` and never ship in client JS.
+- Team section on /about (`team` in `src/content/about.ts`, `src/components/sections/TeamGrid.tsx`), photos resized to 640px WebP with metadata stripped (`public/team/`).
+- "Book a demo" in the header, every hero, every closing band, the mobile menu and /contact (`src/components/sections/BookDemo.tsx`). Opens a dialog with the CRM's meetings scheduler; its script loads only the first time the dialog opens. Address from `NEXT_PUBLIC_MEETINGS_URL` (deploy workflow reads the repository variable `MEETINGS_URL`); without it, the dialog shows the sales address. Recorded on /privacy as a draft row to confirm.
+- Checked: build and contrast gate (86/86), lint, no console errors, no sideways scroll at 360 / 768 / 1280 / 1920 on home, AlgoPay and about. Lighthouse mobile on the compressed export: home 93 to 97, AlgoPay 93 to 96; accessibility 100 on home, 96 on AlgoPay (the faint ghost-card text in the scatter, the same owner-accepted exception that used to sit on home).
 
 ## Owner decisions to keep
 
@@ -28,6 +39,11 @@ Owner, in the CRM:
 - Add the demo domain (`ketchup-69.github.io`), and later the real domain, as an additional site domain in the tracking-code settings, so submissions stop being filed as "Unregistered site domain" spam. Release the test submission from spam.
 - Form styling (button colour) is paywalled on the free plan. On day one of the paid plan, set the submit button to the brand cyan (#38BDF8) with navy text (#031522) in the form's Style tab; until then it stays the default orange. It cannot be restyled from the site's side.
 - The "Create your own free forms" badge is the free plan's; it goes once the paid plan includes branding removal. It cannot be hidden from the site's side.
+
+Owner, Book a demo:
+- In the CRM: create the meetings link (Sales, Meetings), set availability, duration and the confirmation email; copy the link.
+- In GitHub: Settings, Secrets and variables, Actions, Variables. Add `MEETINGS_URL` with that link. Run the deploy workflow.
+- On the live demo, open "Book a demo" in a fresh Chrome profile and check which cookies the scheduler sets (same method as the form, below). Update the scheduler row on /privacy. If any is not strictly necessary, set `askFirst: true` in `src/content/site.ts`: the dialog then asks before loading it.
 
 Owner, legal pages:
 - The CEO signs off both drafts. Before that, fill every `[bracket]` and clear every "To be confirmed" note (`grep -n "PLACEHOLDER\|toConfirm" src/content/privacy.ts src/content/terms.ts`). Owner confirmed 28 Oct 2026: mainland (so the federal PDPL applies), registered name Algomotive Global Technologies - L.L.C - S.P.C, trade licence CN-4452938, retention 12 months.

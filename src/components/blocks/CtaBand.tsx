@@ -1,5 +1,6 @@
 import { Button, Container, GradientField, Heading } from "@/components/ui";
 import { Reveal } from "@/components/motion";
+import { BookDemo } from "@/components/sections/BookDemo";
 import type { ClosingCopy } from "@/content/types";
 
 /**
@@ -24,6 +25,7 @@ export function CtaBand({ copy }: { copy: ClosingCopy }) {
               <Button href={copy.primary.href} size="lg">
                 {copy.primary.label}
               </Button>
+              <BookDemo variant="secondary" size="lg" />
               {copy.secondary ? (
                 <Button href={copy.secondary.href} variant="secondary" size="lg">
                   {copy.secondary.label}

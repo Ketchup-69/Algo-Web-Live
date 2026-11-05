@@ -11,3 +11,4 @@ export { Figure } from "./Figure";
 export { MovedPage, movedMetadata } from "./MovedPage";
 export { LegalDocument } from "./LegalDocument";
 export { RichText } from "./RichText";
+export { LayerStack } from "./LayerStack";

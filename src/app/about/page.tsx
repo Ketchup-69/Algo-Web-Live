@@ -1,6 +1,7 @@
 import { Block, CtaBand, ItemGrid, PageHero, Steps, TermList } from "@/components/blocks";
 import { PointerTracker } from "@/components/motion";
-import { aboutClosing, aboutHero, aboutMeta, accountability, principles, story, vision } from "@/content/about";
+import { aboutClosing, aboutHero, aboutMeta, accountability, principles, story, team, vision } from "@/content/about";
+import { TeamGrid } from "@/components/sections/TeamGrid";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata(aboutMeta);
@@ -17,7 +18,7 @@ export default function AboutPage() {
       </Block>
 
       <Block copy={principles} tone="subtle">
-        <ItemGrid items={principles.items} />
+        <ItemGrid items={principles.items} variant="cards" />
       </Block>
 
       <Block copy={vision}>
@@ -25,7 +26,11 @@ export default function AboutPage() {
       </Block>
 
       <Block copy={accountability} spacing="sm">
-        <ItemGrid items={accountability.items} columns={4} />
+        <ItemGrid items={accountability.items} columns={4} variant="panel" />
+      </Block>
+
+      <Block copy={team} tone="subtle">
+        <TeamGrid people={team.people} />
       </Block>
 
       <CtaBand copy={aboutClosing} />

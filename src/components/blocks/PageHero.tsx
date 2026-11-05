@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import { Button, Container, GradientField, Heading, Section, Text } from "@/components/ui";
 import { HeroSequence } from "@/components/motion/HeroSequence";
+import { BookDemo } from "@/components/sections/BookDemo";
+import { FeatureIcon } from "@/components/ui/FeatureIcon";
 import type { HeroCopy } from "@/content/types";
 
 /**
@@ -42,12 +44,25 @@ export function PageHero({
               <Text tone="muted" size="lg" className="mt-8 max-w-[52ch]">
                 {copy.lede}
               </Text>
+              {copy.highlights?.length ? (
+                <ul className="mt-7 flex max-w-[52ch] flex-col gap-2.5" data-hero-seq="supporting">
+                  {copy.highlights.map((line) => (
+                    <li key={line} className="flex items-start gap-3 text-base font-medium text-fg">
+                      <FeatureIcon name="check" tone="green" size="sm" className="mt-[-0.15rem] size-6 rounded-full" />
+                      {line}
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
               <div className="mt-10 flex flex-wrap items-center gap-3">
                 <Button href={copy.primary.href} size="lg" data-hero-seq="cta">
                   {copy.primary.label}
                 </Button>
+                <span data-hero-seq="cta" className="inline-flex">
+                  <BookDemo variant="secondary" size="lg" />
+                </span>
                 {copy.secondary ? (
-                  <Button href={copy.secondary.href} variant="secondary" size="lg" data-hero-seq="cta">
+                  <Button href={copy.secondary.href} variant="ghost" size="lg" data-hero-seq="cta">
                     {copy.secondary.label}
                   </Button>
                 ) : null}

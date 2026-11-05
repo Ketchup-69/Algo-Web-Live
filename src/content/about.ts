@@ -126,3 +126,29 @@ export const aboutClosing: ClosingCopy = {
   primary: { label: "Engineer Your AI Future", href: routes.contact },
   secondary: { label: "Explore the Agent Launch", href: routes.agentLaunch },
 };
+
+/**
+ * The team (owner decision, 5 Nov 2026: the team's own photos, from
+ * docs/reference/team/, resized and compressed into public/team/). Add a
+ * person by adding an entry and a square photo of at least 640px.
+ */
+export type TeamMember = { name: string; role: string; photo: string; alt: string };
+
+export const team: SectionCopy & { people: TeamMember[] } = {
+  id: "team",
+  heading: "The team",
+  people: [
+    {
+      name: "Om Kashyap",
+      role: "Enterprise Solution Sales",
+      photo: "/team/om-kashyap.webp",
+      alt: "Portrait of Om Kashyap",
+    },
+    {
+      name: "Ugendreshwar Kudupudi",
+      role: "CEO",
+      photo: "/team/ugendreshwar-kudupudi.webp",
+      alt: "Portrait of Ugendreshwar Kudupudi",
+    },
+  ],
+};

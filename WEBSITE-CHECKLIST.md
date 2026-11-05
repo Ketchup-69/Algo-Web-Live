@@ -44,6 +44,11 @@ Phase 1 audit, 28 Oct 2026. Verified in the code and in a baseline build (`npm r
 | A32 | Dark mode toggle | ThemeToggle.tsx exists | exists | `src/components/ui/ThemeToggle.tsx` + `src/lib/theme.ts` (no-flash script). Re-checked in the new palette: navy ground, gated |
 | A33 | Reading progress bar | ReadingProgress.tsx exists | done | Back with the blog in Phase 4, on post pages only (`src/components/ui/ReadingProgress.tsx`), absent under reduced motion |
 | A34 | Product illustrations on every product page | AlgoPO only | done | 28 Oct 2026: AlgoPO hero (purchase requests), AlgoPay, AlgoCash and AlgoCapital AI workflow sections, in the product dashboard's language (`src/components/product/`, data in `src/content/product/dashboard.ts`). Existing visuals audited for dates, names, claims and sums. Checked at 360 / 768 / 1280 / 1920, light and dark, no console errors |
+| A35 | AlgoPay matches the technical brochure | | done | 5 Nov 2026: hero highlights, six-layer architecture with the scope note, seven-step pathway (`src/content/products.ts`, `src/content/stack.ts`) |
+| A36 | Home hero shows the agent at work | | done | 5 Nov 2026: `src/components/product/AgentFlow.tsx`; the invoice scatter moved to the AlgoPay hero as a UAE tax invoice |
+| A37 | Icons and card treatments on every list | | done | 5 Nov 2026: `ItemGrid`, `TermList`, `Steps`, `Trace` all carry icons (`src/lib/icon-for.ts`); varied card styles; GSAP entrances, transform and opacity only, reduced motion respected |
+| A38 | Team section on /about | | done | 5 Nov 2026: content-file list (`src/content/about.ts`), photos in `public/team/` |
+| A39 | Book a demo (meetings scheduler) | | done (needs address) | 5 Nov 2026: `src/components/sections/BookDemo.tsx`; script loads on first open only; sales address until `MEETINGS_URL` is set. Scheduler cookies to confirm on the live demo (privacy row is a placeholder) |
 
 ## B. After launch on the real domain (in-house team, goes in HANDOVER.md)
 

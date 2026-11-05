@@ -57,6 +57,7 @@ export const privacyNotice: LegalDoc = {
         // PLACEHOLDER: the form's fields, exactly as the CRM form has them
         "When you use the contact form, we collect what you enter in it: [the form's fields, for example your name, work email, company and message], and the option you choose under “What do you need?”.",
         "When the contact page loads the form, the form service and its spam check receive standard technical data from your browser: your IP address, browser and device details, the address of the page, and the cookies listed below. The spam check, Google reCAPTCHA, collects hardware and software information, such as device and application data, and sends it to Google for analysis.",
+        "When you choose “Book a demo”, the meeting scheduler, provided by HubSpot, opens in a window on the page. It loads only then, never with the page. To book a time you enter your details in it, [the scheduler's fields, for example your name and work email], and the slot you choose; these go to HubSpot, our CRM, and a calendar invitation is sent to you and to our team.",
         "This website has no analytics or advertising cookies. It keeps two small items in your browser's own storage, both listed below: your light or dark theme, if you choose one, and a flag that lets the contact page reload once if the form does not appear.",
         "The company that hosts this website may keep standard server logs, such as IP addresses and the pages requested, to run and secure the service.",
       ],
@@ -118,7 +119,7 @@ export const privacyNotice: LegalDoc = {
       id: "cookies",
       heading: "Cookies and browser storage",
       blocks: [
-        "The table lists what this website stores in your browser. The form's cookies are set only on the contact page, when the form loads.",
+        "The table lists what this website stores in your browser. The form's cookies are set only on the contact page, when the form loads. The scheduler's cookies are set only when you open “Book a demo”.",
         {
           table: {
             caption: "Cookies and browser storage (form cookies to be confirmed on the live demo)",
@@ -135,6 +136,8 @@ export const privacyNotice: LegalDoc = {
               ["__cf_bm", "HubSpot, for the form", "Tells people from bots, to protect the form", "30 minutes"],
               ["_cfuvid", "HubSpot, for the form", "Limits repeated requests, to protect the form", "Until you close the browser"],
               ["_GRECAPTCHA", "Google reCAPTCHA", "Tells people from bots, to protect the form", "6 months"],
+              // PLACEHOLDER: the scheduler's cookies, once checked on the live demo with the scheduler address set
+              ["[to be confirmed]", "HubSpot, for the meeting scheduler", "Runs the booking calendar and protects it from abuse", "[to be confirmed]"],
             ],
           },
         },
@@ -142,7 +145,7 @@ export const privacyNotice: LegalDoc = {
         `You can block or delete cookies in your browser's settings. If you do, the form may not load; you can still email ${mail(site.email.sales)}.`,
       ],
       toConfirm:
-        "To be confirmed on the live demo: the form's three cookies in the table below are expected, not yet checked. If the check finds any cookie that is not strictly necessary, the form waits for consent and this wording changes.",
+        "To be confirmed on the live demo: the form's three cookies in the table below are expected, not yet checked, and the meeting scheduler's are not yet known. If the check finds any cookie that is not strictly necessary, the form or the scheduler waits for consent (for the scheduler, switch on `askFirst` in src/content/site.ts) and this wording changes.",
     },
     {
       id: "retention",

@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
 import { isGroup, site } from "@/content/site";
 import { Button } from "@/components/ui";
+import { BookDemo } from "@/components/sections/BookDemo";
 import { Logo } from "./Logo";
 
 /**
@@ -205,6 +206,7 @@ export function MobileNav() {
               <Button href={site.cta.href} size="lg" className="w-full" onClick={() => follow(site.cta.href)}>
                 {site.cta.label}
               </Button>
+              <BookDemo variant="secondary" size="lg" className="mt-3 w-full" />
             </div>
           </nav>
         </div>,

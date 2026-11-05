@@ -8,6 +8,7 @@ import { isGroup, site, type NavGroup } from "@/content/site";
 import { Button, Container, ThemeToggle } from "@/components/ui";
 import { Logo } from "./Logo";
 import { MobileNav } from "./MobileNav";
+import { BookDemo } from "@/components/sections/BookDemo";
 
 const trim = (path: string) => path.replace(/\/$/, "") || "/";
 
@@ -181,9 +182,10 @@ export function Nav() {
 
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <Button href={site.cta.href} size="sm" className="hidden lg:inline-flex">
+            <Button href={site.cta.href} size="sm" variant="secondary" className="hidden xl:inline-flex">
               {site.cta.label}
             </Button>
+            <BookDemo size="sm" className="hidden sm:inline-flex" />
             <MobileNav />
           </div>
         </div>

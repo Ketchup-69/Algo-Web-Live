@@ -44,6 +44,10 @@ jobs:
           # line. A new post goes live on the next deploy: run this by hand.
           BLOG_API_TOKEN: ${{ secrets.BLOG_API_TOKEN }}
           BLOG_ID: ${{ vars.BLOG_ID }}
+          # "Book a demo": the CRM meetings scheduler's address. Set the
+          # repository variable MEETINGS_URL; until then the dialog shows the
+          # sales address instead.
+          NEXT_PUBLIC_MEETINGS_URL: ${{ vars.MEETINGS_URL }}
         run: npm run build
 
       - name: Ensure .nojekyll

@@ -55,6 +55,31 @@ export type SiteConfig = {
   portal: Cta;
   /** The one action in the header and the mobile menu. */
   cta: Cta;
+  /**
+   * "Book a demo": the header, every hero and every closing band. Opens a
+   * dialog with the CRM's meetings scheduler (owner decision, 5 Nov 2026).
+   */
+  bookDemo: {
+    label: string;
+    title: string;
+    intro: string;
+    close: string;
+    loading: string;
+    /** Shown in place of the scheduler when no address is set or it cannot load. */
+    fallback: { lead: string; after: string };
+    /** Shown before the scheduler loads when `askFirst` is on. */
+    consent: { body: string; accept: string; privacyLabel: string };
+    /** The scheduler's address, from NEXT_PUBLIC_MEETINGS_URL at build time. Empty: the fallback shows. */
+    url: string;
+    /** The CRM's embed script, exactly as its embed code gives it. Loaded the first time the dialog opens. */
+    scriptSrc: string;
+    /**
+     * Ask before loading the scheduler. Off while its cookies are expected to
+     * be strictly necessary; switch on if the check on the live demo finds
+     * any that are not (CLAUDE.md §7, privacy notice "Cookies").
+     */
+    askFirst: boolean;
+  };
   nav: NavEntry[];
   footer: { heading: string; links: NavLink[] }[];
   legalNav: NavLink[];
@@ -98,6 +123,27 @@ export const site: SiteConfig = {
   portal: { label: "Customer Portal", href: "https://portal.algomotiveai.com" },
 
   cta: { label: "Talk to Algomotive", href: routes.contact },
+
+  bookDemo: {
+    label: "Book a demo",
+    title: "Book a demo",
+    intro: "Pick a time that suits you. The calendar shows the slots our team has open, in your own time zone.",
+    close: "Close",
+    loading: "Loading the calendar",
+    fallback: {
+      lead: "The calendar is not available here yet. Email",
+      after: "with a few times that suit you, and we will send an invitation.",
+    },
+    consent: {
+      body: "The calendar is provided by our CRM and sets its own cookies when it loads.",
+      accept: "Show the calendar",
+      privacyLabel: "Privacy notice",
+    },
+    // PLACEHOLDER: set the repository variable MEETINGS_URL to the scheduler's address (see docs/progress.md).
+    url: /^https:\/\//.test(process.env.NEXT_PUBLIC_MEETINGS_URL ?? "") ? (process.env.NEXT_PUBLIC_MEETINGS_URL as string) : "",
+    scriptSrc: "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js",
+    askFirst: false,
+  },
 
   nav: [
     { label: "Platform", href: routes.platform },

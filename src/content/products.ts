@@ -8,6 +8,7 @@
 
 import type { ClosingCopy, HeroCopy, Item, PageMeta, Related, SectionCopy } from "./types";
 import { routes } from "./site";
+import { stackLayers } from "./stack";
 
 export type ProductSlug = "algopo" | "algocash" | "algopay" | "algocapital-ai";
 
@@ -17,6 +18,10 @@ export type Product = {
   meta: PageMeta;
   hero: HeroCopy;
   workflow: SectionCopy & { steps: Item[] };
+  /** The layers the product is built on, each with its responsibility. */
+  architecture?: SectionCopy & { layers: Item[]; scope?: { label: string; body: string } };
+  /** How an implementation runs, in order. */
+  pathway?: SectionCopy & { steps: Item[] };
   capabilities: SectionCopy & { items: Item[] };
   /** A closing statement on what the product leaves people to decide. */
   outcome?: SectionCopy;
@@ -306,6 +311,14 @@ export const productList: Product[] = [
       lede: "Orchestrate payment validation, approvals, execution, reconciliation, controls and real-time financial visibility.",
       primary: { label: "Discuss AlgoPay", href: routes.contact },
       secondary: { label: "Explore the Workflow", href: "#workflow" },
+      // The technical brochure, page 1 (owner decision, 5 Nov 2026: the brochure is the master for AlgoPay).
+      highlights: [
+        "Purpose-built enterprise payment intelligence",
+        "Payment validation with approved financial controls",
+        "Human authorisation before controlled execution",
+        "Transaction-status visibility and reconciliation",
+        "Works above and across the existing ERP without replacing it",
+      ],
     },
     workflow: {
       id: "workflow",
@@ -345,6 +358,30 @@ export const productList: Product[] = [
           title: "Monitor and improve",
           body: "Track agreed payment measures, exception patterns, authorisation performance, reconciliation status and control coverage.",
         },
+      ],
+    },
+    // The technical brochure, page 5.
+    architecture: {
+      id: "architecture",
+      heading:
+        "A modular operating foundation for payments, agents, controls, human authorisation, ERP connectivity and reconciliation.",
+      layers: stackLayers.map(({ title, body, icon }) => ({ title, body, icon })),
+      scope: {
+        label: "Evidence and scope",
+        body: "AlgoPay extends the existing ERP and payment environment. The existing ERP and connected financial applications remain the systems of record. AlgoPay does not replace the ERP.",
+      },
+    },
+    pathway: {
+      id: "implementation",
+      heading: "Implementation pathway",
+      steps: [
+        { title: "Qualify the payment workflow and define the business outcome", icon: "target" },
+        { title: "Map requests, evidence, controls, authority, systems and ownership", icon: "schema" },
+        { title: "Configure validation, agent roles, approvals and exception handling", icon: "tune" },
+        { title: "Connect approved ERP, finance, payment, banking and data interfaces", icon: "lan" },
+        { title: "Validate scenarios, controls, execution boundaries and reconciliation", icon: "task_alt" },
+        { title: "Enable finance users and complete controlled production readiness", icon: "how_to_reg" },
+        { title: "Activate, monitor, measure and continuously improve", icon: "monitoring" },
       ],
     },
     capabilities: {

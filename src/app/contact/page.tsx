@@ -1,5 +1,6 @@
 import { Block, ItemGrid } from "@/components/blocks";
 import { Container, GradientField, Heading, Link, Section, Text } from "@/components/ui";
+import { BookDemo } from "@/components/sections/BookDemo";
 import { HubSpotContactForm } from "@/components/sections/HubSpotContactForm";
 import { brief, channels, contactMeta, contactPage } from "@/content/contact";
 import { pageMetadata } from "@/lib/metadata";
@@ -26,6 +27,7 @@ export default function ContactPage() {
               <Text tone="muted" size="lg" className="mt-8 max-w-[44ch]">
                 {contactPage.lede}
               </Text>
+              <BookDemo variant="secondary" size="lg" className="mt-8" />
             </div>
 
             <HubSpotContactForm className="lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-start lg:justify-self-end" />
@@ -52,7 +54,7 @@ export default function ContactPage() {
       </Section>
 
       <Block copy={brief} tone="subtle">
-        <ItemGrid items={brief.items} />
+        <ItemGrid items={brief.items} variant="cards" />
       </Block>
     </main>
   );

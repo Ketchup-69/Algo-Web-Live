@@ -40,7 +40,7 @@ export default function PlatformPage() {
       <PageHero copy={platformHero} />
 
       <Block copy={capabilities}>
-        <ItemGrid items={capabilities.items} />
+        <ItemGrid items={capabilities.items} variant="cards" />
       </Block>
 
       <Block copy={architecture} tone="subtle">
@@ -49,12 +49,12 @@ export default function PlatformPage() {
 
       <Block copy={runtime}>
         <Trace items={runtime.steps} />
-        <TermList label={runtime.principlesLabel} items={runtime.principles} className="mt-14" />
+        <TermList label={runtime.principlesLabel} items={runtime.principles} variant="chips" tone="violet" className="mt-14" />
       </Block>
 
       <Block copy={integrations} tone="subtle">
         <SystemTiles items={integrations.categories} />
-        <ItemGrid items={integrations.categories} className="mt-16" />
+        <ItemGrid items={integrations.categories} variant="panel" className="mt-16" />
         <TermList label={integrations.principlesLabel} items={integrations.principles} className="mt-16" />
         <Note className="mt-10">{integrations.disclaimer}</Note>
       </Block>
@@ -72,7 +72,7 @@ export default function PlatformPage() {
         <ItemGrid items={agents.anatomy.items} columns={4} className="mt-10" />
 
         <BlockHead copy={agents.coordination} level={3} className="mt-24" />
-        <TermList items={agents.coordination.items} className="mt-10" />
+        <TermList items={agents.coordination.items} variant="checks" tone="violet" className="mt-10" />
 
         <BlockHead copy={agents.adoption} level={3} className="mt-24" />
         <Steps items={agents.adoption.steps} className="mt-10" />

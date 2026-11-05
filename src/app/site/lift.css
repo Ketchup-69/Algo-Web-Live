@@ -1,0 +1,164 @@
+/* The visual lift on the marketing pages (owner decision, 5 Nov 2026): icon
+   tiles, cards in the dashboard's card style, hover lift, and the hooks the
+   GSAP entrances use. Everything that moves is transform or opacity; a hover
+   shadow is a pseudo-element whose opacity changes, never a box-shadow
+   transition. Imported by globals.css. */
+
+:root,
+[data-theme="light"] {
+  --tile-cyan: color-mix(in oklab, var(--algo-cyan) 16%, var(--algo-white));
+  --tile-violet: color-mix(in oklab, var(--algo-violet) 15%, var(--algo-white));
+  --tile-green: color-mix(in oklab, var(--algo-green) 16%, var(--algo-white));
+  --tile-navy: var(--algo-navy);
+  --tile-on-navy: var(--algo-white);
+  --lift-shadow: 0 18px 40px -16px rgb(3 21 34 / 0.22), 0 2px 6px -2px rgb(3 21 34 / 0.08);
+  --card-flat-shadow: 0 1px 2px rgb(3 21 34 / 0.04);
+}
+[data-theme="dark"],
+[data-theme="band"] {
+  --tile-cyan: color-mix(in oklab, var(--algo-cyan) 20%, var(--algo-navy));
+  --tile-violet: color-mix(in oklab, var(--algo-violet) 22%, var(--algo-navy));
+  --tile-green: color-mix(in oklab, var(--algo-green) 20%, var(--algo-navy));
+  --tile-navy: var(--algo-mint);
+  --tile-on-navy: var(--algo-navy);
+  --lift-shadow: 0 18px 40px -16px rgb(0 0 0 / 0.6);
+  --card-flat-shadow: none;
+}
+@theme inline {
+  --color-tile-cyan: var(--tile-cyan);
+  --color-tile-violet: var(--tile-violet);
+  --color-tile-green: var(--tile-green);
+  --color-tile-navy: var(--tile-navy);
+  --color-tile-on-navy: var(--tile-on-navy);
+}
+
+/* A card on a marketing page: the dashboard's white card with a hairline,
+   14px corners and a whisper of shadow. */
+.site-card {
+  position: relative;
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--card-flat-shadow);
+  isolation: isolate;
+}
+/* The deeper shadow a lifted card casts. Present all along at opacity 0, so
+   hover only fades it in. */
+.lift::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  box-shadow: var(--lift-shadow);
+  opacity: 0;
+  transition: opacity 260ms var(--ease-out);
+  pointer-events: none;
+}
+.lift {
+  transition: transform 260ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .lift:hover {
+    transform: translateY(-4px);
+  }
+  .lift:hover::after {
+    opacity: 1;
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .lift:hover::after {
+    opacity: 1;
+  }
+}
+
+/* A hairline in the brand gradient, drawn in by the reveal (`data-reveal="draw"`). */
+.hairline-brand {
+  height: 1px;
+  background: var(--grad-hairline);
+  transform-origin: left center;
+}
+
+/* ---------------------------------------------------------------- the flow --
+   The home hero (AgentFlow.tsx). Nodes are dashboard cards; the one the pulse
+   has reached is lit. Lit = a cyan ring that fades in (a pseudo-element, so
+   opacity only) and the card rising by two pixels. */
+.flow-node {
+  transition:
+    transform 420ms var(--ease-out),
+    opacity 420ms var(--ease-out);
+}
+.flow-node::before {
+  content: "";
+  position: absolute;
+  inset: calc(var(--u) * -3);
+  border-radius: calc(var(--u) * 17);
+  box-shadow:
+    0 0 0 calc(var(--u) * 2) var(--algo-cyan),
+    0 calc(var(--u) * 14) calc(var(--u) * 32) calc(var(--u) * -10) color-mix(in srgb, var(--algo-cyan) 70%, transparent);
+  opacity: 0;
+  transition: opacity 420ms var(--ease-out);
+  pointer-events: none;
+}
+.flow-node[data-lit="true"] {
+  transform: translateY(calc(var(--u) * -3));
+}
+.flow-node[data-lit="true"]::before {
+  opacity: 1;
+}
+.flow-node[data-person]::before {
+  box-shadow:
+    0 0 0 calc(var(--u) * 2) var(--algo-navy),
+    0 calc(var(--u) * 14) calc(var(--u) * 32) calc(var(--u) * -10) rgb(3 21 34 / 0.45);
+}
+/* The tick each node earns once the pulse has passed it. */
+.flow-done {
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 300ms var(--ease-out),
+    transform 300ms var(--ease-out);
+}
+.flow-node[data-done="true"] .flow-done {
+  opacity: 1;
+  transform: none;
+}
+.flow-pulse {
+  opacity: 0;
+}
+/* Under reduced motion, and before any script runs, the flow shows its
+   finished state: every node done, no pulse. Set by the component. */
+
+/* --------------------------------------------------------------- the stack --
+   AI agentic stack (home) and the AlgoPay architecture: layers that slide in
+   one after another as the section arrives (GSAP, `data-layer`). */
+.stack-layer {
+  position: relative;
+}
+
+/* ------------------------------------------------------------ book a demo --
+   The scheduler dialog (BookDemo.tsx). Opens with a short fade and lift from
+   just below; closes at once. The scheduler's own frame fills the panel. */
+.book-demo[open] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 220ms var(--ease-out),
+    transform 260ms var(--ease-out);
+  @starting-style {
+    opacity: 0;
+    transform: translateY(12px) scale(0.985);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .book-demo[open] {
+    transition: none;
+  }
+}
+.book-demo-frame iframe {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 40rem;
+  border: 0;
+}

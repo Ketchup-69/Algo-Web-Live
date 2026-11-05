@@ -4,7 +4,7 @@ import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from
 import { cn } from "@/lib/cn";
 import { invoiceScatter as data } from "@/content/product/scatter";
 import { AgentMark } from "./AgentPill";
-import { Icon } from "./Icon";
+import { CheckMark, Chip, dash } from "./Dash";
 import { Stage } from "./Stage";
 
 /** Drawn at 1094 × 1056 in the brand file (node 1:16223), print scale. */
@@ -240,8 +240,8 @@ function GhostCard({
   );
 }
 
-const printed = "font-medium tracking-[-0.03em] text-ui-doc-ink";
-const figure = "font-data text-[length:calc(var(--u)*22.634)] leading-[calc(var(--u)*29)]";
+const printed = "tracking-[-0.025em] text-ui-doc-ink";
+const L = data.labels;
 
 /**
  * The hero's invoice scatter, measurement for measurement from the brand
@@ -276,10 +276,9 @@ const TURNS = data.cycle.length - 1;
 const turn = (serial: number) => data.cycle[((serial - 1) % TURNS) + 1] as Invoice;
 
 /** The front card's box in the drawing, and its centre. */
-const FRONT = { left: 232, top: 289, width: 630, height: 360 };
+const FRONT = { left: 150, top: 200, width: 640, height: 500 };
 
 type Invoice = (typeof data.cycle)[number];
-type Line = Invoice["lines"][number];
 
 /**
  * rest     the drawing, still. Where it starts, and where it stays with
@@ -299,40 +298,6 @@ const NEXT: Record<Phase, { to: Phase; after: number }> = {
   pre: { to: "enter", after: 60 },
   enter: { to: "read", after: 1250 },
 };
-
-const TONE = {
-  code: { sub: "text-ui-code", tag: "bg-ui-approved text-ui-on-good" },
-  flag: { sub: "text-ui-variance", tag: "bg-ui-flag text-ui-on-flag" },
-} as const;
-
-/**
- * What a line gains once the agent has dealt with it: a tint behind it, a
- * tick (or a warning) before it, and its GL code (or the reason) in one
- * column beside the amounts. Laid over the printed row and only ever faded,
- * so the invoice underneath never moves except for the label stepping aside.
- * Both tints are 40 tall and 2.5 apart whatever the row's own height.
- */
-function ResolvedRow({ line, inset }: { line: Line; inset: string }) {
-  return (
-    <>
-      <span className={cn("hero-b absolute -inset-x-14 rounded-u-8", inset, line.flag ? "bg-ui-variance-soft" : "bg-ui-code-soft")} />
-      <Icon
-        name={line.flag ? "error" : "check_circle"}
-        className={cn("hero-b absolute top-1/2 left-0 size-26 -translate-y-1/2", line.flag ? "text-ui-variance" : "text-ui-ai")}
-      />
-      <span
-        className={cn(
-          "hero-b absolute top-1/2 right-175 flex -translate-y-1/2 items-center gap-6 font-data fs-u-15 font-semibold whitespace-nowrap",
-          line.flag ? "text-ui-variance" : "text-ui-code",
-        )}
-      >
-        {/* A reason is not a destination, so it carries no arrow. */}
-        {line.flag ? null : <Icon name="arrow_forward" className="size-16 text-ui-ai" />}
-        {line.code}
-      </span>
-    </>
-  );
-}
 
 /**
  * The hero: invoices worked through one at a time, for ever.
@@ -366,7 +331,14 @@ export function InvoiceScatter({ maxScale = 0.62, className }: { maxScale?: numb
   // Run only while it can be seen.
   useEffect(() => {
     const element = root.current;
-    if (!element || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!element) return;
+    // Reduced motion: no cycle, just the first invoice as read and checked.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      // Syncing with the visitor's motion setting, an external system.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setPhase("resolve");
+      return;
+    }
     let onScreen = false;
     const update = () => setAwake(onScreen && document.visibilityState === "visible");
     const observer = new IntersectionObserver(([entry]) => {
@@ -414,8 +386,6 @@ export function InvoiceScatter({ maxScale = 0.62, className }: { maxScale?: numb
 
   const resolved = phase === "resolve" || phase === "exit";
   const cut = resolved ? cuts[1] : cuts[0];
-  const tone = TONE[invoice.tone];
-  const [first, second] = invoice.lines;
 
   // Where the card has to sit to lie exactly over its background card: that
   // card's centre, its width, its turn.
@@ -454,91 +424,136 @@ export function InvoiceScatter({ maxScale = 0.62, className }: { maxScale?: numb
               joined={serial > RING.length}
               // The pulled card goes at once; each one behind it a beat later.
               wait={place === 0 ? 0 : 140 + (place - 1) * 90}
-              text={{ name: waiting.supplier, label: data.ghostLabel, amount: waiting.total.amount }}
+              text={{ name: waiting.supplier, label: data.ghostLabel, amount: `${data.labels.currency} ${waiting.total}` }}
             />
           );
         })}
 
         <div
-          className="hero-card absolute top-289 left-232 flex h-360 w-630 flex-col gap-16 rounded-u-4 bg-bg px-32 py-24 shadow-[0_calc(var(--u)*38)_calc(var(--u)*90)_0_rgb(0_0_0/0.7),0_calc(var(--u)*4)_calc(var(--u)*16)_0_rgb(0_0_0/0.08)]"
+          className="hero-card absolute top-200 left-150 flex h-500 w-640 flex-col rounded-u-6 bg-bg px-30 pt-26 pb-24 text-ui-doc-ink shadow-[0_calc(var(--u)*38)_calc(var(--u)*90)_0_rgb(0_0_0/0.55),0_calc(var(--u)*4)_calc(var(--u)*16)_0_rgb(0_0_0/0.08)]"
           style={{ "--from": from } as CSSProperties}
         >
-          <div className="relative flex flex-col">
-            <span className={cn(printed, "text-[length:calc(var(--u)*30.178)] leading-[calc(var(--u)*37)]")}>
-              {invoice.supplier}
-            </span>
-            <span className="relative font-data text-[length:calc(var(--u)*16.975)] leading-[calc(var(--u)*22)] font-medium">
-              <span className="hero-a block">
-                <span className="text-ui-faint opacity-45">{invoice.date}</span>
+          {/* Head: the document's title and the supplier on the left, its number on the right. */}
+          <div className="relative flex items-start justify-between gap-16">
+            <div className="flex flex-col">
+              <span className={cn(printed, "fs-u-28 leading-[calc(var(--u)*34)] font-semibold")}>{L.title}</span>
+              <span className={cn(printed, "mt-8 fs-u-16 font-semibold")}>{invoice.supplier}</span>
+              <span className="mt-3 font-data fs-u-12 font-medium text-ui-quiet">
+                {L.trn} {invoice.trn}
               </span>
-              <span className={cn("hero-b absolute top-0 left-0 font-bold whitespace-nowrap", tone.sub)}>{invoice.sub}</span>
-            </span>
-            <span className="absolute top-6 right-2 font-data text-[length:calc(var(--u)*20.748)] leading-[calc(var(--u)*27)] font-semibold text-ui-value">
-              {invoice.number}
-            </span>
+            </div>
+            <div className="flex flex-col items-end">
+              <span className="fs-u-11.5 font-medium text-ui-quiet">{L.invoiceNo}</span>
+              <span className="mt-3 font-data fs-u-17 font-semibold text-ui-value">{invoice.number}</span>
+              <span className="relative mt-10 h-22">
+                <span className="hero-b absolute top-0 right-0">
+                  <Chip chip={[invoice.tone === "flag" ? "flag" : "ai", invoice.chip]} />
+                </span>
+              </span>
+            </div>
           </div>
 
-          <div className="flex gap-8 fs-u-15 leading-[calc(var(--u)*20)] whitespace-nowrap">
-            {invoice.meta.map((field, fieldIndex) => (
-              <div key={field.label} className={cn("flex flex-col gap-4", fieldIndex === 0 && "w-149")}>
-                <span className="text-ui-faint opacity-55">{field.label}</span>
-                <span className="font-data font-semibold text-ui-value">{field.value}</span>
+          {/* Who it is addressed to, and the references the checks run against. */}
+          <div className="mt-18 grid grid-cols-[1.1fr_1fr] gap-20 border-t border-border pt-16">
+            <div className="flex flex-col">
+              <span className="fs-u-11.5 font-medium text-ui-quiet">{L.billTo}</span>
+              <span className="mt-4 fs-u-13.5 font-semibold text-ui-value">{data.billTo.name}</span>
+              <span className="mt-2 fs-u-12 font-medium text-ui-quiet">{data.billTo.place}</span>
+              <span className="mt-2 font-data fs-u-12 font-medium text-ui-quiet">
+                {L.trn} {data.billTo.trn}
+              </span>
+            </div>
+            <dl className="grid grid-cols-2 gap-x-16 gap-y-10">
+              {(
+                [
+                  [L.invoiceDate, invoice.date],
+                  [L.dueDate, invoice.due],
+                  [L.lpo, invoice.lpo],
+                  [L.grn, invoice.grn],
+                ] as const
+              ).map(([label, value]) => (
+                <div key={label} className="flex flex-col">
+                  <dt className="fs-u-11.5 font-medium text-ui-quiet">{label}</dt>
+                  <dd className="mt-3 font-data fs-u-13 font-semibold whitespace-nowrap text-ui-value">{value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          {/* The lines. */}
+          <div className="mt-18">
+            <div className="grid h-28 grid-cols-[minmax(0,1fr)_calc(var(--u)*44)_calc(var(--u)*92)_calc(var(--u)*104)] items-center rounded-u-6 bg-bg-subtle px-12 fs-u-11 font-semibold text-ui-quiet">
+              <span>{L.description}</span>
+              <span className="text-right">{L.qty}</span>
+              <span className="text-right">{L.unit}</span>
+              <span className="text-right">{L.amount}</span>
+            </div>
+            {invoice.lines.map((line, index) => (
+              <div
+                key={`${invoice.number}-${index}`}
+                className="grid h-34 grid-cols-[minmax(0,1fr)_calc(var(--u)*44)_calc(var(--u)*92)_calc(var(--u)*104)] items-center border-b border-border px-12 fs-u-13 text-ui-value"
+              >
+                <span className="truncate font-medium">{line.description}</span>
+                <span className="text-right font-data">{line.qty}</span>
+                <span className="text-right font-data">{line.unit}</span>
+                <span className="text-right font-data font-semibold">{line.amount}</span>
               </div>
             ))}
           </div>
 
-          {/* The rule is drawn inside a zero-height line: it takes no room. */}
-          <div className="-mt-1 h-1 shrink-0 bg-border" />
-
-          <div className="flex flex-col gap-8 whitespace-nowrap">
-            <div className="relative flex items-center justify-between">
-              {first ? <ResolvedRow line={first} inset="inset-y-[calc(var(--u)*2.5)]" /> : null}
-              <span className={cn(printed, "hero-shift relative fs-u-20 leading-[calc(var(--u)*24)]")}>{first?.label}</span>
-              <span data-select="" className="relative flex h-45 w-155 items-center justify-center rounded-u-4">
-                <span className="hero-a absolute inset-0 rounded-u-4 bg-ui-select/8" />
-                {/* A 2.83px stroke inside the box, dashed 7.54 on, 5.66 off. */}
-                <svg viewBox="0 0 155 45" fill="none" className="hero-a absolute inset-0 size-full" aria-hidden="true">
-                  <rect
-                    x="1.4146"
-                    y="1.4146"
-                    width="152.1708"
-                    height="42.1708"
-                    rx="2.5854"
-                    strokeWidth="2.8292"
-                    strokeDasharray="7.5446 5.6584"
-                    className="stroke-ui-select"
-                  />
-                </svg>
-                <span className={cn(figure, "relative font-semibold text-ui-value")}>{first?.amount}</span>
-              </span>
+          {/* Subtotal, VAT and the total, right-aligned under the amounts. */}
+          <dl className="mt-16 ml-auto flex w-300 flex-col gap-6 pr-12 fs-u-13 text-ui-value">
+            <div className="flex justify-between">
+              <dt className="font-medium text-ui-quiet">{L.subtotal}</dt>
+              <dd className="font-data font-semibold">{invoice.subtotal}</dd>
             </div>
-
-            <div className="flex flex-col gap-32">
-              <div className="hero-late relative flex items-center justify-between">
-                {second ? <ResolvedRow line={second} inset="-inset-y-8" /> : null}
-                <span className={cn(printed, "hero-shift relative fs-u-20 leading-[calc(var(--u)*24)]")}>{second?.label}</span>
-                <span className={cn(figure, "relative text-ui-value opacity-45")}>{second?.amount}</span>
-              </div>
-              <div className="flex items-center justify-between pt-8">
-                <span className="flex items-center gap-16">
-                  <span className={cn(printed, "text-[length:calc(var(--u)*30.178)] leading-[calc(var(--u)*37)]")}>
-                    {invoice.total.label}
-                  </span>
-                  <span className={cn("hero-b hero-late rounded-u-6 px-10 py-4 font-data fs-u-14 font-bold", tone.tag)}>
-                    {invoice.tag}
-                  </span>
-                </span>
-                <span className="font-data text-[length:calc(var(--u)*26.406)] leading-[calc(var(--u)*34)] font-semibold text-ui-value">
-                  {invoice.total.amount}
-                </span>
-              </div>
+            <div className="flex justify-between">
+              <dt className="font-medium text-ui-quiet">{L.vat}</dt>
+              <dd className="font-data font-semibold">{invoice.vat}</dd>
             </div>
-          </div>
+            <div className="mt-2 flex items-baseline justify-between border-t border-border pt-10">
+              <dt className="fs-u-15 font-semibold">{L.total}</dt>
+              <dd className="font-data fs-u-22 font-bold tracking-[-0.02em]">
+                <span className={dash.currency}>{L.currency}</span>
+                {invoice.total}
+              </dd>
+            </div>
+          </dl>
 
           <div
             data-scan=""
-            className="absolute top-303 left-0 h-9 w-630 rounded-[calc(var(--u)*11.03)] border-[length:var(--u)] border-ui-scan bg-ui-scan/60 shadow-[0_0_calc(var(--u)*71.693)_calc(var(--u)*5.515)_var(--algo-ui-scan)]"
+            className="absolute top-450 left-0 h-9 w-640 rounded-[calc(var(--u)*11.03)] border-[length:var(--u)] border-ui-scan bg-ui-scan/60 shadow-[0_0_calc(var(--u)*71.693)_calc(var(--u)*5.515)_var(--algo-ui-scan)]"
           />
+        </div>
+
+        {/* What the AI checked: the dashboard's own card and wording, laid
+            over the invoice's empty lower left once it has been read, so it
+            covers none of the printed figures. */}
+        <div className="hero-checks card absolute top-560 left-40 w-400 px-18 pt-16 pb-14">
+          <div className="fs-u-13.5 font-semibold tracking-[-0.015em] text-ui-value">{L.checksTitle}</div>
+          <ul className="mt-10 overflow-hidden rounded-u-10 border border-border">
+            {invoice.checks.map((check, index) => (
+              <li
+                key={`${invoice.number}-${check.label}`}
+                style={{ "--i": index } as CSSProperties}
+                className={cn(
+                  "hero-check flex min-h-38 items-center gap-10 border-t border-border px-12 py-7 fs-u-12 tracking-[-0.01em] text-ui-value first:border-t-0",
+                  check.flagged ? "bg-ui-row-tint font-semibold" : "font-medium",
+                )}
+              >
+                <CheckMark flagged={check.flagged} />
+                <span className="min-w-0 flex-1 leading-[1.3]">{check.label}</span>
+                <span
+                  className={cn(
+                    "font-data fs-u-11 whitespace-nowrap",
+                    check.flagged ? "font-semibold text-ui-value" : "text-ui-quiet",
+                  )}
+                >
+                  {check.value}
+                </span>
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/* What the agent is saying. Centred under the card, as drawn. The
@@ -547,8 +562,17 @@ export function InvoiceScatter({ maxScale = 0.62, className }: { maxScale?: numb
             with it; this one follows the shape that is left. */}
         <div
           data-pill=""
-          className="hero-pill absolute top-682 left-[calc(var(--u)*547)] -translate-x-1/2"
-          style={{ "--u": "calc(100cqw / var(--stage-width) * 2.2642)", "--spacing": "var(--u)" } as CSSProperties}
+          className="hero-pill absolute -translate-x-1/2"
+          style={
+            {
+              // Placed in the stage's own unit; the pill's type and padding
+              // run on its larger unit, set beside it.
+              top: "calc(100cqw / var(--stage-width) * 776)",
+              left: "calc(100cqw / var(--stage-width) * 700)",
+              "--u": "calc(100cqw / var(--stage-width) * 2.2642)",
+              "--spacing": "var(--u)",
+            } as CSSProperties
+          }
         >
           <div
             ref={pill}

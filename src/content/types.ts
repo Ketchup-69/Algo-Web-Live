@@ -4,6 +4,8 @@
  * page is a list of typed objects and the components hold no strings (§6).
  */
 
+import type { FeatureIconName } from "@/components/ui/FeatureIcon";
+
 /** A link that looks like a button, or a plain text link. */
 export type Cta = { label: string; href: string };
 
@@ -27,6 +29,8 @@ export type Item = {
   marker?: string;
   title: string;
   body?: string;
+  /** The item's icon. Without one, it is picked from the title (src/lib/icon-for.ts). */
+  icon?: FeatureIconName;
   /** Short supporting phrases, set as a quiet list under the body. */
   points?: string[];
 };
@@ -42,6 +46,8 @@ export type HeroCopy = {
   secondary?: Cta;
   /** One quiet line under the buttons. */
   note?: string;
+  /** Short claims set as a ticked list under the lede (AlgoPay: the brochure's five). */
+  highlights?: string[];
 };
 
 /** The navy band that closes every page. */

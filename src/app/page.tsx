@@ -1,7 +1,9 @@
-import { Block, CompareTable, CtaBand, ItemGrid, Note, PageHero, Steps, TermList, Trace } from "@/components/blocks";
-import { Button } from "@/components/ui";
+import { Block, CompareTable, CtaBand, ItemGrid, LayerStack, Note, PageHero, Steps, TermList, Trace } from "@/components/blocks";
+import { Button, Container, Heading, Section, Text } from "@/components/ui";
+import { Reveal } from "@/components/motion";
+import { agenticStack, stackLayers } from "@/content/stack";
 import { PointerTracker } from "@/components/motion";
-import { InvoiceScatter } from "@/components/product/InvoiceScatter";
+import { AgentFlow } from "@/components/product/AgentFlow";
 import { ProductRows } from "@/components/sections/ProductRows";
 import {
   agentLaunch,
@@ -15,7 +17,6 @@ import {
   products,
   securityTeaser,
 } from "@/content/home";
-import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata(homeMeta, { absolute: true });
@@ -35,15 +36,12 @@ export default function Home() {
         copy={homeHero}
         size="4xl"
         visual={
-          <figure>
-            <InvoiceScatter className="mx-auto lg:mr-0" />
-            <figcaption className="mt-4 text-center text-sm text-fg-muted lg:text-right">{site.ui.sampleNote}</figcaption>
-          </figure>
+          <AgentFlow className="mx-auto lg:mr-0" />
         }
       />
 
       <Block copy={difference}>
-        <ItemGrid items={difference.items} />
+        <ItemGrid items={difference.items} variant="cards" />
       </Block>
 
       <Block copy={comparison} spacing="sm">
@@ -59,7 +57,7 @@ export default function Home() {
       </Block>
 
       <Block copy={platformTeaser}>
-        <TermList items={platformTeaser.terms} />
+        <TermList items={platformTeaser.terms} variant="chips" />
         <div className="mt-10 flex flex-wrap gap-3">
           {platformTeaser.links.map((link, index) => (
             <Button key={link.href} href={link.href} variant={index === 0 ? "secondary" : "ghost"}>
@@ -69,18 +67,43 @@ export default function Home() {
         </div>
       </Block>
 
+      {/* AI agentic stack: the one navy section on the page. */}
+      <Section id={agenticStack.id} data-theme="band" className="scroll-mt-20 bg-bg text-fg">
+        <Container width="wide">
+          <Reveal>
+            <div className="grid gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
+              <div className="lg:sticky lg:top-28 lg:self-start">
+                <Heading level={2} size="3xl" gradient className="max-w-[16ch] text-balance" data-reveal="lines">
+                  {agenticStack.heading}
+                </Heading>
+                {agenticStack.intro ? (
+                  <Text tone="muted" size="lg" className="mt-5 max-w-[44ch]">
+                    {agenticStack.intro}
+                  </Text>
+                ) : null}
+                <span aria-hidden="true" data-reveal="draw" className="hairline-brand mt-10 block max-w-80" />
+                <Button href={agenticStack.link.href} variant="secondary" className="mt-10">
+                  {agenticStack.link.label}
+                </Button>
+              </div>
+              <LayerStack layers={stackLayers.map(({ title, line, icon }) => ({ title, body: line, icon }))} dense />
+            </div>
+          </Reveal>
+        </Container>
+      </Section>
+
       <Block copy={products}>
         <ProductRows items={products.items} />
       </Block>
 
       <Block copy={industries}>
-        <ItemGrid items={industries.items} />
+        <ItemGrid items={industries.items} variant="panel" />
       </Block>
 
       <Block copy={securityTeaser} tone="subtle">
         <Trace label={securityTeaser.sequenceLabel} items={securityTeaser.sequence.map((title) => ({ title }))} />
         <h3 className="mt-16 font-display text-2xl font-bold text-fg">{securityTeaser.pillarsHeading}</h3>
-        <ItemGrid items={securityTeaser.pillars} columns={4} className="mt-8" />
+        <ItemGrid items={securityTeaser.pillars} columns={4} variant="cards" className="mt-8" />
         <Button href={securityTeaser.link.href} variant="secondary" className="mt-12">
           {securityTeaser.link.label}
         </Button>

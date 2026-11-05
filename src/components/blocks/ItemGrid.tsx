@@ -1,5 +1,7 @@
 import { cn } from "@/lib/cn";
+import { iconFor } from "@/lib/icon-for";
 import { Text } from "@/components/ui";
+import { FeatureIcon, toneAt } from "@/components/ui/FeatureIcon";
 import type { Item } from "@/content/types";
 
 const columnClasses = {
@@ -9,30 +11,90 @@ const columnClasses = {
 } as const;
 
 /**
- * Parallel features or principles: no order, no numbers. Each sits under a
- * hairline rather than in a card, so a page of them reads as one surface
- * (§4: not every section an identical rounded card).
+ * Parallel features or principles: no order, no numbers. Three treatments, so
+ * a page of them never reads as the same rounded card over and over (§4):
+ *
+ *   rule    under a hairline, icon beside the title. The quiet default.
+ *   cards   separate dashboard cards that lift on hover.
+ *   panel   one card holding the set, divided by hairlines, like a
+ *           dashboard table.
+ *
+ * Every item carries an icon: its own `icon`, or one picked from its words.
  */
 export function ItemGrid({
   items,
   columns = 3,
+  variant = "rule",
   className,
 }: {
   items: Item[];
   columns?: keyof typeof columnClasses;
+  variant?: "rule" | "cards" | "panel";
   className?: string;
 }) {
+  if (variant === "panel") {
+    return (
+      <ul
+        data-reveal="cards"
+        className={cn(
+          "site-card grid overflow-hidden",
+          columnClasses[columns],
+          "[&>li]:border-border [&>li]:border-b sm:[&>li]:border-r",
+          className,
+        )}
+      >
+        {items.map((item, index) => (
+          <li key={item.title} className="-mr-px -mb-px p-6 sm:p-7">
+            <FeatureIcon name={item.icon ?? iconFor(item.title, item.body)} tone={toneAt(index)} />
+            <h3 className="mt-5 font-display text-lg font-semibold text-fg">{item.title}</h3>
+            {item.body ? (
+              <Text tone="muted" measure={false} className="mt-2">
+                {item.body}
+              </Text>
+            ) : null}
+            {item.points?.length ? <Points points={item.points} /> : null}
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
+  if (variant === "cards") {
+    return (
+      <ul data-reveal="cards" className={cn("grid gap-4 sm:gap-5", columnClasses[columns], className)}>
+        {items.map((item, index) => (
+          <li key={item.title} className="site-card lift p-6 sm:p-7">
+            <FeatureIcon name={item.icon ?? iconFor(item.title, item.body)} tone={toneAt(index)} />
+            <h3 className="mt-5 font-display text-lg font-semibold text-fg">{item.title}</h3>
+            {item.body ? (
+              <Text tone="muted" measure={false} className="mt-2">
+                {item.body}
+              </Text>
+            ) : null}
+            {item.points?.length ? <Points points={item.points} /> : null}
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
   return (
-    <ul className={cn("grid gap-x-10 gap-y-10", columnClasses[columns], className)}>
-      {items.map((item) => (
-        <li key={item.title} className="border-t border-border pt-6">
-          <h3 className="font-display text-lg font-semibold text-fg">{item.title}</h3>
-          {item.body ? (
-            <Text tone="muted" measure={false} className="mt-2.5">
-              {item.body}
-            </Text>
-          ) : null}
-          {item.points?.length ? <Points points={item.points} /> : null}
+    <ul data-reveal="cards" className={cn("grid gap-x-10 gap-y-10", columnClasses[columns], className)}>
+      {items.map((item, index) => (
+        <li key={item.title} className="relative pt-6">
+          <span aria-hidden="true" data-rail="" className="absolute inset-x-0 top-0 h-px bg-border" />
+          <div className="flex items-start gap-4">
+            <FeatureIcon name={item.icon ?? iconFor(item.title, item.body)} tone={toneAt(index)} size="sm" className="mt-0.5" />
+            <div className="min-w-0">
+              <h3 className="font-display text-lg font-semibold text-fg">{item.title}</h3>
+              {item.body ? (
+                <Text tone="muted" measure={false} className="mt-2">
+                  {item.body}
+                </Text>
+              ) : null}
+              {item.points?.length ? <Points points={item.points} /> : null}
+            </div>
+          </div>
         </li>
       ))}
     </ul>
